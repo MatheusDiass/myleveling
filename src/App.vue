@@ -5,17 +5,21 @@
     <v-main class="backgroudColor">
       <router-view />
     </v-main>
+
+    <MylevFooter/>
   </v-app>
 </template>
 
 <script>
 import MylevNavbar from "./components/Mylev-Navbar.vue";
+import MylevFooter from "./components/Mylev-Footer.vue"
 
 export default {
   name: "App",
 
   components: {
     MylevNavbar,
+    MylevFooter
   },
 
   data: () => ({
