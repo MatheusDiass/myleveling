@@ -1,13 +1,32 @@
 <template>
-    <v-container>
-        <h1>Home</h1>
+  <v-container>
+    <h1>Home</h1>
 
-        <br>
+    <br />
 
-        <v-divider></v-divider>
+    <v-divider></v-divider>
 
-        <br>
+    <br />
 
-        <h3>Cursos</h3>
-    </v-container>
+    <h3>Cursos</h3>
+
+    <br />
+
+    <MylevContentName title="Matemática" color="#499fc6"/>
+
+    <br />
+
+    <MylevContentName title="Português" color="#93d7f5"/>
+  </v-container>
 </template>
+
+<script>
+import MylevContentName from "../components/Mylev-ContentName.vue"
+
+export default {
+  name: "Mylev-Home",
+  components: {
+      MylevContentName,
+  }
+};
+</script>
