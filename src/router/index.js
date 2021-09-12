@@ -3,6 +3,7 @@ import VueRouter from "vue-router";
 
 //Views
 import MylevHome from '../views/Mylev-Home.vue'
+import MylevRegister from '../views/Mylev-Register.vue'
 
 Vue.use(VueRouter);
 
@@ -11,6 +12,11 @@ const routes = [
     path: '/',
     name: 'Home',
     component: MylevHome
+  },
+  {
+    path: '/Register',
+    name: 'Register',
+    component: MylevRegister
   }
 ];
 

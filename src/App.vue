@@ -50,4 +50,21 @@ export default {
 .backgroudColor {
   background-color: #899397;
 }
+
+.contentCenter {
+  display: flex;
+  justify-content: center;
+}
+.paddingCard {
+  padding-left: 15%;
+  padding-right: 15%;
+  padding-top: 25px;
+  padding-bottom: 25px;
+}
+.externalDivBorder {
+    border-width: 4px;
+    border-style: solid;
+    border-radius: 10px;
+    border-color: white;
+}
 </style>
