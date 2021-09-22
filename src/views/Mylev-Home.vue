@@ -24,7 +24,8 @@
 import MylevContentName from "../components/Mylev-ContentName.vue"
 
 export default {
-  name: "Mylev-Home",
+  name: "MylevHome",
+  
   components: {
       MylevContentName,
   }

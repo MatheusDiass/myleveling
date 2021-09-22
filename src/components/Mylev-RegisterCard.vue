@@ -28,10 +28,7 @@
 
 <script>
 export default {
-  data() {
-    return {};
-  },
-  methods: {},
+  name: "MylevRegisterCard",
 };
 </script>
 
