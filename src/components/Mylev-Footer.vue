@@ -8,7 +8,7 @@
 
 <script>
 export default {
-  name: "Mylev-Footer",
+  name: "MylevFooter",
 };
 </script>
 

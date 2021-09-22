@@ -1,6 +1,6 @@
 <template>
     <v-container>
-        <h1>login</h1>
+        <h1>Login</h1>
 
         <br>
 
@@ -14,12 +14,12 @@
 
 <script>
 import MylevLoginCard from "../components/Mylev-LoginCard.vue"
-    export default {
-        data() {
-            return {}
-        },
-        components: {
-            MylevLoginCard
-        }
+
+export default {
+    name: "MylevLogin",
+
+    components: {
+        MylevLoginCard,
     }
+}
 </script>

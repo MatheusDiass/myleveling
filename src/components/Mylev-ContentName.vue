@@ -8,10 +8,18 @@
 
 <script>
 export default {
-  name: "Mylev-ContentName",
+  name: "MylevContentName",
+  
   props: {
-      title: String,
-      color: String,
+      title: {
+        type: String,
+        required: true,
+      },
+
+      color: {
+        type: String,
+        required: true,
+      },
   }
 };
 </script>

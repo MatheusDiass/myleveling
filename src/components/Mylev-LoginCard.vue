@@ -5,7 +5,8 @@
         
         <label>Email:</label>
         <v-text-field background-color="white" outlined></v-text-field>
-        <label>Senha</label>
+
+        <label>Senha:</label>
         <v-text-field background-color="white" outlined></v-text-field>
 
         <div class="contentCenter">
@@ -25,10 +26,7 @@
 
 <script>
 export default {
-  data() {
-    return {};
-  },
-  methods: {},
+  name: "MylevLoginCard",
 };
 </script>
 
