@@ -61,10 +61,12 @@ export default {
   padding-top: 25px;
   padding-bottom: 25px;
 }
-.externalDivBorder {
-    border-width: 4px;
-    border-style: solid;
-    border-radius: 10px;
-    border-color: white;
+
+.v-sheet.v-card {
+  border: 5px solid white !important;
+}
+
+.container {
+  width: 75%;
 }
 </style>

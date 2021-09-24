@@ -1,9 +1,7 @@
 <template>
-    <div class="externalDivBorder sizeDiv">
-        <v-card class="verticalCenterContent" :color="color" width="300" height="250" rounded="lg" flat>
-            <v-card-title class="textCenter sizeText">{{ title }}</v-card-title>
-        </v-card>
-    </div>
+    <v-card class="verticalCenterContent" :color="color" width="300" height="250" rounded="lg" flat>
+        <v-card-title class="textCenter sizeText">{{ title }}</v-card-title>
+    </v-card>
 </template>
 
 <script>
@@ -25,13 +23,6 @@ export default {
 </script>
 
 <style scoped>
-.externalDivBorder {
-    border-width: 4px;
-    border-style: solid;
-    border-radius: 10px;
-    border-color: white;
-}
-
 .sizeDiv {
     width: 300px;
     height: 258px;

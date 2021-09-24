@@ -1,3 +1,4 @@
 {
-    "mylevelingbackend": "http://localhost:3000"
+    "mylevelingbackend": "http://localhost:3000",
+    "subject": "http://localhost:3000/subject"
 }
