@@ -6,6 +6,9 @@ import getters from "./getters"
 import actions from "./actions"
 import mutations from "./mutations"
 
+//Modules
+import subjectModule from "./modules/Subject";
+
 Vue.use(Vuex);
 
 export default new Vuex.Store({
@@ -13,4 +16,7 @@ export default new Vuex.Store({
   getters,
   actions,
   mutations,
+  modules: {
+    subject: subjectModule,
+  }
 });
