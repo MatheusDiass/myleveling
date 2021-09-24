@@ -2,17 +2,15 @@
   <div class="externalDivBorder">
     <v-card class="paddingCard" color="#499fc6" flat>
       <v-form>
-        <label>Nome:</label>
-        <v-text-field background-color="white" outlined></v-text-field>
-        <label>Nickname:</label>
-        <v-text-field background-color="white" outlined></v-text-field>
+        
         <label>Email:</label>
         <v-text-field background-color="white" outlined></v-text-field>
-        <label>Senha</label>
+
+        <label>Senha:</label>
         <v-text-field background-color="white" outlined></v-text-field>
 
         <div class="contentCenter">
-          <v-btn color="#3898ec">Cadastrar</v-btn>
+          <v-btn color="#3898ec">login</v-btn>
         </div>
 
         <div>
@@ -28,7 +26,7 @@
 
 <script>
 export default {
-  name: "MylevRegisterCard",
+  name: "MylevLoginCard",
 };
 </script>
 

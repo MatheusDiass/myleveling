@@ -5,7 +5,7 @@ import VueRouter from "vue-router";
 import MylevHome from '../views/Mylev-Home.vue'
 import MylevRegister from '../views/Mylev-Register.vue'
 import MylevSubject from '../views/Mylev-Subject.vue'
-
+import MylevLogin from '../views/Mylev-Login.vue'
 
 Vue.use(VueRouter);
 
@@ -16,7 +16,7 @@ const routes = [
     component: MylevHome
   },
   {
-    path: '/Register',
+    path: '/register',
     name: 'Register',
     component: MylevRegister
   },
@@ -24,6 +24,11 @@ const routes = [
     path: '/AddSubject',
     name: 'AddSubject',
     component: MylevSubject
+  },
+  {
+    path: '/login',
+    name: 'Login',
+    component: MylevLogin
   }
 ];
 

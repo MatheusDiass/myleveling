@@ -14,13 +14,12 @@
 
 <script>
 import MylevRegisterCard from "../components/Mylev-RegisterCard.vue"
-    export default {
-        data() {
-            return {}
-        },
-        components: {
-            MylevRegisterCard
-        }
+export default {
+    name: "MylevRegister",
+    
+    components: {
+        MylevRegisterCard,
     }
+}
 </script>
 

@@ -12,9 +12,9 @@
       <v-spacer></v-spacer>
 
       <v-row class="hidden-sm-and-down">
-        <v-btn elevation="0" class="textColor" text>Home</v-btn>
+        <v-btn :to="{ name: 'Home' }" elevation="0" class="textColor" text exact>Home</v-btn>
         <v-btn elevation="0" class="textColor" text>Área do Aluno</v-btn>
-        <v-btn elevation="0" class="textColor" text>Login</v-btn>
+        <v-btn :to="{ name: 'Login' }" elevation="0" class="textColor" text>Login</v-btn>
       </v-row>
 
       <v-row class="hidden-md-and-up">
@@ -27,7 +27,7 @@
 
           <v-list class="color">
             <v-list-item>
-              <v-btn elevation="0" class="textColor" text>Home</v-btn>
+              <v-btn :to="{ name: 'Home' }" elevation="0" class="textColor" text exact>Home</v-btn>
             </v-list-item>
 
             <v-list-item>
@@ -35,7 +35,7 @@
             </v-list-item>
 
             <v-list-item>
-              <v-btn elevation="0" class="textColor" text>Login</v-btn>
+              <v-btn :to="{ name: 'Login' }" elevation="0" class="textColor" text>Login</v-btn>
             </v-list-item>
           </v-list>
         </v-menu>
@@ -46,7 +46,7 @@
 
 <script>
 export default {
-  name: "Mylev-NavBar",
+  name: "MylevNavBar",
 };
 </script>
 
