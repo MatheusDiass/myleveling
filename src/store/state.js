@@ -1,7 +1,7 @@
 const state = {
     showSnackbar: {
         show: false,
-        message: ""
+        message: "",
     }
 };
 

@@ -6,20 +6,23 @@
       <router-view />
     </v-main>
 
-    <MylevFooter/>
+    <MylevFooter />
+    <MylevSnackbar />
   </v-app>
 </template>
 
 <script>
 import MylevNavbar from "./components/Mylev-Navbar.vue";
-import MylevFooter from "./components/Mylev-Footer.vue"
+import MylevFooter from "./components/Mylev-Footer.vue";
+import MylevSnackbar from "./components/Mylev-Snackbar.vue";
 
 export default {
   name: "App",
 
   components: {
     MylevNavbar,
-    MylevFooter
+    MylevFooter,
+    MylevSnackbar,
   },
 
   data: () => ({
@@ -44,7 +47,7 @@ export default {
 }
 
 .textColor {
-  color: #333 !important;
+  color: black !important;
 }
 
 .backgroudColor {
