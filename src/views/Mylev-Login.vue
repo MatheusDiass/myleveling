@@ -8,12 +8,12 @@
 
         <br>
 
-        <MylevLoginCard/>
+        <MylevLoginCard />
     </v-container>
 </template>
 
 <script>
-import MylevLoginCard from "../components/Mylev-LoginCard.vue"
+import MylevLoginCard from "../components/Mylev-LoginCard.vue";
 
 export default {
     name: "MylevLogin",

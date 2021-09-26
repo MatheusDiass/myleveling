@@ -55,7 +55,7 @@ export default {
 }
 
 .contentCenter {
-  display: flex;
+  display: flex !important;
   justify-content: center;
 }
 .paddingCard {
