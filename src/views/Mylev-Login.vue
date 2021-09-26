@@ -13,7 +13,7 @@
 </template>
 
 <script>
-import MylevLoginCard from "../components/Mylev-LoginCard.vue";
+import MylevLoginCard from "../components/views/login/Mylev-LoginCard.vue";
 
 export default {
     name: "MylevLogin",

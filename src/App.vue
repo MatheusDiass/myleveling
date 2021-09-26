@@ -12,9 +12,9 @@
 </template>
 
 <script>
-import MylevNavbar from "./components/Mylev-Navbar.vue";
-import MylevFooter from "./components/Mylev-Footer.vue";
-import MylevSnackbar from "./components/Mylev-Snackbar.vue";
+import MylevNavbar from "./components/shared/Mylev-Navbar.vue";
+import MylevFooter from "./components/shared/Mylev-Footer.vue";
+import MylevSnackbar from "./components/shared/Mylev-Snackbar.vue";
 
 export default {
   name: "App",

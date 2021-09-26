@@ -13,7 +13,8 @@
 </template>
 
 <script>
-import MylevRegisterCard from "../components/Mylev-RegisterCard.vue"
+import MylevRegisterCard from "../components/views/register/Mylev-RegisterCard.vue"
+
 export default {
     name: "MylevRegister",
     
