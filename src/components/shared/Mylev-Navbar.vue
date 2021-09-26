@@ -5,7 +5,7 @@
         ><v-img
           max-height="60"
           max-width="60"
-          :src="require('../assets/logo.png')"
+          :src="require('../../assets/logo.png')"
         ></v-img
       ></v-toolbar-title>
 

@@ -22,8 +22,7 @@
 </template>
 
 <script>
-import MylevContentName from "../components/Mylev-ContentName.vue";
-import config from "@/configuration/configuration.json";
+import MylevContentName from "../components/shared/Mylev-ContentName.vue";
 import { mapActions, mapGetters } from "vuex";
 
 export default {
@@ -43,11 +42,10 @@ export default {
 
   methods: {
     ...mapActions("subject", ["fecthSubjects"]),
+    
     async listSubjects() {
-      let route = config.subject;
-
       try {
-        await this.fecthSubjects({ route });
+        await this.fecthSubjects();
       } catch(error) {
         console.log(error);
       }

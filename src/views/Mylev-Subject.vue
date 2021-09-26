@@ -1,29 +1,29 @@
 <template>
-    <v-container>
-        <h1>Adicionar Matéria</h1>
+  <v-container>
+    <h1>Adicionar Matéria</h1>
 
-        <br>
+    <br />
 
-        <v-divider></v-divider>
+    <v-divider></v-divider>
 
-        <br>
+    <br />
 
-        <MylevSubjectCard/>
-    </v-container>
+    <MylevSubjectCard />
+
+    <MylevAlert />
+  </v-container>
 </template>
 
 <script>
-import MylevSubjectCard from "../components/Mylev-SubjectCard.vue"
-    export default {
-        data() {
-            return {}
-        },
-        components: {
-            MylevSubjectCard
-        }
-    }
+import MylevSubjectCard from '../components/views/subject/Mylev-SubjectCard.vue'
+import MylevAlert from '../components/shared/Mylev-Alert.vue'
+
+export default {
+  name: 'MylevSubject',
+
+  components: {
+    MylevSubjectCard,
+    MylevAlert,
+  },
+}
 </script>
-
-<style scoped>
-
-</style>
