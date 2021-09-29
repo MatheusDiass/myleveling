@@ -1,6 +1,6 @@
 <template>
-  <v-container>
-    <h1>Editar matéria</h1>
+    <v-container>
+    <h1>Lista de Matérias</h1>
 
     <br />
 
@@ -13,8 +13,7 @@
 </template>
 
 <script>
-
 export default {
-  name: 'MylevEditSubject',
+    name: 'MylevListSubject',
 }
 </script>
