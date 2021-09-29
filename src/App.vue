@@ -71,5 +71,6 @@ export default {
 
 .container {
   width: 75%;
+  margin-bottom: 80px;
 }
 </style>
