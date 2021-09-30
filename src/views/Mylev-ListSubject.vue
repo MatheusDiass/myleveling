@@ -8,12 +8,18 @@
 
     <br />
 
-  
+    <MylevTableSubjectCard />
   </v-container>
 </template>
 
 <script>
+import MylevTableSubjectCard from '../components/views/subject/Mylev-TableSubjectCard.vue'
+
 export default {
     name: 'MylevListSubject',
+
+    components: {
+        MylevTableSubjectCard,
+    },
 }
 </script>
