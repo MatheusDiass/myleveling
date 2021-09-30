@@ -69,6 +69,10 @@ export default {
   border: 5px solid white !important;
 }
 
+.v-data-table__wrapper {
+  border-radius: 3px;
+}
+
 .container {
   width: 75%;
   margin-bottom: 80px;
