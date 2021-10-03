@@ -6,6 +6,8 @@ import MylevHome from '../views/Mylev-Home.vue'
 import MylevRegister from '../views/Mylev-Register.vue'
 import MylevSubject from '../views/Mylev-Subject.vue'
 import MylevLogin from '../views/Mylev-Login.vue'
+import MylevAddSubContent from '../views/Mylev-AddSubContent.vue'
+import MylevEditSubject from '../views/Mylev-EditSubject.vue'
 import MylevListSubject from '../views/Mylev-ListSubject.vue'
 
 Vue.use(VueRouter);
@@ -30,6 +32,16 @@ const routes = [
     path: '/login',
     name: 'Login',
     component: MylevLogin
+  },
+  {
+    path: '/addSubContent',
+    name: 'AddSubContent',
+    component: MylevAddSubContent
+  },
+  {
+    path:'/EditSubject',
+    name: 'EditSubject',
+    component: MylevEditSubject
   },
   {
     path: '/listsubjects',
