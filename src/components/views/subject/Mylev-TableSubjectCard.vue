@@ -8,7 +8,7 @@
         </tr>
       </thead>
       <tbody>
-        <tr v-for="subject in subjects" :key="subject.id">
+        <tr v-for="(subject, index) in subjects" :key="subject.id">
           <td>{{ subject.data.name }}</td>
           <td>
             <div>
@@ -18,18 +18,7 @@
                 :to="{ name: 'EditSubject', params: { id: subject.id } }"
                 ><v-icon>mdi-pencil</v-icon>Editar</v-btn
               >
-              <v-btn class="mx-2" color="red" text
-                ><v-icon>mdi-delete</v-icon>Deletar</v-btn
-              >
-            </div>
-          </td>
-        </tr>
-        <tr>
-          <td>Português</td>
-          <td>
-            <div>
-              <v-btn class="mx-2" text><v-icon>mdi-pencil</v-icon>Editar</v-btn>
-              <v-btn class="mx-2" color="red" text
+              <v-btn class="mx-2" color="red" text @click="removeSubject(index, subject.id)"
                 ><v-icon>mdi-delete</v-icon>Deletar</v-btn
               >
             </div>
@@ -58,6 +47,11 @@ export default {
     this.fecthSubjects()
   },
 
+  //Remove o Alert de erro ao sair da página
+  beforeDestroy() {
+    this.showAlertMessage({ show: false, message: '' });
+  },
+
   computed: {
     //Getters Vuex
     ...mapGetters('subject', ['subjects']),
@@ -66,7 +60,31 @@ export default {
   methods: {
     //Actions Vuex
     ...mapActions(['showSnackbarMessage', 'showAlertMessage']),
-    ...mapActions('subject', ['fecthSubjects']),
+    ...mapActions('subject', ['fecthSubjects', 'deleteSubject']),
+
+    async removeSubject(index, subjectId) {
+      try {
+        //Deleta a matéria
+        let res = await this.deleteSubject(subjectId);
+        
+        //Remove matéria do array que está listando as matérias
+        this.subjects.splice(index, 1);
+
+        //Abre um Snackbar com a mensagem de sucesso
+        this.showSnackbarMessage({ show: true, message: res });
+      } catch(error) {
+        let errorMessage = '';
+
+        if(error.response) {
+          errorMessage = error.response.data;
+        } else {
+          errorMessage = "Não foi possível se conectar com a API!";
+        }
+
+        //Exibe o Alert de erro
+        this.showAlertMessage({ show: true, message: errorMessage });
+      }
+    }
   },
 }
 </script>
