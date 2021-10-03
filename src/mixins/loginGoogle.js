@@ -3,12 +3,14 @@ import { mapActions, mapGetters } from 'vuex'
 
 export default {
   computed: {
+    //Getters Vuex
     ...mapGetters('profile', ['profile']),
   },
 
   methods: {
+    //Actions Vuex
     ...mapActions(['saveInititalProfileInformations', 'showAlertMessage']),
-    ...mapActions('profile', ['fecthSubjectByUid']),
+    ...mapActions('profile', ['fecthProfileByUid']),
 
     async login() {
       try {
@@ -26,7 +28,7 @@ export default {
         const userData = data.user
 
         //Pega informações do usuário no firebase
-        await this.fecthSubjectByUid({ uid: userData.uid })
+        await this.fecthProfileByUid({ uid: userData.uid })
 
         //Dados do usuário
         const user = {

@@ -8,11 +8,16 @@
         </tr>
       </thead>
       <tbody>
-        <tr v-for="(subject, index) in subjects" :key="index">
-          <td>{{ subject.name }}</td>
+        <tr v-for="subject in subjects" :key="subject.id">
+          <td>{{ subject.data.name }}</td>
           <td>
             <div>
-              <v-btn class="mx-2" text><v-icon>mdi-pencil</v-icon>Editar</v-btn>
+              <v-btn
+                class="mx-2"
+                text
+                :to="{ name: 'EditSubject', params: { id: subject.id } }"
+                ><v-icon>mdi-pencil</v-icon>Editar</v-btn
+              >
               <v-btn class="mx-2" color="red" text
                 ><v-icon>mdi-delete</v-icon>Deletar</v-btn
               >
@@ -43,20 +48,23 @@ export default {
 
   data() {
     return {
+      //Nome das colunas da tabela
       headers: [{ text: 'Nome da Matéria' }, { text: 'Ações' }],
     }
   },
 
   created() {
+    //Pega todas as matérias para serem listadas na tabela
     this.fecthSubjects()
   },
 
   computed: {
+    //Getters Vuex
     ...mapGetters('subject', ['subjects']),
   },
 
   methods: {
-    //Actions vuex
+    //Actions Vuex
     ...mapActions(['showSnackbarMessage', 'showAlertMessage']),
     ...mapActions('subject', ['fecthSubjects']),
   },
