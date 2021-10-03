@@ -20,7 +20,14 @@
       <div>
         <br />
         <v-row class="contentCenter"><label>Outras Opções</label></v-row>
-        <v-row class="contentCenter"><v-img max-height="60" max-width="60" :src="require('../../../assets/logoGoogle.png')"></v-img>
+        <v-row class="contentCenter">
+          <a @click="login">
+            <v-img
+              max-height="60"
+              max-width="60"
+              :src="require('../../../assets/logoGoogle.png')"
+            ></v-img>
+          </a>
         </v-row>
       </div>
     </v-form>
@@ -28,11 +35,15 @@
 </template>
 
 <script>
+import { loginGoogle } from '@/mixins'
+
 export default {
-  name: "MylevRegisterCard",
-};
+  name: 'MylevRegisterCard',
+
+  mixins: [loginGoogle],
+
+  beforeDestroy() {
+    this.showAlertMessage({ show: false, message: '' })
+  },
+}
 </script>
-
-<style scoped>
-
-</style>

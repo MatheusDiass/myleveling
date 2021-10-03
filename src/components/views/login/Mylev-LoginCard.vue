@@ -1,7 +1,6 @@
 <template>
   <v-card class="paddingCard" color="#499fc6" rounded="lg" flat>
     <v-form>
-        
       <label>Email:</label>
       <v-text-field background-color="white" outlined></v-text-field>
 
@@ -15,7 +14,14 @@
       <div>
         <br />
         <v-row class="contentCenter"><label>Outras Opções</label></v-row>
-        <v-row class="contentCenter"><v-img max-height="60" max-width="60" :src="require('../../../assets/logoGoogle.png')"></v-img>
+        <v-row class="contentCenter">
+          <a @click="login"
+            ><v-img
+              max-height="60"
+              max-width="60"
+              :src="require('../../../assets/logoGoogle.png')"
+            ></v-img
+          ></a>
         </v-row>
       </div>
     </v-form>
@@ -23,7 +29,15 @@
 </template>
 
 <script>
+import { loginGoogle } from '@/mixins'
+
 export default {
-  name: "MylevLoginCard",
-};
+  name: 'MylevLoginCard',
+
+  mixins: [loginGoogle],
+
+  beforeDestroy() {
+    this.showAlertMessage({ show: false, message: '' })
+  },
+}
 </script>

@@ -1,5 +1,5 @@
-import axios from "axios"
-import MUTATIONS_TYPES from "./mutationsTypes";
+import axios from "axios";
+import MUTATIONS_TYPES from "./mutationTypes";
 import config from "@/configuration/configuration.json";
 
 

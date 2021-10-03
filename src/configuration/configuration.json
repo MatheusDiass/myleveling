@@ -1,4 +1,6 @@
 {
     "mylevelingbackend": "http://localhost:3000",
-    "subject": "http://localhost:3000/subject"
+    "login": "http://localhost:3000/login",
+    "subject": "http://localhost:3000/subject",
+    "profile": "http://localhost:3000/profile"
 }
