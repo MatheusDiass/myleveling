@@ -25,7 +25,7 @@ export default {
     }
   },
 
-   beforeDestroy() {
+  beforeDestroy() {
     this.showAlertMessage({ show: false, message: '' });
   },
 
