@@ -24,7 +24,7 @@ const routes = [
     component: MylevRegister
   },
   {
-    path: '/AddSubject',
+    path: '/addsubject',
     name: 'AddSubject',
     component: MylevSubject
   },
@@ -34,12 +34,12 @@ const routes = [
     component: MylevLogin
   },
   {
-    path: '/addSubContent',
+    path: '/addsubContent',
     name: 'AddSubContent',
     component: MylevAddSubContent
   },
   {
-    path:'/EditSubject',
+    path:'/editsubject/:id',
     name: 'EditSubject',
     component: MylevEditSubject
   },
