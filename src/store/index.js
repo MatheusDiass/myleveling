@@ -9,6 +9,7 @@ import mutations from "./mutations"
 //Modules
 import profileModule from "./modules/Profile";
 import subjectModule from "./modules/Subject";
+import subContentModule from "./modules/SubContent"
 
 Vue.use(Vuex);
 
@@ -18,7 +19,8 @@ export default new Vuex.Store({
   actions,
   mutations,
   modules: {
-    subject: subjectModule,
     profile: profileModule,
+    subject: subjectModule,
+    subContent: subContentModule,
   }
 });

@@ -1,6 +1,6 @@
 <template>
   <div class="externalDivBorder">
-    <v-card class="paddingCard" color="#499fc6" flat>
+    <v-card class="paddingCard" color="#499fc6" rounded="lg" flat>
       <v-form>
         <label>Nome:</label>
         <v-text-field

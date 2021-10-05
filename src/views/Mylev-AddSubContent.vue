@@ -1,6 +1,6 @@
 <template>
   <v-container>
-    <h1>Adicionar Sub Conteudo</h1>
+    <h1>Adicionar SubConteúdo</h1>
 
     <br />
 
@@ -8,7 +8,7 @@
 
     <br />
 
-    <MylevSubContent/>
+    <MylevSubContent />
   </v-container>
 </template>
 

@@ -1,24 +1,51 @@
 <template>
   <div class="externalDivBorder">
-    <v-card class="paddingCard" color="#499fc6" flat>
+    <v-card class="paddingCard" color="#499fc6" rounded="lg" flat>
       <v-form>
-        <label>Titulo:</label>
-        <v-text-field  background-color="white" outlined></v-text-field>
+        <label>Título:</label>
+        <v-text-field
+          v-model="title"
+          background-color="white"
+          outlined
+        ></v-text-field>
+
         <label>Matéria:</label>
-        <v-select  background-color="white" outlined></v-select>
-        <label>Conteudo:</label>
-        <v-textarea background-color="white" outlined></v-textarea>
+        <v-select
+          :items="subjects"
+          item-text="data.name"
+          item-value="id"
+          v-model="subjectId"
+          background-color="white"
+          outlined
+        ></v-select>
+
+        <label>Conteúdo:</label>
+        <v-textarea
+          v-model="content"
+          background-color="white"
+          outlined
+        ></v-textarea>
+
         <label>Video da aula:</label>
         <v-checkbox label="Clique para desbloquar a opção"></v-checkbox>
-        <v-file-input background-color="white" outlined></v-file-input>
+        <v-file-input
+          v-model="video"
+          ref="video"
+          background-color="white"
+          outlined
+        ></v-file-input>
+
         <label>Matériais</label>
         <v-checkbox label="Clique para desbloquar a opção"></v-checkbox>
-        <v-file-input  background-color="white" outlined></v-file-input>
-
-
+        <v-file-input
+          v-model="file"
+          ref="file"
+          background-color="white"
+          outlined
+        ></v-file-input>
 
         <div class="contentCenter">
-          <v-btn color="#3898ec">Salvar</v-btn>
+          <v-btn color="#3898ec" @click="addNewSubContent">Salvar</v-btn>
         </div>
       </v-form>
     </v-card>
@@ -26,7 +53,80 @@
 </template>
 
 <script>
+import { mapActions, mapGetters } from 'vuex'
+
 export default {
-    name:'MylevSubContent',
+  name: 'MylevSubContent',
+
+  data() {
+    return {
+      title: '',
+      subjectId: '',
+      content: '',
+      video: [],
+      file: [],
+    }
+  },
+
+  async created() {
+    //Pega todas as matérias para serem listadas na tabela
+    await this.fecthSubjects();
+  },
+
+  computed: {
+    //Getters Vuex
+    ...mapGetters('subject', ['subjects']),
+  },
+
+  methods: {
+    //Actions Vuex
+    ...mapActions(["showSnackbarMessage", "showAlertMessage"]),
+    ...mapActions('subject', ['fecthSubjects']),
+    ...mapActions('subContent', ['addSubContent', 'addSubContentVideo', 'addSubContentFile']),
+
+    //Salva o subconteúdo
+    async addNewSubContent() {
+      const subContent = {
+        title: this.title,
+        subjectId: this.subjectId,
+        content: this.content,
+      };
+
+      try {
+        //Salva no firebase os dados iniciais(Título, conteúdo e o ID da matéria)
+        const id = await this.addSubContent(subContent);
+
+        //Compila o video para ser enviado para a API
+        const formDataVideo = new FormData();
+        formDataVideo.append('video', this.video);
+
+        //Compila o arquivo para ser enviado para a API
+        const formDataFile = new FormData();
+        formDataFile.append('file', this.file);
+
+        //Faz o upload do video no firebase
+        await this.addSubContentVideo({
+          subjectId: this.subjectId,
+          id,
+          video: formDataVideo,
+        });
+
+        //Faz o upload do arquivo no firebase
+        const res = await this.addSubContentFile({
+          subjectId: this.subjectId,
+          id,
+          file: formDataFile,
+        });
+
+        //Abre um Snackbar com a mensagem de sucesso
+        this.showSnackbarMessage({ show: true, message: res });
+
+        //Muda para a página de listagem das matérias
+        this.$router.push({ name: "Login" });
+      } catch (error) {
+        console.log(error.response.data);
+      }
+    },
+  },
 }
 </script>

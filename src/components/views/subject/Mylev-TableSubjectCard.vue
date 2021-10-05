@@ -44,7 +44,7 @@ export default {
 
   created() {
     //Pega todas as matérias para serem listadas na tabela
-    this.fecthSubjects()
+    this.fecthSubjects();
   },
 
   //Remove o Alert de erro ao sair da página
