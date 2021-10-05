@@ -16,6 +16,13 @@ const actions = {
         const { data } = await axios.post(`${config.subContentVideo}/${subjectId}/${id}`, video);
 
         return data;
+    },
+
+    //Faz a requisição para a API para salvar o arquivo do subconteúdo 
+    addSubContentFile: async (state, { subjectId, id, file }) => {
+        const { data } = await axios.post(`${config.subContentFile}/${subjectId}/${id}`, file);
+
+        return data;
     }
 };
 

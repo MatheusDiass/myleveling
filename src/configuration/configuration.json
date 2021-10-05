@@ -4,5 +4,6 @@
     "profile": "http://localhost:3000/profile",
     "subject": "http://localhost:3000/subject",
     "subContent": "http://localhost:3000/subcontent",
-    "subContentVideo": "http://localhost:3000/subcontentvideo"
+    "subContentVideo": "http://localhost:3000/subcontentvideo",
+    "subContentFile": "http://localhost:3000/subcontentfile"
 }

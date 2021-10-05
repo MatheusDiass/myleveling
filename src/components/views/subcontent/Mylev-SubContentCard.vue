@@ -39,6 +39,7 @@
         <v-checkbox label="Clique para desbloquar a opção"></v-checkbox>
         <v-file-input
           v-model="file"
+          ref="file"
           background-color="white"
           outlined
         ></v-file-input>
@@ -81,8 +82,9 @@ export default {
     //Actions Vuex
     ...mapActions(["showSnackbarMessage", "showAlertMessage"]),
     ...mapActions('subject', ['fecthSubjects']),
-    ...mapActions('subContent', ['addSubContent', 'addSubContentVideo']),
+    ...mapActions('subContent', ['addSubContent', 'addSubContentVideo', 'addSubContentFile']),
 
+    //Salva o subconteúdo
     async addNewSubContent() {
       const subContent = {
         title: this.title,
@@ -91,15 +93,29 @@ export default {
       };
 
       try {
+        //Salva no firebase os dados iniciais(Título, conteúdo e o ID da matéria)
         const id = await this.addSubContent(subContent);
 
-        const formData = new FormData();
-        formData.append('video', this.video)
+        //Compila o video para ser enviado para a API
+        const formDataVideo = new FormData();
+        formDataVideo.append('video', this.video);
 
-        const res = await this.addSubContentVideo({
+        //Compila o arquivo para ser enviado para a API
+        const formDataFile = new FormData();
+        formDataFile.append('file', this.file);
+
+        //Faz o upload do video no firebase
+        await this.addSubContentVideo({
           subjectId: this.subjectId,
           id,
-          video: formData,
+          video: formDataVideo,
+        });
+
+        //Faz o upload do arquivo no firebase
+        const res = await this.addSubContentFile({
+          subjectId: this.subjectId,
+          id,
+          file: formDataFile,
         });
 
         //Abre um Snackbar com a mensagem de sucesso
