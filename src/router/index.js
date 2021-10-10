@@ -3,57 +3,44 @@ import VueRouter from "vue-router";
 
 //Views
 import MylevHome from '../views/Mylev-Home.vue'
-import MylevRegister from '../views/Mylev-Register.vue'
-import MylevSubject from '../views/Mylev-Subject.vue'
 import MylevLogin from '../views/Mylev-Login.vue'
-import MylevAddSubContent from '../views/Mylev-AddSubContent.vue'
-import MylevEditSubject from '../views/Mylev-EditSubject.vue'
-import MylevListSubject from '../views/Mylev-ListSubject.vue'
+import MylevRegister from '../views/Mylev-Register.vue'
+
+//Routes
+import { subjectRoutes } from './subject'
+import { subContentRoutes } from './subcontent'
 
 Vue.use(VueRouter);
 
 const routes = [
+  //Página Home
   {
     path: '/',
     name: 'Home',
     component: MylevHome
   },
+
+  //Página de Login
+  {
+    path: '/login',
+    name: 'Login',
+    component: MylevLogin,
+  },
+
+  //Página de Cadastro
   {
     path: '/register',
     name: 'Register',
     component: MylevRegister
   },
-  {
-    path: '/addsubject',
-    name: 'AddSubject',
-    component: MylevSubject
-  },
-  {
-    path: '/login',
-    name: 'Login',
-    component: MylevLogin
-  },
-  {
-    path: '/addsubContent',
-    name: 'AddSubContent',
-    component: MylevAddSubContent
-  },
-  {
-    path:'/editsubject/:id',
-    name: 'EditSubject',
-    component: MylevEditSubject
-  },
-  {
-    path: '/listsubjects',
-    name: 'ListSubjects',
-    component: MylevListSubject
-  }
 ];
+
+const allRoutes = routes.concat(subjectRoutes, subContentRoutes);
 
 const router = new VueRouter({
   mode: "history",
   base: process.env.BASE_URL,
-  routes,
+  routes: allRoutes,
 });
 
 export default router;
