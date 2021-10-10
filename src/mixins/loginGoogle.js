@@ -23,9 +23,8 @@ export default {
         let data = await signInWithPopup(auth, provider)
 
         //Caso o login seja feito corretamente é gerado um token e recebido algumas informações do usuário
-        const credential = GoogleAuthProvider.credentialFromResult(data)
-        const token = credential.accessToken
-        const userData = data.user
+        const token = data.user.accessToken;
+        const userData = data.user;
 
         //Pega informações do usuário no firebase
         await this.fecthProfileByUid({ uid: userData.uid })
@@ -36,6 +35,7 @@ export default {
           name: userData.displayName,
           nickname: '',
           profilePicture: userData.photoURL,
+          role: "STUDENT",
           emailVerified: userData.emailVerified,
           verificationCode: 0,
         }
@@ -57,7 +57,7 @@ export default {
           }
         } else {
           //Salva nos cookies do navegador os dados do usuário e seu token
-          this.$cookies.set('profile', user)
+          this.$cookies.set('profile', JSON.stringify(this.profile))
           this.$cookies.set('token', token)
         }
       } catch (error) {
