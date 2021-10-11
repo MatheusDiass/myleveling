@@ -5,6 +5,7 @@ import VueRouter from "vue-router";
 import MylevHome from '../views/Mylev-Home.vue'
 import MylevLogin from '../views/Mylev-Login.vue'
 import MylevRegister from '../views/Mylev-Register.vue'
+import MylevConfirmRegister from '../views/Mylev-ConfirmRegister.vue'
 
 //Routes
 import { subjectRoutes } from './subject'
@@ -32,6 +33,13 @@ const routes = [
     path: '/register',
     name: 'Register',
     component: MylevRegister
+  },
+
+  //Página para confirmar cadastro
+  {
+    path: '/register/confirm/:id',
+    name: 'ConfirmRegister',
+    component: MylevConfirmRegister
   },
 ];
 
