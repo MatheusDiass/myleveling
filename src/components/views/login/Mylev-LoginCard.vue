@@ -8,7 +8,7 @@
       <v-text-field background-color="white" outlined></v-text-field>
 
       <div class="contentCenter">
-        <v-btn color="#3898ec">login</v-btn>
+        <v-btn color="#3898ec">Login</v-btn>
       </div>
 
       <div>
