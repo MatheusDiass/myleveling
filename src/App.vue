@@ -7,14 +7,14 @@
     </v-main>
 
     <MylevFooter />
-    <MylevSnackbar />
+    <MylevNotification />
   </v-app>
 </template>
 
 <script>
 import MylevNavbar from "./components/shared/Mylev-Navbar.vue";
 import MylevFooter from "./components/shared/Mylev-Footer.vue";
-import MylevSnackbar from "./components/shared/Mylev-Snackbar.vue";
+import MylevNotification from "./components/shared/Mylev-Notifications.vue"
 
 export default {
   name: "App",
@@ -22,7 +22,7 @@ export default {
   components: {
     MylevNavbar,
     MylevFooter,
-    MylevSnackbar,
+    MylevNotification,
   },
 
   data: () => ({
