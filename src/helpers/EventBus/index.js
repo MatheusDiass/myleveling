@@ -5,3 +5,4 @@ const EventBus = new Vue();
 
 export default EventBus;
 export * from './utils';
+export * from './constants';
