@@ -12,7 +12,7 @@
 </template>
 
 <script>
-import MylevNavbar from "./components/shared/Mylev-Navbar.vue";
+import MylevNavbar from "./components/shared/Mylev-NavBar/Mylev-Navbar.vue";
 import MylevFooter from "./components/shared/Mylev-Footer.vue";
 import MylevNotification from "./components/shared/Mylev-Notifications.vue"
 

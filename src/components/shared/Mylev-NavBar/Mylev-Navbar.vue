@@ -5,7 +5,7 @@
         ><v-img
           max-height="60"
           max-width="60"
-          :src="require('../../assets/logo.png')"
+          :src="require('../../../assets/logo.png')"
         ></v-img
       ></v-toolbar-title>
 
@@ -13,8 +13,13 @@
 
       <v-row class="hidden-sm-and-down">
         <v-btn :to="{ name: 'Home' }" elevation="0" class="textColor" text exact>Home</v-btn>
-        <v-btn elevation="0" class="textColor" text>Área do Aluno</v-btn>
-        <v-btn :to="{ name: 'Login' }" elevation="0" class="textColor" text>Login</v-btn>
+
+        <MylevAdminOptionsDesktop />
+
+        <div v-if="!isLogged">
+          <v-btn :to="{ name: 'Register' }" elevation="0" class="textColor" text>Cadastrar</v-btn>
+          <v-btn :to="{ name: 'Login' }" elevation="0" class="textColor" text>Login</v-btn>
+        </div>
       </v-row>
 
       <v-row class="hidden-md-and-up">
@@ -45,8 +50,44 @@
 </template>
 
 <script>
+import MylevAdminOptionsDesktop from './components/Mylev-AdminOptionsDesktop.vue';
+import { getCookie } from '@/helpers/managerCookies';
+
 export default {
   name: "MylevNavBar",
+
+  components: {
+    MylevAdminOptionsDesktop,
+  },
+
+  data() {
+    return {
+      isLogged: false,
+      isAdmin: false,
+    }
+  },
+
+  created() {
+    this.checkPermissionUser();
+  },
+
+  methods: {
+    checkPermissionUser() {
+      const profile = getCookie('profile');
+      
+      if(!profile) {
+        this.isLogged = false;
+        console.log('NÃO ESTÁ LOGADO!');
+      } else {
+        this.isLogged = true;
+        if(profile.role === "ADMIN") {
+          this.isAdmin = true;
+        } else {
+          this.isAdmin = false;
+        }
+      }
+    }
+  }
 };
 </script>
 
