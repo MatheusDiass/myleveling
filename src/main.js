@@ -22,7 +22,7 @@ initializeApp(firebaseConfig);
 
 //Cookies configuration
 Vue.use(VueCookies);
-Vue.$cookies.config("60s");
+Vue.$cookies.config("1h");
 
 Vue.config.productionTip = false;
 

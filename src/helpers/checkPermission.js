@@ -1,6 +1,6 @@
-import axios from "axios"
+import axios from "axios";
 import config from "@/configuration/configuration.json";
-import { getCookie } from './managerCookies'
+import { getCookie } from './managerCookies';
 
 /*
 Helper para verificar se o token é valido e se o usuário tem
