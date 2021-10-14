@@ -21,6 +21,38 @@
           <MylevAdminOptionsDesktop />
         </div>
 
+        <!-- Botão com o imagem e o nome do usuário, com as opções de Perfil e Logout -->
+        <v-menu v-if="isLogged" offset-y>
+          <template v-slot:activator="{ on, attrs }">
+            
+            <v-btn class="textColor" v-bind="attrs" v-on="on" elevation="0" text
+              ><MylevUserImage class="mr-1" :isSmall="true" :profile="profile" /><span>{{ username }}</span></v-btn
+            >
+          </template>
+          <v-list class="color">
+            <v-list-item
+              ><v-btn
+                elevation="0"
+                class="textColor"
+                text
+                exact
+                >Perfil</v-btn
+              ></v-list-item
+            >
+
+            <v-list-item
+              ><v-btn
+                @click="logout"
+                elevation="0"
+                class="textColor"
+                text
+                exact
+                >Logout</v-btn
+              ></v-list-item
+            >
+          </v-list>
+        </v-menu>
+
         <!-- Se o usuário não estiver logado as opções(Cadastro, Login) abaixo também são exibidas -->
         <div v-if="!isLogged">
           <v-btn :to="{ name: 'Register' }" elevation="0" class="textColor" text
@@ -57,6 +89,38 @@
               <MylevAdminOptionsMobile />
             </div>
 
+            <!-- Botão com o imagem e o nome do usuário, com as opções de Perfil e Logout -->
+            <v-list-item v-if="isLogged">
+              <v-menu offset-x left>
+                <template v-slot:activator="{ on, attrs }">
+                  <v-btn class="textColor" v-bind="attrs" v-on="on" elevation="0" text
+                    ><MylevUserImage class="mr-1" :isSmall="true" :profile="profile" /><span>{{ username }}</span></v-btn
+                  >
+                </template>
+                <v-list class="color">
+                  <v-list-item
+                    ><v-btn
+                      elevation="0"
+                      class="textColor"
+                      text
+                      exact
+                      >Perfil</v-btn
+                    ></v-list-item
+                  >
+                  <v-list-item
+                    ><v-btn
+                      @click="logout"
+                      elevation="0"
+                      class="textColor"
+                      text
+                      exact
+                      >Logout</v-btn
+                    ></v-list-item
+                  >
+                </v-list>
+              </v-menu>
+            </v-list-item>
+
             <!-- Se o usuário não estiver logado as opções(Cadastro, Login) abaixo também são exibidas -->
             <div v-if="!isLogged">
               <v-list-item>
@@ -89,7 +153,8 @@
 <script>
 import MylevAdminOptionsDesktop from './components/Mylev-AdminOptionsDesktop.vue'
 import MylevAdminOptionsMobile from './components/Mylev-AdminOptionsMobile.vue'
-import { getCookie } from '@/helpers/managerCookies'
+import MylevUserImage from '../Mylev-UserImage.vue'
+import { getCookie, removeCookie } from '@/helpers/managerCookies'
 
 export default {
   name: 'MylevNavBar',
@@ -97,17 +162,25 @@ export default {
   components: {
     MylevAdminOptionsDesktop,
     MylevAdminOptionsMobile,
+    MylevUserImage,
   },
 
   data() {
     return {
       isLogged: false,
       isAdmin: false,
+      profile: {},
     }
   },
 
   created() {
     this.checkPermissionUser()
+  },
+
+  computed: {
+    username() {
+        return this.profile.name || "Anônimo";
+    },
   },
 
   methods: {
@@ -119,6 +192,7 @@ export default {
       if (!profile) {
         this.isLogged = false
       } else {
+        this.profile = profile;
         this.isLogged = true
         if (profile.role === 'ADMIN') {
           this.isAdmin = true
@@ -127,6 +201,15 @@ export default {
         }
       }
     },
+
+    //Encerra a seção do usuário
+    logout() {
+      removeCookie('profile');
+      removeCookie('token');
+
+      //Muda para a página de login
+      this.$router.push({ name: "Login" });
+    }
   },
 }
 </script>
