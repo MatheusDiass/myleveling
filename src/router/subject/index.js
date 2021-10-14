@@ -24,7 +24,10 @@ export const subjectRoutes = [
   {
     path:'/admin/subjects/edit/:id',
     name: 'EditSubject',
-    component: MylevEditSubject
+    component: MylevEditSubject,
+    async beforeEnter(to, from, next) {
+      await checkPermission(to, from, next);
+    },
   },
 
   //Página para listar as matérias
@@ -32,9 +35,8 @@ export const subjectRoutes = [
     path: '/admin/subjects',
     name: 'ListSubjects',
     component: MylevListSubject,
-    /*beforeEnter(to, from, next) {
-      next();
-      checkPermission(to, from, next);
-    },*/
+    async beforeEnter(to, from, next) {
+      await checkPermission(to, from, next);
+    },
   },
 ];
