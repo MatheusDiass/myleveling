@@ -1,7 +1,7 @@
 //Views
-import MylevSubject from '../../views/Mylev-Subject.vue'
-import MylevListSubject from '../../views/Mylev-ListSubject.vue'
-import MylevEditSubject from '../../views/Mylev-EditSubject.vue'
+import MylevSubject from '../../views/subject/Mylev-Subject.vue'
+import MylevListSubject from '../../views/subject/Mylev-ListSubject.vue'
+import MylevEditSubject from '../../views/subject/Mylev-EditSubject.vue'
 
 /*
 Helper para verificar se o token é valido e se o usuário tem
