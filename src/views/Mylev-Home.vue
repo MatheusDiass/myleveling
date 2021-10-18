@@ -14,7 +14,7 @@
 
     <v-row align="center" justify="start">
       <v-col cols="12" sm="6" md="4" v-for="subject in subjects" :key="subject.name">
-        <MylevContentName :title="subject.name" color="#499fc6"/>
+        <MylevContentName :title="subject.data.name" color="#499fc6"/>
       </v-col>
     </v-row>
 
@@ -32,8 +32,8 @@ export default {
       MylevContentName,
   },
 
-  created() {
-    this.listSubjects();
+  async created() {
+    await this.listSubjects();
   },
 
   computed: {
