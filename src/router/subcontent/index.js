@@ -1,5 +1,6 @@
 //Views
 import MylevAddSubContent from '../../views/Mylev-AddSubContent.vue'
+import MylevSubContent from '../../views/Mylev-SubContent.vue'
 
 /*
 Helper para verificar se o token é valido e se o usuário tem
@@ -17,4 +18,10 @@ export const subContentRoutes = [
       await checkPermission(to, from, next);
     },
   },
+  {
+    path: '/subcontent/:id',
+    name: 'SubContent',
+    component: MylevSubContent
+  }
 ];
+

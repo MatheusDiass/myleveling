@@ -1,6 +1,7 @@
 import axios from "axios";
 //import MUTATIONS_TYPES from "./mutationTypes";
 import config from "@/configuration/configuration.json";
+import MUTATIONS_TYPES from "./mutationTypes";
 
 
 const actions = {
@@ -23,7 +24,14 @@ const actions = {
         const { data } = await axios.post(`${config.subContentFile}/${subjectId}/${id}`, file);
 
         return data;
-    }
+    },
+
+    //Faz a requisição para a API para obtem um Subconteúdo pelo ID 
+    fecthSubContentById: async ({ commit }, { subContentId }) => {
+        const { data } = await axios.get(`${config.subContent}/${subContentId}`);
+
+        commit(MUTATIONS_TYPES.setSubContent, data);
+    },
 };
 
 export default actions;
