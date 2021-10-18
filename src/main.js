@@ -3,7 +3,15 @@ import App from "./App.vue";
 import router from "./router";
 import store from "./store";
 import vuetify from "./plugins/vuetify";
+
+//Cookies
 import VueCookies from "vue-cookies";
+
+//Player Video - Vue-Plyr
+import VuePlyr from 'vue-plyr'
+import 'vue-plyr/dist/vue-plyr.css'
+
+//Firebase
 import { initializeApp } from "firebase/app";
 
 //Firebase configuration
@@ -23,6 +31,9 @@ initializeApp(firebaseConfig);
 //Cookies configuration
 Vue.use(VueCookies);
 Vue.$cookies.config("60s");
+
+//Vue-plyr - Player Video - Configuration
+Vue.use(VuePlyr);
 
 Vue.config.productionTip = false;
 
