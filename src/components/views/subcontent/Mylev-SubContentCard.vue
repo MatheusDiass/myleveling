@@ -20,11 +20,12 @@
         ></v-select>
 
         <label>Conteúdo:</label>
-        <v-textarea
+        <Editor
           v-model="content"
-          background-color="white"
-          outlined
-        ></v-textarea>
+          api-key="zffi3dnax0zgaazxgxnnaf92v9t2ks1mi0rgg57nwfry9872"
+        />
+
+        <br>
 
         <label>Video da aula:</label>
         <v-checkbox label="Clique para desbloquar a opção"></v-checkbox>
@@ -54,6 +55,7 @@
 
 <script>
 import { mapActions, mapGetters } from 'vuex'
+import Editor from '@tinymce/tinymce-vue';
 
 export default {
   name: 'MylevSubContent',
@@ -66,6 +68,10 @@ export default {
       video: [],
       file: [],
     }
+  },
+
+  components: {
+    Editor,
   },
 
   async created() {

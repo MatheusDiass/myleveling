@@ -1,6 +1,6 @@
 <template>
   <vue-plyr>
-    <video controls crossorigin playsinline>
+    <video class="playerSize" controls crossorigin playsinline>
       <source :src="linkVideo" type="video/mp4" />
     </video>
   </vue-plyr>
@@ -18,3 +18,10 @@ export default {
   }
 }
 </script>
+
+<style scoped>
+.playerSize {
+  width: 100%;
+  height: 600px;
+}
+</style>
