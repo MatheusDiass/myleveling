@@ -77,4 +77,10 @@ export default {
   width: 75%;
   margin-bottom: 80px;
 }
+
+@media (max-width: 660px) {
+  .container {
+    width: 100%;
+  }
+}
 </style>
