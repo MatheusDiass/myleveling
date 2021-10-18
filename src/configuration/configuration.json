@@ -2,6 +2,7 @@
     "mylevelingbackend": "http://localhost:3000",
     "checkToken": "http://localhost:3000/token",
     "login": "http://localhost:3000/login",
+    "register": "http://localhost:3000/register",
     "profile": "http://localhost:3000/profile",
     "subject": "http://localhost:3000/subject",
     "subContent": "http://localhost:3000/subcontent",

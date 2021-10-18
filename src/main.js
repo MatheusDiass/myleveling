@@ -30,7 +30,7 @@ initializeApp(firebaseConfig);
 
 //Cookies configuration
 Vue.use(VueCookies);
-Vue.$cookies.config("60s");
+Vue.$cookies.config("1h");
 
 //Vue-plyr - Player Video - Configuration
 Vue.use(VuePlyr);
