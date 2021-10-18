@@ -15,8 +15,8 @@
 </template>
 
 <script>
-import MylevSubjectCard from '../components/views/subject/Mylev-SubjectCard.vue'
-import MylevAlert from '../components/shared/Mylev-Alert.vue'
+import MylevSubjectCard from '@/components/views/subject/Mylev-SubjectCard.vue'
+import MylevAlert from '@/components/shared/Mylev-Alert.vue'
 
 export default {
   name: 'MylevEditSubject',
