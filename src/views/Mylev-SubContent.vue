@@ -8,7 +8,7 @@
 
     <br />
 
-    <div>{{ subContent.content }}</div>
+    <div v-html="subContent.content"></div>
 
     <br />
 
