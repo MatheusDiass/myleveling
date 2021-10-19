@@ -1,4 +1,5 @@
 import { getAuth, signInWithPopup, GoogleAuthProvider } from 'firebase/auth'
+import { createNotify, NOTIFICATION_TYPE } from '@/helpers/EventBus';
 import { mapActions, mapGetters } from 'vuex'
 
 export default {
@@ -9,12 +10,12 @@ export default {
 
   methods: {
     //Actions Vuex
-    ...mapActions(['saveInititalProfileInformations', 'showAlertMessage']),
+    ...mapActions(['saveInititalProfileInformations']),
     ...mapActions('profile', ['fecthProfileByUid']),
 
-    async login() {
+    async loginGoogle() {
       try {
-        const auth = getAuth()
+        const auth = getAuth();
 
         //Provedor de login(Google)
         const provider = new GoogleAuthProvider()
@@ -44,21 +45,40 @@ export default {
         if (!this.profile) {
           //Salva as informações do usuário no firebase
           const res = await this.saveInititalProfileInformations(user)
-          console.log(res)
+
           if (res) {
             //Salva nos cookies do navegador os dados do usuário e seu token
             this.$cookies.set('profile', JSON.stringify(user))
             this.$cookies.set('token', token)
+            
+            //Cria a notificação
+            createNotify({
+              type: NOTIFICATION_TYPE.SUCCESS,
+              message: 'Login realizado com sucesso!',
+            });
 
-            console.log(this.$cookies.get('profile'))
+            //Muda para a página de listagem das matérias
+            this.$router.push({ name: 'Home' })
           } else {
-            //Exibe o Alert de erro
-            this.showAlertMessage({ show: true, message: res })
+            //Cria a notificação
+            createNotify({
+              type: NOTIFICATION_TYPE.ERROR,
+              message: res,
+            });
           }
         } else {
           //Salva nos cookies do navegador os dados do usuário e seu token
           this.$cookies.set('profile', JSON.stringify(this.profile))
           this.$cookies.set('token', token)
+
+          //Cria a notificação
+          createNotify({
+            type: NOTIFICATION_TYPE.SUCCESS,
+            message: 'Login realizado com sucesso!',
+          });
+
+          //Muda para a página de listagem das matérias
+          this.$router.push({ name: 'Home' })
         }
       } catch (error) {
         let errorMessage = ''
@@ -78,8 +98,11 @@ export default {
           }
         }
 
-        //Exibe o Alert de erro
-        this.showAlertMessage({ show: true, message: errorMessage });
+        //Cria a notificação
+        createNotify({
+          type: NOTIFICATION_TYPE.ERROR,
+          message: errorMessage,
+        });
       }
     },
   },
