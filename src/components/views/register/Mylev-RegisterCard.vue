@@ -21,7 +21,7 @@
         <br />
         <v-row class="contentCenter"><label>Outras Opções</label></v-row>
         <v-row class="contentCenter">
-          <a @click="login">
+          <a @click="loginGoogle">
             <v-img
               max-height="60"
               max-width="60"
