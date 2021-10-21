@@ -1,5 +1,5 @@
 const state = {
-    profile: {},
+    profile: undefined,
 };
 
 export default state;

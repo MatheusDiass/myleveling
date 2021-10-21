@@ -154,7 +154,8 @@
 import MylevAdminOptionsDesktop from './components/Mylev-AdminOptionsDesktop.vue'
 import MylevAdminOptionsMobile from './components/Mylev-AdminOptionsMobile.vue'
 import MylevUserImage from '../Mylev-UserImage.vue'
-import { getCookie, removeCookie } from '@/helpers/managerCookies'
+import { getCookie, removeCookie, hasKey } from '@/helpers/managerCookies'
+import { mapActions, mapGetters } from 'vuex'
 
 export default {
   name: 'MylevNavBar',
@@ -169,32 +170,54 @@ export default {
     return {
       isLogged: false,
       isAdmin: false,
-      profile: {},
     }
   },
 
-  created() {
+  mounted() {
+    console.log('Matheus');
+    console.log(this.profile);
     this.checkPermissionUser()
   },
 
+  watch: {
+    /*Verifica se alguma mudança ocorreu na variavel "profile" do vuex
+    e executa o metódo "checkPermissionUser"*/
+    profile() {
+      console.log(this.profile);
+      this.checkPermissionUser()
+    } 
+  },
+
   computed: {
+    //Getters Vuex
+    ...mapGetters('profile', ['profile']),
+
     username() {
-        return this.profile.name || "Anônimo";
+      console.log(this.profile);
+      return this.profile.name || "Anônimo";
     },
   },
 
   methods: {
+    //Actions Vuex
+    ...mapActions('profile', ['cleanProfile', 'setProfile']),
+
     //Verifica se o usuário está logado e se o mesmo tem permissão de admin
     //Utiliza os cookies do navegador
     checkPermissionUser() {
-      const profile = getCookie('profile')
+      if (!this.profile) {
+        if(hasKey('profile')) {
+          const profile = getCookie('profile');
 
-      if (!profile) {
-        this.isLogged = false
+          this.setProfile({ profile });
+        } else {
+          //Desabilita a visualização de alguns menus
+          this.isLogged = false;
+          this.isAdmin = false;
+        }
       } else {
-        this.profile = profile;
         this.isLogged = true
-        if (profile.role === 'ADMIN') {
+        if (this.profile.role === 'ADMIN') {
           this.isAdmin = true
         } else {
           this.isAdmin = false
@@ -204,8 +227,16 @@ export default {
 
     //Encerra a seção do usuário
     logout() {
+      //Remove os cookies do navegador
       removeCookie('profile');
       removeCookie('token');
+
+      //Desabilita a visualização de alguns menus
+      this.isLogged = false;
+      this.isAdmin = false;
+
+      //Limpa a variavel onde é armazenado o perfil do usuário
+      this.cleanProfile();
 
       //Muda para a página de login
       this.$router.push({ name: "Login" });

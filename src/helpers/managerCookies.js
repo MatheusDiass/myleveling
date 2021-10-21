@@ -11,3 +11,7 @@ export function setCookie(keyName, data) {
 export function removeCookie(keyName) {
     Vue.$cookies.remove(keyName);
 }
+
+export function hasKey(keyName) {
+    return Vue.$cookies.isKey(keyName);
+}
