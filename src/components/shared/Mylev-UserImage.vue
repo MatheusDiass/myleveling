@@ -1,5 +1,5 @@
 <template>
-  <v-avatar :size="avatarSize" color="white">
+  <v-avatar :class="[border]" :size="avatarSize" color="white">
     <v-img v-if="picture" :src="picture" :alt="username" />
     <span v-else>{{ getNameFirstChars }}</span>
   </v-avatar>
@@ -8,11 +8,18 @@
 <script>
 export default {
   name: 'MylevUserImage',
+
   data() {
     return {}
   },
+
   props: {
     isSmall: {
+      type: Boolean,
+      default: false,
+    },
+
+    hasBorder: {
       type: Boolean,
       default: false,
     },
@@ -29,7 +36,7 @@ export default {
       if (this.isSmall) {
         return 28
       } else {
-        return 60
+        return 100
       }
     },
 
@@ -64,7 +71,18 @@ export default {
                 return firstNameChar;
             }
         }
+    },
+
+    //Com base na computed "hasBorder" adiciona uma bordar no avatar
+    border() {
+      return this.hasBorder ? 'whiteBorder' : '';
     }
   },
 }
 </script>
+
+<style>
+.whiteBorder {
+  border: 5px solid white;
+}
+</style>
