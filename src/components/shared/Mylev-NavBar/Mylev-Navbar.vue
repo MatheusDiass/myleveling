@@ -32,6 +32,7 @@
           <v-list class="color">
             <v-list-item
               ><v-btn
+                :to="{ name: 'Profile' }"
                 elevation="0"
                 class="textColor"
                 text
@@ -100,6 +101,7 @@
                 <v-list class="color">
                   <v-list-item
                     ><v-btn
+                      :to="{ name: 'Profile' }"
                       elevation="0"
                       class="textColor"
                       text
@@ -174,8 +176,6 @@ export default {
   },
 
   mounted() {
-    console.log('Matheus');
-    console.log(this.profile);
     this.checkPermissionUser()
   },
 
@@ -183,7 +183,6 @@ export default {
     /*Verifica se alguma mudança ocorreu na variavel "profile" do vuex
     e executa o metódo "checkPermissionUser"*/
     profile() {
-      console.log(this.profile);
       this.checkPermissionUser()
     } 
   },
@@ -193,7 +192,6 @@ export default {
     ...mapGetters('profile', ['profile']),
 
     username() {
-      console.log(this.profile);
       return this.profile.name || "Anônimo";
     },
   },
