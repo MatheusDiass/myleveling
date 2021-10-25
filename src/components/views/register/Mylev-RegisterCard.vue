@@ -10,7 +10,7 @@
       <label>Email:</label>
       <v-text-field v-model="email" background-color="white" outlined></v-text-field>
 
-      <label>Senha</label>
+      <label>Senha:</label>
       <v-text-field v-model="password" background-color="white" outlined></v-text-field>
 
       <div class="contentCenter">
