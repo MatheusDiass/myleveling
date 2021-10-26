@@ -43,8 +43,9 @@
 </template>
 
 <script>
-import MylevDialog from '@/components/shared/Mylev-Dialog.vue'
 import { mapActions, mapGetters } from 'vuex'
+import MylevDialog from '@/components/shared/Mylev-Dialog.vue'
+import { createNotify, NOTIFICATION_TYPE } from '@/helpers/EventBus';
 
 export default {
   name: 'TableSubjectCard',
@@ -90,8 +91,11 @@ export default {
         //Remove matéria do array que está listando as matérias
         this.subjects.splice(this.subjectToDelete.index, 1);
 
-        //Abre um Snackbar com a mensagem de sucesso
-        this.showSnackbarMessage({ show: true, message: res });
+        //Cria a notificação
+        createNotify({
+          type: NOTIFICATION_TYPE.SUCCESS,
+          message: res,
+        });
       } catch(error) {
         let errorMessage = '';
 
@@ -101,8 +105,11 @@ export default {
           errorMessage = "Não foi possível se conectar com a API!";
         }
 
-        //Exibe o Alert de erro
-        this.showAlertMessage({ show: true, message: errorMessage });
+        //Cria a notificação
+        createNotify({
+          type: NOTIFICATION_TYPE.ERROR,
+          message: errorMessage,
+        });
       }
 
       //Fecha o dialogo de deleção da matéria

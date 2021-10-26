@@ -55,6 +55,7 @@
 
 <script>
 import { mapActions, mapGetters } from 'vuex'
+import { createNotify, NOTIFICATION_TYPE } from '@/helpers/EventBus';
 import Editor from '@tinymce/tinymce-vue';
 
 export default {
@@ -86,7 +87,7 @@ export default {
 
   methods: {
     //Actions Vuex
-    ...mapActions(["showSnackbarMessage", "showAlertMessage"]),
+    //...mapActions(["showSnackbarMessage", "showAlertMessage"]),
     ...mapActions('subject', ['fecthSubjects']),
     ...mapActions('subContent', ['addSubContent', 'addSubContentVideo', 'addSubContentFile']),
 
@@ -124,13 +125,28 @@ export default {
           file: formDataFile,
         });
 
-        //Abre um Snackbar com a mensagem de sucesso
-        this.showSnackbarMessage({ show: true, message: res });
+        //Cria a notificação
+        createNotify({
+          type: NOTIFICATION_TYPE.SUCCESS,
+          message: res,
+        });
 
         //Muda para a página de listagem das matérias
-        this.$router.push({ name: "Login" });
+        this.$router.push({ name: "Home" });
       } catch (error) {
-        console.log(error.response.data);
+        let errorMessage = '';
+
+        if(error.response) {
+          errorMessage = error.response.data;
+        } else {
+          errorMessage = "Não foi possível se conectar com a API!";
+        }
+
+        //Cria a notificação
+        createNotify({
+          type: NOTIFICATION_TYPE.ERROR,
+          message: errorMessage,
+        });
       }
     },
   },
