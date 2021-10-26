@@ -19,6 +19,7 @@
 
 <script>
 import { mapActions, mapGetters } from "vuex";
+import { createNotify, NOTIFICATION_TYPE } from '@/helpers/EventBus';
 
 export default {
   name: 'MylevSubjectCard',
@@ -86,11 +87,14 @@ export default {
       try {
         let res = await this.addSubject(data);
 
-        //Abre um Snackbar com a mensagem de sucesso
-        this.showSnackbarMessage({ show: true, message: res });
+        //Cria a notificação
+        createNotify({
+          type: NOTIFICATION_TYPE.SUCCESS,
+          message: res,
+        });
 
         //Muda para a página de listagem das matérias
-        this.$router.push({ name: "Login" });
+        this.$router.push({ name: "ListSubjects" });
       } catch(error) {
         let errorMessage = '';
 
@@ -100,8 +104,11 @@ export default {
           errorMessage = "Não foi possível se conectar com a API!";
         }
 
-        //Exibe o Alert de erro
-        this.showAlertMessage({ show: true, message: errorMessage });
+        //Cria a notificação
+        createNotify({
+          type: NOTIFICATION_TYPE.ERROR,
+          message: errorMessage,
+        });
       }
     },
 
@@ -115,11 +122,14 @@ export default {
       try {
         let res = await this.editSubject({ subject });
 
-        //Abre um Snackbar com a mensagem de sucesso
-        this.showSnackbarMessage({ show: true, message: res });
+        //Cria a notificação
+        createNotify({
+          type: NOTIFICATION_TYPE.SUCCESS,
+          message: res,
+        });
 
         //Muda para a página de listagem das matérias
-        this.$router.push({ name: "Login" });
+        this.$router.push({ name: "ListSubjects" });
       } catch(error) {
         let errorMessage = '';
 
@@ -129,8 +139,11 @@ export default {
           errorMessage = "Não foi possível se conectar com a API!";
         }
 
-        //Exibe o Alert de erro
-        this.showAlertMessage({ show: true, message: errorMessage });
+        //Cria a notificação
+        createNotify({
+          type: NOTIFICATION_TYPE.ERROR,
+          message: errorMessage,
+        });
       }
     },
 
