@@ -40,6 +40,7 @@
 import { getAuth, signInWithEmailAndPassword } from 'firebase/auth'
 import { createNotify, NOTIFICATION_TYPE } from '@/helpers/EventBus';
 import { loginGoogle } from '@/mixins'
+import { mapActions } from 'vuex'
 
 export default {
   name: 'MylevLoginCard',
@@ -54,38 +55,53 @@ export default {
   },
 
   methods: {
+    //Actions Vuex
+    ...mapActions('profile', ['fecthUserDataByEmail']),
+    
     async loginEmailAndPassword() {
       try {
         const auth = getAuth()
+        
+        const userData = await this.fecthUserDataByEmail(this.email);
 
-        //Realiza o login e recebe os dados de retorno
-        const data = await signInWithEmailAndPassword(
-          auth,
-          this.email,
-          this.password
-        )
+        if(userData.emailVerified) {
+          //Realiza o login e recebe os dados de retorno
+          const data = await signInWithEmailAndPassword(
+            auth,
+            this.email,
+            this.password
+          )
 
-        //Recebe o token
-        const token = data.user.accessToken
+          //Recebe o token
+          const token = data.user.accessToken
 
-        //Recebe o UID do usuário
-        const uidUser = data._tokenResponse.localId
+          //Recebe o UID do usuário
+          const uidUser = data._tokenResponse.localId
 
-        //Pega informações do usuário no firebase
-        await this.fecthProfileByUid({ uid: uidUser })
+          //Pega informações do usuário no firebase
+          await this.fecthProfileByUid({ uid: uidUser })
 
-        //Salva nos cookies do navegador os dados do usuário e seu token
-        this.$cookies.set('profile', JSON.stringify(this.profile))
-        this.$cookies.set('token', token)
+          //Salva nos cookies do navegador os dados do usuário e seu token
+          this.$cookies.set('profile', JSON.stringify(this.profile))
+          this.$cookies.set('token', token)
 
-        //Cria a notificação
-        createNotify({
-          type: NOTIFICATION_TYPE.SUCCESS,
-          message: 'Login realizado com sucesso!',
-        });
+          //Cria a notificação
+          createNotify({
+            type: NOTIFICATION_TYPE.SUCCESS,
+            message: 'Login realizado com sucesso!',
+          });
 
-        //Muda para a página de listagem das matérias
-        this.$router.push({ name: 'Home' })
+          //Muda para a página de listagem das matérias
+          this.$router.push({ name: 'Home' })
+        } else {
+          //Cria a notificação
+          createNotify({
+            type: NOTIFICATION_TYPE.ERROR,
+            message: 'Confirme seu email antes de fazer login!',
+          });
+        }
+
+        
       } catch (error) {
         let errorMessage = '';
 
