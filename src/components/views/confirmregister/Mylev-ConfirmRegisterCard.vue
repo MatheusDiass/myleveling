@@ -1,9 +1,11 @@
 <template>
   <v-card class="paddingCard" color="#499fc6" rounded="lg" flat>
-    <v-form>
+    <v-form ref="form">
       <label>Código:</label>
       <v-text-field
         v-model="code"
+        :rules="codeRules"
+        counter="6"
         background-color="white"
         outlined
       ></v-text-field>
@@ -24,10 +26,13 @@
 <script>
 import axios from 'axios'
 import config from '@/configuration/configuration.json'
+import confirmEmailValidation from '@/mixins/validations/confirmEmailValidation'
 import { createNotify, NOTIFICATION_TYPE } from '@/helpers/EventBus'
 
 export default {
   name: 'MylevConfirmRegisterCard',
+
+  mixins: [confirmEmailValidation],
 
   data() {
     return {
