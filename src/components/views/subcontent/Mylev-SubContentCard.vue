@@ -1,154 +1,181 @@
 <template>
-  <div class="externalDivBorder">
-    <v-card class="paddingCard" color="#499fc6" rounded="lg" flat>
-      <v-form>
-        <label>Título:</label>
-        <v-text-field
-          v-model="title"
-          background-color="white"
-          outlined
-        ></v-text-field>
+   <div class="externalDivBorder">
+      <v-card class="paddingCard" color="#499fc6" rounded="lg" flat>
+         <v-form ref="form">
+            <label>Título:</label>
+            <v-text-field
+               v-model="title"
+               :rules="titleRules"
+               counter="15"
+               background-color="white"
+               outlined
+            ></v-text-field>
 
-        <label>Matéria:</label>
-        <v-select
-          :items="subjects"
-          item-text="data.name"
-          item-value="id"
-          v-model="subjectId"
-          background-color="white"
-          outlined
-        ></v-select>
+            <label>Matéria:</label>
+            <v-select
+               v-model="subjectId"
+               :rules="sujectRules"
+               :items="subjects"
+               item-text="data.name"
+               item-value="id"
+               background-color="white"
+               outlined
+            ></v-select>
 
-        <label>Conteúdo:</label>
-        <Editor
-          v-model="content"
-          api-key="zffi3dnax0zgaazxgxnnaf92v9t2ks1mi0rgg57nwfry9872"
-        />
+            <label>Conteúdo:</label>
+            <Editor
+               v-model="content"
+               api-key="zffi3dnax0zgaazxgxnnaf92v9t2ks1mi0rgg57nwfry9872"
+            />
 
-        <br>
+            <br />
 
-        <label>Video da aula:</label>
-        <v-checkbox label="Clique para desbloquar a opção"></v-checkbox>
-        <v-file-input
-          v-model="video"
-          ref="video"
-          background-color="white"
-          outlined
-        ></v-file-input>
+            <label>Video da aula:</label>
+            <v-checkbox
+               v-model="hasVideo"
+               label="Clique para desbloquar a opção"
+            ></v-checkbox>
+            <v-file-input
+               v-model="video"
+               :rules="hasVideo ? videoRules : []"
+               :disabled="!hasVideo"
+               ref="video"
+               background-color="white"
+               outlined
+            ></v-file-input>
 
-        <label>Matériais</label>
-        <v-checkbox label="Clique para desbloquar a opção"></v-checkbox>
-        <v-file-input
-          v-model="file"
-          ref="file"
-          background-color="white"
-          outlined
-        ></v-file-input>
+            <label>Matériais</label>
+            <v-checkbox
+               v-model="hasFile"
+               label="Clique para desbloquar a opção"
+            ></v-checkbox>
+            <v-file-input
+               v-model="file"
+               :rules="hasFile ? fileRules : []"
+               :disabled="!hasFile"
+               ref="file"
+               background-color="white"
+               outlined
+            ></v-file-input>
 
-        <div class="contentCenter">
-          <v-btn color="#3898ec" @click="addNewSubContent">Salvar</v-btn>
-        </div>
-      </v-form>
-    </v-card>
-  </div>
+            <div class="contentCenter">
+               <v-btn color="#3898ec" @click="addNewSubContent">Salvar</v-btn>
+            </div>
+         </v-form>
+      </v-card>
+   </div>
 </template>
 
 <script>
 import { mapActions, mapGetters } from 'vuex'
-import { createNotify, NOTIFICATION_TYPE } from '@/helpers/EventBus';
-import Editor from '@tinymce/tinymce-vue';
+import { createNotify, NOTIFICATION_TYPE } from '@/helpers/EventBus'
+import subContentValidation from '@/mixins/validations/subContentValidation'
+import Editor from '@tinymce/tinymce-vue'
+
+const ALLOWEXTENSIONS = ['mp4', 'mkv', 'avi', 'mpeg', 'mov']
 
 export default {
-  name: 'MylevSubContent',
+   name: 'MylevSubContent',
 
-  data() {
-    return {
-      title: '',
-      subjectId: '',
-      content: '',
-      video: [],
-      file: [],
-    }
-  },
+   mixins: [subContentValidation],
 
-  components: {
-    Editor,
-  },
-
-  async created() {
-    //Pega todas as matérias para serem listadas na tabela
-    await this.fecthSubjects();
-  },
-
-  computed: {
-    //Getters Vuex
-    ...mapGetters('subject', ['subjects']),
-  },
-
-  methods: {
-    //Actions Vuex
-    //...mapActions(["showSnackbarMessage", "showAlertMessage"]),
-    ...mapActions('subject', ['fecthSubjects']),
-    ...mapActions('subContent', ['addSubContent', 'addSubContentVideo', 'addSubContentFile']),
-
-    //Salva o subconteúdo
-    async addNewSubContent() {
-      const subContent = {
-        title: this.title,
-        subjectId: this.subjectId,
-        content: this.content,
-      };
-
-      try {
-        //Salva no firebase os dados iniciais(Título, conteúdo e o ID da matéria)
-        const id = await this.addSubContent(subContent);
-
-        //Compila o video para ser enviado para a API
-        const formDataVideo = new FormData();
-        formDataVideo.append('video', this.video);
-
-        //Compila o arquivo para ser enviado para a API
-        const formDataFile = new FormData();
-        formDataFile.append('file', this.file);
-
-        //Faz o upload do video no firebase
-        await this.addSubContentVideo({
-          subjectId: this.subjectId,
-          id,
-          video: formDataVideo,
-        });
-
-        //Faz o upload do arquivo no firebase
-        const res = await this.addSubContentFile({
-          subjectId: this.subjectId,
-          id,
-          file: formDataFile,
-        });
-
-        //Cria a notificação
-        createNotify({
-          type: NOTIFICATION_TYPE.SUCCESS,
-          message: res,
-        });
-
-        //Muda para a página de listagem das matérias
-        this.$router.push({ name: "Home" });
-      } catch (error) {
-        let errorMessage = '';
-
-        if(error.response) {
-          errorMessage = error.response.data;
-        } else {
-          errorMessage = "Não foi possível se conectar com a API!";
-        }
-
-        //Cria a notificação
-        createNotify({
-          type: NOTIFICATION_TYPE.ERROR,
-          message: errorMessage,
-        });
+   data() {
+      return {
+         title: '',
+         subjectId: '',
+         content: '',
+         video: null,
+         file: null,
+         hasVideo: false,
+         hasFile: false,
+         allowExtensions: ALLOWEXTENSIONS,
       }
-    },
-  },
+   },
+
+   components: {
+      Editor,
+   },
+
+   async created() {
+      //Pega todas as matérias para serem listadas na tabela
+      await this.fecthSubjects()
+   },
+
+   computed: {
+      //Getters Vuex
+      ...mapGetters('subject', ['subjects']),
+   },
+
+   methods: {
+      //Actions Vuex
+      //...mapActions(["showSnackbarMessage", "showAlertMessage"]),
+      ...mapActions('subject', ['fecthSubjects']),
+      ...mapActions('subContent', [
+         'addSubContent',
+         'addSubContentVideo',
+         'addSubContentFile',
+      ]),
+
+      //Salva o subconteúdo
+      async addNewSubContent() {
+         if (this.$refs.form.validate()) {
+            const subContent = {
+               title: this.title,
+               subjectId: this.subjectId,
+               content: this.content,
+            }
+
+            try {
+               //Salva no firebase os dados iniciais(Título, conteúdo e o ID da matéria)
+               const id = await this.addSubContent(subContent)
+
+               //Compila o video para ser enviado para a API
+               const formDataVideo = new FormData()
+               formDataVideo.append('video', this.video)
+
+               //Compila o arquivo para ser enviado para a API
+               const formDataFile = new FormData()
+               formDataFile.append('file', this.file)
+
+               //Faz o upload do video no firebase
+               await this.addSubContentVideo({
+                  subjectId: this.subjectId,
+                  id,
+                  video: formDataVideo,
+               })
+
+               //Faz o upload do arquivo no firebase
+               const res = await this.addSubContentFile({
+                  subjectId: this.subjectId,
+                  id,
+                  file: formDataFile,
+               })
+
+               //Cria a notificação
+               createNotify({
+                  type: NOTIFICATION_TYPE.SUCCESS,
+                  message: res,
+               })
+
+               //Muda para a página de listagem das matérias
+               this.$router.push({ name: 'Home' })
+            } catch (error) {
+               let errorMessage = ''
+
+               if (error.response) {
+                  errorMessage = error.response.data
+               } else {
+                  errorMessage = 'Não foi possível se conectar com a API!'
+               }
+
+               //Cria a notificação
+               createNotify({
+                  type: NOTIFICATION_TYPE.ERROR,
+                  message: errorMessage,
+               })
+            }
+         }
+      },
+   },
 }
 </script>
