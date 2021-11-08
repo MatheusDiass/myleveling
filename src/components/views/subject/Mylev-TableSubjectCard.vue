@@ -4,7 +4,7 @@
       <v-simple-table class="textCenter">
         <thead class="color">
           <tr class="headerBorderLeft">
-            <th class="textColor textCenter">Nome da Matéria</th>
+            <th class="textColor textCenter">Nome da Disciplina</th>
             <th class="textColor textCenter">Ações</th>
           </tr>
         </thead>
@@ -32,7 +32,7 @@
     <MylevDialog
         :show="showDialog"
         title="Aviso!"
-        content="Deseja realmente deletar a máteria ?"
+        content="Deseja realmente deletar a disciplina ?"
         :confirmButton="true"
         confirmButtonText="Deletar"
         :cancelButton="true"
@@ -52,8 +52,6 @@ export default {
 
   data() {
     return {
-      //Nome das colunas da tabela
-      headers: [{ text: 'Nome da Matéria' }, { text: 'Ações' }],
       showDialog: false,
       subjectToDelete: {},
     }
@@ -64,7 +62,7 @@ export default {
   },
 
   created() {
-    //Pega todas as matérias para serem listadas na tabela
+    //Obtem todas as dsiciplinas para serem listadas na tabela
     this.fecthSubjects();
   },
 
@@ -85,10 +83,10 @@ export default {
 
     async removeSubject() {
       try {
-        //Deleta a matéria
+        //Deleta a disciplina
         let res = await this.deleteSubject(this.subjectToDelete.subjectId);
         
-        //Remove matéria do array que está listando as matérias
+        //Remove a disciplina do array que está listando as matérias
         this.subjects.splice(this.subjectToDelete.index, 1);
 
         //Cria a notificação
@@ -112,19 +110,19 @@ export default {
         });
       }
 
-      //Fecha o dialogo de deleção da matéria
+      //Fecha o dialogo de deleção da disciplina
       this.showDialog = false;
     },
 
-    /*Atribuí uma matéria a variavel "selectedToDelete" (matéria que será deletada)
-    e abre o dialogo para a deleção da matéria */
+    /*Atribuí uma disciplina a variavel "selectedToDelete" (disciplina que será deletada)
+    e abre o dialogo para a deleção da disciplina */
     openDialog(subject) {
       this.subjectToDelete = subject;
       this.showDialog = true;
     },
 
-    /*Remove a matéria da variavel "selectedToDelete" (matéria que não foi excluída)
-    e fecha o dialogo de deleção da matéria*/
+    /*Remove a dsiciplina da variavel "selectedToDelete" (disciplina que não foi excluída)
+    e fecha o dialogo de deleção da disciplina*/
     closeDialog(event) {
       this.subjectToDelete = {};
       this.showDialog = event;

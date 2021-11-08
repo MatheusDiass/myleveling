@@ -97,7 +97,7 @@ export default {
    },
 
    async created() {
-      //Pega todas as matérias para serem listadas na tabela
+      //Obtem todas as matérias para serem listadas na tabela
       await this.fecthSubjects()
    },
 
@@ -116,7 +116,7 @@ export default {
          'addSubContentFile',
       ]),
 
-      //Salva o subconteúdo
+      //Salva a matéria
       async addNewSubContent() {
          if (this.$refs.form.validate()) {
             const subContent = {

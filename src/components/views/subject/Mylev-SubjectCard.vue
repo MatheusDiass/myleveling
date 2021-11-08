@@ -48,7 +48,7 @@ export default {
          let subjectId = this.getSubjectId()
 
          try {
-            //Pega a matéria pelo ID
+            //Obtem a dsiciplina pelo ID
             await this.fecthSubjectById({ subjectId })
 
             //Atribui ao campo
@@ -87,7 +87,7 @@ export default {
          'fecthSubjectById',
       ]),
 
-      //Salva a matéria
+      //Salva a disciplina
       async addNewSubject() {
          let data = {
             name: this.subjectName,
@@ -102,7 +102,7 @@ export default {
                message: res,
             })
 
-            //Muda para a página de listagem das matérias
+            //Muda para a página de listagem das disciplinas
             this.$router.push({ name: 'ListSubjects' })
          } catch (error) {
             let errorMessage = ''
@@ -121,7 +121,7 @@ export default {
          }
       },
 
-      //Atualiza uma matéria
+      //Atualiza uma disciplina
       async updateSubject() {
          let subject = {
             id: this.getSubjectId(),
@@ -137,7 +137,7 @@ export default {
                message: res,
             })
 
-            //Muda para a página de listagem das matérias
+            //Muda para a página de listagem das disciplinas
             this.$router.push({ name: 'ListSubjects' })
          } catch (error) {
             let errorMessage = ''
@@ -156,23 +156,23 @@ export default {
          }
       },
 
-      //Pega o ID da matéria contida na URL
+      //Obtem o ID da disciplina contida na URL
       getSubjectId() {
          return this.$route.params.id
       },
 
-      //Salva ou atualiza a matéria dependendo da página em que estiver
+      //Salva ou atualiza a disciplina dependendo da página em que estiver
       async saveEdit() {
-         //Se o formulário estiver validado, salva ou atualiza a matéria
+         //Se o formulário estiver validado, salva ou atualiza a disciplina
          if (this.$refs.form.validate()) {
             //Se estiver na página de edição
             if (this.isEdit) {
-               //Atualiza a matéria
+               //Atualiza a disciplina
                this.updateSubject()
 
                //Se estiver na página de adicionar
             } else {
-               //Adiciona matéria
+               //Adiciona disciplina
                this.addNewSubject()
             }
          }

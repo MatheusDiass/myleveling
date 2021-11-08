@@ -1,6 +1,6 @@
 <template>
   <v-container>
-    <h1>Adicionar Matéria</h1>
+    <h1>Adicionar Disciplina</h1>
 
     <br />
 
