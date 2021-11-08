@@ -41,12 +41,12 @@ export default {
     MylevPlayerVideo,
   },
 
-  //Obtem o todos os dados do Subconteúdo ao entrar na página
+  //Obtem o todos os dados da matéria ao entrar na página
   async created() {
     //Obtem o ID passado pela url
     const subContentId = this.getSubjectId();
 
-    //Obtem os dados do SubConteúdo
+    //Obtem os dados da matéria
     await this.fecthSubContentById({ subContentId });
   },
 
@@ -59,7 +59,7 @@ export default {
     //Actions Vuex
     ...mapActions('subContent', ['fecthSubContentById']),
 
-    //Pega o ID do SubConteúdo contido na URL
+    //Pega o ID da matéria contida na URL
     getSubjectId() {
       return this.$route.params.id;
     },

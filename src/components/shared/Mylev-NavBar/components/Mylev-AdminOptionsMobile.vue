@@ -4,7 +4,7 @@
       <v-menu offset-x left>
         <template v-slot:activator="{ on, attrs }">
           <v-btn class="textColor" v-bind="attrs" v-on="on" elevation="0" text
-            >Matérias</v-btn
+            >Disciplinas</v-btn
           >
         </template>
         <v-list class="color">
@@ -36,7 +36,7 @@
       <v-menu offset-x left>
         <template v-slot:activator="{ on, attrs }">
           <v-btn class="textColor" v-bind="attrs" v-on="on" elevation="0" text
-            >Subconteúdos</v-btn
+            >Matérias</v-btn
           >
         </template>
         <v-list class="color">
