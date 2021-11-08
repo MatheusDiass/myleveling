@@ -14,10 +14,20 @@
          <v-text-field
             v-model="nickname"
             :rules="nicknameRules"
+            :error-messages="nicknameExistMessage"
             counter="15"
             background-color="white"
             outlined
-         ></v-text-field>
+         >
+            <template v-slot:append>
+               <v-progress-circular
+                  v-if="nicknameLoading"
+                  size="24"
+                  color="#499fc6"
+                  indeterminate
+               ></v-progress-circular>
+            </template>
+         </v-text-field>
 
          <label>Email:</label>
          <v-text-field
@@ -105,14 +115,14 @@ export default {
                   message: 'Cadastro realizado com sucesso!',
                })
 
-               //Muda para a página de "Confirmar Email"
+               //Muda para a página de "Confirmar Email"ni
                this.$router.push({
                   name: 'ConfirmRegister',
                   params: { id: uid },
                })
             } catch (error) {
                let errorMessage = ''
-               
+
                if (error.response) {
                   errorMessage = error.response.data
                } else {
