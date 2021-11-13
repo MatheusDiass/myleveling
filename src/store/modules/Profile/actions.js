@@ -4,14 +4,14 @@ import config from "@/configuration/configuration.json";
 
 const actions = {
     //Faz a requisição para a API para pegar um perfil pelo UID(Firestore)
-    fecthProfileByUid: async ({ commit }, { uid }) => {
+    fecthProfileByUid: async({ commit }, { uid }) => {
         let { data } = await axios.get(`${config.profile}/${uid}`);
-
+        console.log(data);
         commit(MUTATIONS_TYPES.setProfile, data);
     },
 
     //Faz a requisição para a API para pegar um perfil pelo email
-    fecthUserDataByEmail: async(state, email) => {
+    fetchUserDataByEmail: async(state, email) => {
         let { data } = await axios.get(`${config.profile}/email/${email}`);
 
         return data;

@@ -9,6 +9,13 @@ const actions = {
 
         commit(MUTATIONS_TYPES.setBookmarks, data);
     },
+
+    //Faz a requisição para a API para deletar um favorito
+    deleteFavorite: async(state, favoriteId) => {
+        const { data } = await axios.delete(`${config.bookmark}/${favoriteId}`);
+
+        return data;
+    }
 };
 
 export default actions;

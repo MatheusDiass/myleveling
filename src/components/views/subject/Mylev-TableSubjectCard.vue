@@ -43,8 +43,8 @@
 </template>
 
 <script>
-import { mapActions, mapGetters } from 'vuex'
-import MylevDialog from '@/components/shared/Mylev-Dialog.vue'
+import { mapActions, mapGetters } from 'vuex';
+import MylevDialog from '@/components/shared/Mylev-Dialog.vue';
 import { createNotify, NOTIFICATION_TYPE } from '@/helpers/EventBus';
 
 export default {
@@ -62,7 +62,7 @@ export default {
   },
 
   created() {
-    //Obtem todas as dsiciplinas para serem listadas na tabela
+    //Obtem todas as disciplinas para serem listadas na tabela
     this.fecthSubjects();
   },
 
@@ -86,7 +86,7 @@ export default {
         //Deleta a disciplina
         let res = await this.deleteSubject(this.subjectToDelete.subjectId);
         
-        //Remove a disciplina do array que está listando as matérias
+        //Remove a disciplina do array que está listando as disciplinas
         this.subjects.splice(this.subjectToDelete.index, 1);
 
         //Cria a notificação
@@ -114,14 +114,14 @@ export default {
       this.showDialog = false;
     },
 
-    /*Atribuí uma disciplina a variavel "selectedToDelete" (disciplina que será deletada)
+    /*Atribuí uma disciplina a variavel "subjectToDelete" (disciplina que será deletada)
     e abre o dialogo para a deleção da disciplina */
     openDialog(subject) {
       this.subjectToDelete = subject;
       this.showDialog = true;
     },
 
-    /*Remove a dsiciplina da variavel "selectedToDelete" (disciplina que não foi excluída)
+    /*Remove a disciplina da variavel "subjectToDelete" (disciplina que não foi excluída)
     e fecha o dialogo de deleção da disciplina*/
     closeDialog(event) {
       this.subjectToDelete = {};
