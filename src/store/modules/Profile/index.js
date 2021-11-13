@@ -7,7 +7,7 @@ import actions from "./actions";
 import mutations from "./mutations";
 
 //Modules
-import bookmarkModule from './Bookmark';
+import bookmarkModule from './modules/bookmark';
 
 Vue.use(Vuex);
 
@@ -17,8 +17,8 @@ const profileModule = {
     getters,
     actions,
     mutations,
-    module: {
-        bookmarkModule,
+    modules: {
+        bookmark: bookmarkModule,
     }
 };
 

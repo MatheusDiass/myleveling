@@ -1,36 +1,54 @@
 <template>
-    <v-container>
-        <h1 class="text-center">Meu Perfil</h1>
+   <v-container>
+      <h1 class="text-center">Meu Perfil</h1>
 
-        <br>
+      <br />
 
-        <div class="text-center">
-            <MylevUserImage :hasBorder="true" :profile="profile"/>
-            <h3>{{ profile.name }}</h3>
-        </div>
+      <div class="text-center">
+         <MylevUserImage :hasBorder="true" :profile="profile" />
+         <h3>{{ profile.name }}</h3>
+      </div>
 
-        <br><br>
+      <br /><br />
 
-        <MylevProfileInfoCard />
-    </v-container>
+      <v-row>
+         <v-col cols="12">
+            <div>
+               <MylevProfileInfoCard />
+            </div>
+         </v-col>
+      </v-row>
+
+      <v-row>
+         <v-col cols="12" lg="6" md="6" sm="12">
+            <MylevFavorites />
+         </v-col>
+
+         <v-col cols="12" lg="6" md="6" sm="12">
+            <!-- Task component -->
+         </v-col>
+      </v-row>
+   </v-container>
 </template>
 
 <script>
-import MylevUserImage from '@/components/shared/Mylev-UserImage.vue'
-import MylevProfileInfoCard from '@/components/views/profile/Mylev-ProfileInfoCard.vue'
-import { mapGetters } from 'vuex'
+import MylevUserImage from '@/components/shared/Mylev-UserImage.vue';
+import MylevProfileInfoCard from '@/components/views/profile/Mylev-ProfileInfoCard.vue';
+import MylevFavorites from '@/components/views/profile/Mylev-Favorites.vue';
+import { mapGetters } from 'vuex';
 
 export default {
-    name: 'MylevProfile',
+   name: 'MylevProfile',
 
-    components: {
-        MylevUserImage,
-        MylevProfileInfoCard,
-    },
+   components: {
+      MylevUserImage,
+      MylevProfileInfoCard,
+      MylevFavorites,
+   },
 
-    computed: {
-    //Getters Vuex
-    ...mapGetters('profile', ['profile']),
-  },
+   computed: {
+      //Getters Vuex
+      ...mapGetters('profile', ['profile']),
+   },
 }
 </script>
