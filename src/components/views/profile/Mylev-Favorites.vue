@@ -2,19 +2,25 @@
    <v-card color="#499fc6" rounded="lg" flat>
       <v-card-title class="contentCenter">Meu Favoritos</v-card-title>
 
-      <v-list color="#499fc6" two-line>
-        <v-list-item class="pl-10 pr-10" v-for="bookmark in bookmarks" :key="bookmark.id">
-          <v-row>
-            <v-list-item-content>{{ bookmark.data.name }}</v-list-item-content>
-            <v-icon color="red darken-3" @click="openDialog">mdi-heart</v-icon>
-          </v-row>
-        </v-list-item>
-      </v-list>
+      <v-virtual-scroll :bench="5" :items="bookmarks" height="200" item-height="64">
+        <template v-slot:default="{ item }">
+          <v-list-item class="mb-2 pl-10 pr-10" key="item.id">
+            <v-row>
+              <v-list-item-content @click="goToFavorite(item.data.id)">{{ item.data.name }}</v-list-item-content>
+              <v-list-item-action style="display: contents;">
+                <v-icon color="red darken-3" @click="openDialog(item)">mdi-delete</v-icon>
+              </v-list-item-action>
+            </v-row>
+          </v-list-item>
+
+          <v-divider></v-divider>
+        </template>
+      </v-virtual-scroll>
 
       <MylevDialog
         :show="showDialog"
         title="Aviso!"
-        content="Deseja realmente deletar a favorito ?"
+        content="Deseja realmente deletar o favorito ?"
         :confirmButton="true"
         confirmButtonText="Deletar"
         :cancelButton="true"
@@ -51,17 +57,17 @@ export default {
    computed: {
       //Getters Vuex
       ...mapGetters('profile', ['profile']),
-      ...mapGetters('profile/bookmark', ['bookmarks', 'deleteFavorite']),
+      ...mapGetters('profile/bookmark', ['bookmarks']),
    },
 
    methods: {
       //Actions Vuex
-      ...mapActions('profile/bookmark', ['fetchAllBookmarksByUser']),
+      ...mapActions('profile/bookmark', ['fetchAllBookmarksByUser', 'deleteFavorite']),
 
       async removeFavorite() {
         try {
           //Deleta o favorito
-          const res = await this.deleteFavorite(this.favoriteToDelete.favoriteId);
+          const res = await this.deleteFavorite(this.favoriteToDelete.id);
 
           //Remove o favorito do array que está listando os favoritos
           this.bookmarks.splice(this.favoriteToDelete.index, 1);
@@ -86,6 +92,9 @@ export default {
             message: errorMessage,
           });
         }
+
+        //Fecha o dialogo de deleção de favorito
+        this.showDialog = false;
       },
 
     /*Atribuí um favorito a variavel "favoriteToDelete" (favorito que será deletado)
@@ -100,7 +109,18 @@ export default {
     closeDialog(event) {
       this.favoriteToDelete = {};
       this.showDialog = event;
+    },
+
+    //Abre a página do favorito
+    goToFavorite(id) {
+      this.$router.push({ name: 'SubContent', params: { id } });
     }
    },
 }
 </script>
+
+<style>
+.v-list-item__content {
+  cursor: pointer;
+}
+</style>

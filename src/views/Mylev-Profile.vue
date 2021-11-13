@@ -12,19 +12,22 @@
       <br /><br />
 
       <v-row>
-         <v-col lg="8" md="8" sm="12">
+         <v-col cols="12">
             <div>
                <MylevProfileInfoCard />
             </div>
          </v-col>
-         <v-col lg="4" md="4" sm="12" class="mb-9">
-            <div class="mt-15">
-               <MylevFavorites />
-            </div>
-         </v-col>
       </v-row>
 
-      <MylevDialog />
+      <v-row>
+         <v-col cols="12" lg="6" md="6" sm="12">
+            <MylevFavorites />
+         </v-col>
+
+         <v-col cols="12" lg="6" md="6" sm="12">
+            <!-- Task component -->
+         </v-col>
+      </v-row>
    </v-container>
 </template>
 
@@ -32,7 +35,6 @@
 import MylevUserImage from '@/components/shared/Mylev-UserImage.vue';
 import MylevProfileInfoCard from '@/components/views/profile/Mylev-ProfileInfoCard.vue';
 import MylevFavorites from '@/components/views/profile/Mylev-Favorites.vue';
-import MylevDialog from '@/components/shared/Mylev-Dialog.vue';
 import { mapGetters } from 'vuex';
 
 export default {
@@ -42,7 +44,6 @@ export default {
       MylevUserImage,
       MylevProfileInfoCard,
       MylevFavorites,
-      MylevDialog,
    },
 
    computed: {
