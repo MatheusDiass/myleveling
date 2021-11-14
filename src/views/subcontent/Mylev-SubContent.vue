@@ -1,6 +1,9 @@
 <template>
   <v-container>
-    <h1>{{ subContent.title }}</h1>
+    <v-row justify="start">
+        <h1 class="mr-5">{{ subContent.title }}</h1>
+        <MylevBookmarkButton v-if="subContent.title" :contentId="subContentId" :contentTitle="subContent.title" />
+    </v-row>
 
     <br />
 
@@ -31,38 +34,37 @@
 </template>
 
 <script>
-import { mapActions, mapGetters } from 'vuex'
-import MylevPlayerVideo from '@/components/shared/Mylev-PlayerVideo'
+import { mapActions, mapGetters } from 'vuex';
+import MylevPlayerVideo from '@/components/shared/Mylev-PlayerVideo';
+import MylevBookmarkButton from '../../components/shared/Mylev-Bookmark-Button.vue';
 
 export default {
   name: 'Mylev-SubContent',
 
   components: {
     MylevPlayerVideo,
+    MylevBookmarkButton,
   },
 
   //Obtem o todos os dados da matéria ao entrar na página
   async created() {
-    //Obtem o ID passado pela url
-    const subContentId = this.getSubjectId();
-
     //Obtem os dados da matéria
-    await this.fecthSubContentById({ subContentId });
+    await this.fecthSubContentById({ subContentId: this.subContentId });
   },
 
   computed: {
     //Getters Vuex
     ...mapGetters('subContent', ['subContent']),
+
+    //Obtem o ID da matéria contida na URL
+    subContentId() {
+      return this.$route.params.id;
+    },
   },
 
   methods: {
     //Actions Vuex
     ...mapActions('subContent', ['fecthSubContentById']),
-
-    //Pega o ID da matéria contida na URL
-    getSubjectId() {
-      return this.$route.params.id;
-    },
   }
 }
 </script>

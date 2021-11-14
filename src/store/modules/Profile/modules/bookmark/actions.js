@@ -10,9 +10,16 @@ const actions = {
         commit(MUTATIONS_TYPES.setBookmarks, data);
     },
 
+    //Faz a requisição para a API para adicionar um favorito
+    addBookmark: async(state, bookmark) => {
+        const { data } = await axios.post(`${config.bookmark}`, bookmark);
+
+        return data;
+    },
+
     //Faz a requisição para a API para deletar um favorito
-    deleteFavorite: async(state, favoriteId) => {
-        const { data } = await axios.delete(`${config.bookmark}/${favoriteId}`);
+    deleteBookmark: async(state, bookmarkId) => {
+        const { data } = await axios.delete(`${config.bookmark}/${bookmarkId}`);
 
         return data;
     }
