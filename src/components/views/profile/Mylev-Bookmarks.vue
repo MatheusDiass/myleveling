@@ -31,17 +31,17 @@
 </template>
 
 <script>
-import { mapActions, mapGetters } from 'vuex'
+import { mapActions, mapGetters } from 'vuex';
 import MylevDialog from '@/components/shared/Mylev-Dialog.vue';
 import { createNotify, NOTIFICATION_TYPE } from '@/helpers/EventBus';
 
 export default {
-   name: 'MylevFavorites',
+   name: 'MylevBookmarks',
 
    data() {
       return {
         showDialog: false,
-        favoriteToDelete: {},
+        bookmarkToDelete: {},
       }
    },
 
@@ -62,15 +62,18 @@ export default {
 
    methods: {
       //Actions Vuex
-      ...mapActions('profile/bookmark', ['fetchAllBookmarksByUser', 'deleteFavorite']),
+      ...mapActions('profile/bookmark', ['fetchAllBookmarksByUser', 'deleteBookmark']),
 
       async removeFavorite() {
         try {
           //Deleta o favorito
-          const res = await this.deleteFavorite(this.favoriteToDelete.id);
+          const res = await this.deleteBookmark(this.bookmarkToDelete.id);
 
           //Remove o favorito do array que está listando os favoritos
-          this.bookmarks.splice(this.favoriteToDelete.index, 1);
+          const newBookmarks = this.bookmarks.filter(
+              (bookmark) => bookmark.data.id != this.contentId
+          );
+          this.$store.commit('profile/bookmark/setBookmarks', newBookmarks);
 
           //Cria a notificação
           createNotify({
@@ -97,17 +100,17 @@ export default {
         this.showDialog = false;
       },
 
-    /*Atribuí um favorito a variavel "favoriteToDelete" (favorito que será deletado)
+    /*Atribuí um favorito a variavel "bookmarkToDelete" (favorito que será deletado)
     e abre o dialogo para a deleção do favorito */
-    openDialog(favorite) {
-      this.favoriteToDelete = favorite;
+    openDialog(bookmark) {
+      this.bookmarkToDelete = bookmark;
       this.showDialog = true;
     },
 
-    /*Remove o favorito da variavel "favoriteToDelete" (favorito que não foi excluída)
+    /*Remove o favorito da variavel "bookmarkToDelete" (favorito que não foi excluída)
     e fecha o dialogo de deleção do favorito*/
     closeDialog(event) {
-      this.favoriteToDelete = {};
+      this.bookmarkToDelete = {};
       this.showDialog = event;
     },
 
