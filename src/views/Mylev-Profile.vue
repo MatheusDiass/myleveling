@@ -25,7 +25,7 @@
          </v-col>
 
          <v-col cols="12" lg="6" md="6" sm="12">
-            <!-- Task component -->
+            <MylevTasks />
          </v-col>
       </v-row>
    </v-container>
@@ -35,6 +35,7 @@
 import MylevUserImage from '@/components/shared/Mylev-UserImage.vue';
 import MylevProfileInfoCard from '@/components/views/profile/Mylev-ProfileInfoCard.vue';
 import MylevBookmarks from '@/components/views/profile/Mylev-Bookmarks.vue';
+import MylevTasks from '@/components/views/profile/Mylev-Tasks.vue'
 import { mapGetters } from 'vuex';
 
 export default {
@@ -44,6 +45,7 @@ export default {
       MylevUserImage,
       MylevProfileInfoCard,
       MylevBookmarks,
+      MylevTasks
    },
 
    computed: {
