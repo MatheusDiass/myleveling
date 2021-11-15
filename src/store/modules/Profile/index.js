@@ -8,6 +8,7 @@ import mutations from "./mutations";
 
 //Modules
 import bookmarkModule from './modules/bookmark';
+import taskModule from './modules/tasks';
 
 Vue.use(Vuex);
 
@@ -19,6 +20,7 @@ const profileModule = {
     mutations,
     modules: {
         bookmark: bookmarkModule,
+        task: taskModule,
     }
 };
 

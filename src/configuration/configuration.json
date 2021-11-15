@@ -7,6 +7,7 @@
     "confirmEmail": "http://localhost:3000/confirmEmail",
     "profile": "http://localhost:3000/profile",
     "bookmark": "http://localhost:3000/bookmark",
+    "task": "http://localhost:3000/task",
     "subject": "http://localhost:3000/subject",
     "subContent": "http://localhost:3000/subcontent",
     "subContentVideo": "http://localhost:3000/subcontentvideo",

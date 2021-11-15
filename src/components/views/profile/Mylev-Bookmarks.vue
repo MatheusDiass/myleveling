@@ -1,32 +1,49 @@
 <template>
    <v-card color="#499fc6" rounded="lg" flat>
-      <v-card-title class="contentCenter">Meu Favoritos</v-card-title>
+      <v-row>
+         <v-col>
+            <v-card-title
+               class="ml-3 contentCenter"
+               style="justify-content: start"
+               >Favoritos</v-card-title
+            >
+         </v-col>
+      </v-row>
 
-      <v-virtual-scroll :bench="5" :items="bookmarks" height="200" item-height="64">
-        <template v-slot:default="{ item }">
-          <v-list-item class="mb-2 pl-10 pr-10" key="item.id">
-            <v-row>
-              <v-list-item-content @click="goToFavorite(item.data.id)">{{ item.data.name }}</v-list-item-content>
-              <v-list-item-action style="display: contents;">
-                <v-icon color="red darken-3" @click="openDialog(item)">mdi-delete</v-icon>
-              </v-list-item-action>
-            </v-row>
-          </v-list-item>
+      <v-virtual-scroll
+         :bench="5"
+         :items="bookmarks"
+         height="200"
+         item-height="64"
+      >
+         <template v-slot:default="{ item }">
+            <v-list-item class="mb-2 pl-10 pr-10" :key="item.id">
+               <v-row>
+                  <v-list-item-content @click="goToFavorite(item.data.id)">{{
+                     item.data.name
+                  }}</v-list-item-content>
+                  <v-list-item-action style="display: contents">
+                     <v-icon color="red darken-3" @click="openDialog(item)"
+                        >mdi-delete</v-icon
+                     >
+                  </v-list-item-action>
+               </v-row>
+            </v-list-item>
 
-          <v-divider></v-divider>
-        </template>
+            <v-divider></v-divider>
+         </template>
       </v-virtual-scroll>
 
       <MylevDialog
-        :show="showDialog"
-        title="Aviso!"
-        content="Deseja realmente deletar o favorito ?"
-        :confirmButton="true"
-        confirmButtonText="Deletar"
-        :cancelButton="true"
-        @confirm="removeFavorite"
-        @closeDialog="closeDialog"
-    />
+         :show="showDialog"
+         title="Aviso!"
+         content="Deseja realmente deletar o favorito ?"
+         :confirmButton="true"
+         confirmButtonText="Deletar"
+         :cancelButton="true"
+         @confirm="removeBookmark"
+         @closeDialog="closeDialog"
+      />
    </v-card>
 </template>
 
@@ -40,13 +57,13 @@ export default {
 
    data() {
       return {
-        showDialog: false,
-        bookmarkToDelete: {},
-      }
+         showDialog: false,
+         bookmarkToDelete: {},
+      };
    },
 
    components: {
-     MylevDialog,
+      MylevDialog,
    },
 
    created() {
@@ -62,68 +79,71 @@ export default {
 
    methods: {
       //Actions Vuex
-      ...mapActions('profile/bookmark', ['fetchAllBookmarksByUser', 'deleteBookmark']),
+      ...mapActions('profile/bookmark', [
+         'fetchAllBookmarksByUser',
+         'deleteBookmark',
+      ]),
 
-      async removeFavorite() {
-        try {
-          //Deleta o favorito
-          const res = await this.deleteBookmark(this.bookmarkToDelete.id);
+      async removeBookmark() {
+         try {
+            //Deleta o favorito
+            const res = await this.deleteBookmark(this.bookmarkToDelete.id);
 
-          //Remove o favorito do array que está listando os favoritos
-          const newBookmarks = this.bookmarks.filter(
-              (bookmark) => bookmark.data.id != this.contentId
-          );
-          this.$store.commit('profile/bookmark/setBookmarks', newBookmarks);
+            //Remove o favorito do array que está listando os favoritos
+            const newBookmarks = this.bookmarks.filter(
+               (bookmark) => bookmark.data.id != this.contentId
+            );
+            this.$store.commit('profile/bookmark/setBookmarks', newBookmarks);
 
-          //Cria a notificação
-          createNotify({
-            type: NOTIFICATION_TYPE.SUCCESS,
-            message: res,
-          });
-        } catch(error) {
-          let errorMessage = '';
+            //Cria a notificação
+            createNotify({
+               type: NOTIFICATION_TYPE.SUCCESS,
+               message: res,
+            });
+         } catch (error) {
+            let errorMessage = '';
 
-          if(error.response) {
-            errorMessage = error.response.data;
-          } else {
-            errorMessage = "Não foi possível se conectar com a API!";
-          }
+            if (error.response) {
+               errorMessage = error.response.data;
+            } else {
+               errorMessage = 'Não foi possível se conectar com a API!';
+            }
 
-          //Cria a notificação
-          createNotify({
-            type: NOTIFICATION_TYPE.ERROR,
-            message: errorMessage,
-          });
-        }
+            //Cria a notificação
+            createNotify({
+               type: NOTIFICATION_TYPE.ERROR,
+               message: errorMessage,
+            });
+         }
 
-        //Fecha o dialogo de deleção de favorito
-        this.showDialog = false;
+         //Fecha o dialogo de deleção de favorito
+         this.showDialog = false;
       },
 
-    /*Atribuí um favorito a variavel "bookmarkToDelete" (favorito que será deletado)
-    e abre o dialogo para a deleção do favorito */
-    openDialog(bookmark) {
-      this.bookmarkToDelete = bookmark;
-      this.showDialog = true;
-    },
+      /*Atribuí um favorito a variavel "bookmarkToDelete" (favorito que será deletado)
+      e abre o dialogo para a deleção do favorito */
+      openDialog(bookmark) {
+         this.bookmarkToDelete = bookmark;
+         this.showDialog = true;
+      },
 
-    /*Remove o favorito da variavel "bookmarkToDelete" (favorito que não foi excluída)
-    e fecha o dialogo de deleção do favorito*/
-    closeDialog(event) {
-      this.bookmarkToDelete = {};
-      this.showDialog = event;
-    },
+      /*Remove o favorito da variavel "bookmarkToDelete" (favorito que não foi excluído)
+      e fecha o dialogo de deleção do favorito*/
+      closeDialog(event) {
+         this.bookmarkToDelete = {};
+         this.showDialog = event;
+      },
 
-    //Abre a página do favorito
-    goToFavorite(id) {
-      this.$router.push({ name: 'SubContent', params: { id } });
-    }
+      //Abre a página do favorito
+      goToFavorite(id) {
+         this.$router.push({ name: 'SubContent', params: { id } });
+      },
    },
-}
+};
 </script>
 
 <style>
 .v-list-item__content {
-  cursor: pointer;
+   cursor: pointer;
 }
 </style>
