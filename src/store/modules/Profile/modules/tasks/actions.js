@@ -9,6 +9,19 @@ const actions = {
 
         commit(MUTATIONS_TYPES.setTasks, data);
     },
+    //Faz a requisição para a API para deletar uma tarefa
+    addTask: async(state, task) => {
+        const { data } = await axios.post(`${config.task}`, task);
+
+        return data;
+    },
+
+    //Faz a requisição para a API para editar uma tarefa
+    editTask: async(state, task) => {
+        const { data } = await axios.put(`${config.task}`, task);
+
+        return data;
+    },
 
     //Faz a requisição para a API para deletar uma tarefa
     deleteTask: async(state, taskId) => {

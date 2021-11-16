@@ -35,7 +35,7 @@
 import MylevUserImage from '@/components/shared/Mylev-UserImage.vue';
 import MylevProfileInfoCard from '@/components/views/profile/Mylev-ProfileInfoCard.vue';
 import MylevBookmarks from '@/components/views/profile/Mylev-Bookmarks.vue';
-import MylevTasks from '@/components/views/profile/Mylev-Tasks.vue'
+import MylevTasks from '@/components/views/profile/Mylev-Tasks/Mylev-Tasks.vue'
 import { mapGetters } from 'vuex';
 
 export default {
