@@ -13,7 +13,7 @@
       <v-virtual-scroll
          :bench="5"
          :items="bookmarks"
-         height="200"
+         height="256"
          item-height="64"
       >
          <template v-slot:default="{ item }">

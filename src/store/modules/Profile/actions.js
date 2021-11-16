@@ -6,7 +6,7 @@ const actions = {
     //Faz a requisição para a API para pegar um perfil pelo UID(Firestore)
     fecthProfileByUid: async({ commit }, { uid }) => {
         let { data } = await axios.get(`${config.profile}/${uid}`);
-        console.log(data);
+
         commit(MUTATIONS_TYPES.setProfile, data);
     },
 
