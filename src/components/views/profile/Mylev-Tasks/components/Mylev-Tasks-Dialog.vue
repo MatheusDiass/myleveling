@@ -9,12 +9,13 @@
          <div class="pa-5">
             <h1>{{ titleDialog }}</h1>
 
-            <br>
+            <br />
 
-            <v-form>
+            <v-form ref="form">
                <label>Título:</label>
                <v-text-field
                   v-model="title"
+                  :rules="titleRules"
                   background-color="white"
                   outlined
                ></v-text-field>
@@ -22,6 +23,7 @@
                <label>Descrição:</label>
                <v-text-field
                   v-model="description"
+                  :rules="descriptionRules"
                   background-color="white"
                   outlined
                ></v-text-field>
@@ -39,6 +41,7 @@
                         v-bind="attrs"
                         v-on="on"
                         :value="taskDueDate(dueDate)"
+                        :rules="dueDateRules"
                         prepend-inner-icon="mdi-calendar"
                         background-color="white"
                         outlined
@@ -66,11 +69,12 @@ import { mapActions } from 'vuex';
 import { getCookie } from '@/helpers/managerCookies';
 import { dateTime } from '@/mixins';
 import { createNotify, NOTIFICATION_TYPE } from '@/helpers/EventBus';
+import taskValidation from '@/mixins/validations/taskValidation';
 
 export default {
    name: 'MylevTasksDialog',
 
-   mixins: [dateTime],
+   mixins: [dateTime, taskValidation],
 
    data() {
       return {
@@ -94,7 +98,7 @@ export default {
          default: false,
       },
 
-      task: {
+      task: {    
          type: Object,
          default: () => ({}),
       },
@@ -110,12 +114,12 @@ export default {
 
    computed: {
       titleDialog() {
-         if(this.isEdit) {
+         if (this.isEdit) {
             return 'Editar tarefa';
          } else {
             return 'Nova tarefa';
          }
-      }
+      },
    },
 
    methods: {
@@ -161,7 +165,8 @@ export default {
 
       //Salva ou atualiza a tarefa
       async saveEdit() {
-         //Obtem o UID do usuário
+         if (this.$refs.form.validate()) {
+            //Obtem o UID do usuário
          const userId = getCookie('profile').uid;
 
          let res = '';
@@ -201,6 +206,7 @@ export default {
 
          //Fecha o dialogo
          this.closeTasksDialog();
+         }
       },
 
       //Limpa os campos do dialogo
