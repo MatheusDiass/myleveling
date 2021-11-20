@@ -7,11 +7,19 @@
     <v-divider></v-divider>
 
     <br />
+
+    <MylevTableSubContentCard />
   </v-container>
 </template>
 
 <script>
+import MylevTableSubContentCard from '@/components/views/subcontent/Mylev-TableSubContentCard.vue';
+
 export default {
     name: 'MylevListSubContent',
+
+    components: {
+      MylevTableSubContentCard,
+    }
 }
 </script>

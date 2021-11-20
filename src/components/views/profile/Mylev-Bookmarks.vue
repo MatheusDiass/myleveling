@@ -23,8 +23,13 @@
                      item.data.name
                   }}</v-list-item-content>
                   <v-list-item-action style="display: contents">
-                     <v-icon color="red darken-3" @click="openDialog(item)"
-                        >mdi-delete</v-icon
+                     <v-btn
+                        elevation="0"
+                        class="textColor mt-2"
+                        color="red darken-3"
+                        text
+                        @click="openDialog(item)"
+                        ><v-icon>mdi-delete</v-icon>Deletar</v-btn
                      >
                   </v-list-item-action>
                </v-row>
@@ -91,8 +96,10 @@ export default {
 
             //Remove o favorito do array que está listando os favoritos
             const newBookmarks = this.bookmarks.filter(
-               (bookmark) => bookmark.data.id != this.contentId
+               (bookmark) => bookmark.id != this.bookmarkToDelete.id
             );
+
+            //Atualiza os favoritos
             this.$store.commit('profile/bookmark/setBookmarks', newBookmarks);
 
             //Cria a notificação

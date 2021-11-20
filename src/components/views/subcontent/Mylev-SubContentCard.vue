@@ -11,7 +11,7 @@
                outlined
             ></v-text-field>
 
-            <label>Matéria:</label>
+            <label>Disciplina:</label>
             <v-select
                v-model="subjectId"
                :rules="sujectRules"

@@ -11,7 +11,7 @@ export default {
             ],
 
             sujectRules: [
-                v => !!v || 'Campo matéria é obrigatório!'
+                v => !!v || 'Campo disciplina é obrigatório!'
             ],
 
             videoRules: [
@@ -23,6 +23,6 @@ export default {
                 v => !!v || 'Campo materiais é obrigatório!',
                 v => (v && fileValidation(v)) || 'A extensão de arquivos permitidos são: docx, pdf, txt!',
             ]
-        } 
+        }
     }
 }
