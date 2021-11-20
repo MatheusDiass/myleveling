@@ -83,4 +83,17 @@ export default {
     width: 100%;
   }
 }
+
+/* Tables */
+th {
+  font-size: 20px !important;
+}
+
+td {
+  font-size: 15px !important;
+}
+
+.textCenter {
+  text-align: center !important;
+}
 </style>

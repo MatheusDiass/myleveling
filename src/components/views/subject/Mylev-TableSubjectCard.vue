@@ -48,7 +48,7 @@ import MylevDialog from '@/components/shared/Mylev-Dialog.vue';
 import { createNotify, NOTIFICATION_TYPE } from '@/helpers/EventBus';
 
 export default {
-  name: 'TableSubjectCard',
+  name: 'MylevTableSubjectCard',
 
   data() {
     return {
@@ -61,9 +61,9 @@ export default {
     MylevDialog,
   },
 
-  created() {
+  async created() {
     //Obtem todas as disciplinas para serem listadas na tabela
-    this.fecthSubjects();
+    await this.fecthSubjects();
   },
 
   //Remove o Alert de erro ao sair da página
@@ -130,17 +130,3 @@ export default {
   },
 }
 </script>
-
-<style scoped>
-th {
-  font-size: 20px !important;
-}
-
-td {
-  font-size: 15px !important;
-}
-
-.textCenter {
-  text-align: center !important;
-}
-</style>

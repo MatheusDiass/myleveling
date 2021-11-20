@@ -161,6 +161,7 @@ export default {
                (task) => task.id != this.taskToDelete.id
             );
 
+            //Atualiza as tarefas
             this.$store.commit('profile/task/setTasks', newTasks);
 
             //Cria a notificação
