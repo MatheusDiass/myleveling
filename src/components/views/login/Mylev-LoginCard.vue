@@ -32,7 +32,7 @@
                   ><v-img
                      max-height="60"
                      max-width="60"
-                     :src="require('../../../assets/logoGoogle.png')"
+                     :src="require('../../../assets/img/logoGoogle.png')"
                   ></v-img
                ></a>
             </v-row>
