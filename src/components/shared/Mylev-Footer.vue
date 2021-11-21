@@ -1,6 +1,6 @@
 <template>
   <div class="footer">
-    <v-footer class="color">
+    <v-footer class="color" elevation="6">
       <b class="textColor">My Leveling - 2021</b>
     </v-footer>
   </div>

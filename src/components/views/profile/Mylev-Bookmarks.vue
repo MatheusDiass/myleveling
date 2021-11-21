@@ -1,5 +1,5 @@
 <template>
-   <v-card color="#499fc6" rounded="lg" flat>
+   <v-card color="#499fc6" rounded="lg" elevation="6">
       <v-row>
          <v-col>
             <v-card-title

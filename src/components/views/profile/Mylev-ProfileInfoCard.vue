@@ -8,7 +8,7 @@
 
         <br>
 
-        <v-card class="paddingCard" color="#499fc6" rounded="lg" flat>
+        <v-card class="paddingCard" color="#499fc6" rounded="lg" elevation="6">
             <v-form>
                 <label>Nome:</label>
                 <v-text-field v-model="name" :disabled="isDisable" background-color="white" outlined></v-text-field>

@@ -1,6 +1,6 @@
 <template>
   <div>
-    <v-app-bar class="color heightNavFooter" flat dense>
+    <v-app-bar class="color heightNavFooter" elevation="6" dense>
       <v-toolbar-title
         ><v-img
           max-height="60"
