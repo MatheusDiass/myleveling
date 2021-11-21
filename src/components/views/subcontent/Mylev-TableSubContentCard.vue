@@ -9,10 +9,7 @@
                </tr>
             </thead>
             <tbody>
-               <tr
-                  v-for="subContent in subContents"
-                  :key="subContent.id"
-               >
+               <tr v-for="subContent in subContents" :key="subContent.id">
                   <td>{{ subContent.data.title }}</td>
                   <td>
                      <div>
@@ -29,9 +26,7 @@
                            class="mx-2"
                            color="red"
                            text
-                           @click="
-                              openDialog(subContent)
-                           "
+                           @click="openDialog(subContent)"
                            ><v-icon>mdi-delete</v-icon>Deletar</v-btn
                         >
                      </div>
@@ -51,12 +46,15 @@
          @confirm="removeSubContent"
          @closeDialog="closeDialog"
       />
+
+      <MylevLoading :isLoading="isLoading"/>
    </div>
 </template>
 
 <script>
 import { mapActions, mapGetters } from 'vuex';
 import MylevDialog from '@/components/shared/Mylev-Dialog.vue';
+import MylevLoading from '../../shared/Mylev-Loading.vue';
 import { createNotify, NOTIFICATION_TYPE } from '@/helpers/EventBus';
 
 export default {
@@ -66,11 +64,13 @@ export default {
       return {
          showDialog: false,
          subContentToDelete: {},
+         isLoading: false,
       };
    },
 
    components: {
       MylevDialog,
+      MylevLoading,
    },
 
    async created() {
@@ -88,6 +88,12 @@ export default {
       ...mapActions('subContent', ['fecthSubContents', 'deleteSubContent']),
 
       async removeSubContent() {
+         //Fecha o dialogo de deleção da disciplina
+         this.showDialog = false;
+
+         //Exibe o componente de carregamento
+         this.isLoading = true;
+
          try {
             //Deleta a matéria
             let res = await this.deleteSubContent(this.subContentToDelete);
@@ -121,8 +127,8 @@ export default {
             });
          }
 
-         //Fecha o dialogo de deleção da disciplina
-         this.showDialog = false;
+         //Remove o componente de carregamento
+         this.isLoading = false;
       },
 
       /*Atribuí uma matéria a variavel "subContentToDelete" (matéria que será deletada)

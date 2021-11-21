@@ -1,5 +1,6 @@
 <template>
-   <v-card class="paddingCard" color="#499fc6" rounded="lg" elevation="6">
+   <div>
+      <v-card class="paddingCard" color="#499fc6" rounded="lg" elevation="6">
       <v-form ref="form">
          <label>Nome:</label>
          <v-text-field
@@ -67,14 +68,18 @@
          </div>
       </v-form>
    </v-card>
+
+   <MylevLoading :isLoading="isLoading"/>
+   </div>
 </template>
 
 <script>
-import axios from 'axios'
-import config from '@/configuration/configuration.json'
-import { loginGoogle } from '@/mixins'
-import registerValidation from '@/mixins/validations/registerValidation'
-import { createNotify, NOTIFICATION_TYPE } from '@/helpers/EventBus'
+import axios from 'axios';
+import config from '@/configuration/configuration.json';
+import { loginGoogle } from '@/mixins';
+import registerValidation from '@/mixins/validations/registerValidation';
+import { createNotify, NOTIFICATION_TYPE } from '@/helpers/EventBus';
+import MylevLoading from '../../shared/Mylev-Loading.vue';
 
 export default {
    name: 'MylevRegisterCard',
@@ -88,7 +93,12 @@ export default {
          email: '',
          password: '',
          showPassword: false,
-      }
+         isLoading: false,
+      };
+   },
+
+   components: {
+      MylevLoading,
    },
 
    methods: {
@@ -96,47 +106,53 @@ export default {
       async register() {
          //Se o formulário estiver validado, realiza o cadastro
          if (this.$refs.form.validate()) {
+            //Exibe o componente de carregamento
+            this.isLoading = true;
+
             const data = {
                name: this.name,
                nickname: this.nickname,
                email: this.email,
                password: this.password,
-            }
+            };
 
             try {
-               const res = await axios.post(`${config.register}`, data)
+               const res = await axios.post(`${config.register}`, data);
 
                //Obtem o UID do usuário retornado após fazer o cadastro
-               const uid = res.data.uid
+               const uid = res.data.uid;
 
                //Cria a notificação
                createNotify({
                   type: NOTIFICATION_TYPE.SUCCESS,
                   message: 'Cadastro realizado com sucesso!',
-               })
+               });
 
                //Muda para a página de "Confirmar Email"ni
                this.$router.push({
                   name: 'ConfirmRegister',
                   params: { id: uid },
-               })
+               });
             } catch (error) {
-               let errorMessage = ''
+               let errorMessage = '';
 
                if (error.response) {
-                  errorMessage = error.response.data
+                  errorMessage = error.response.data;
                } else {
-                  errorMessage = 'Não foi possível se conectar com a API!'
+                  errorMessage = 'Não foi possível se conectar com a API!';
                }
 
                //Cria a notificação
                createNotify({
                   type: NOTIFICATION_TYPE.ERROR,
                   message: errorMessage,
-               })
+               });
             }
+
+            //Remove o componente de carregamento
+            this.isLoading = false;
          }
       },
    },
-}
+};
 </script>

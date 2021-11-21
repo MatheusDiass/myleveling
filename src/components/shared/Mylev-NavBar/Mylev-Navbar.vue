@@ -5,7 +5,7 @@
             ><v-img
                max-height="80"
                max-width="80"
-               :src="require('../../../assets/img/Myleveling_Logo.png')"
+               :src="require('../../../assets/img/Myleveling_Logo_Black.png')"
             ></v-img
          ></v-toolbar-title>
 

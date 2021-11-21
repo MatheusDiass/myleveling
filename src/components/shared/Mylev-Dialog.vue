@@ -1,74 +1,98 @@
 <template>
-    <v-dialog  v-model="show" :fullscreen="$vuetify.breakpoint.mobile" width="550" persistent>
-            <v-card class="paddingCard" color="#499fc6" rounded="lg" flat>
-                <div class="pa-5">
-                    <h1>{{ title }}</h1>
+   <div>
+      <v-dialog
+         v-model="show"
+         :fullscreen="$vuetify.breakpoint.mobile"
+         width="550"
+         persistent
+      >
+         <v-card class="paddingCard" color="#499fc6" rounded="lg" flat>
+            <div class="pa-5">
+               <h1>{{ title }}</h1>
 
-                    <br>
+               <br />
 
-                    <h3>{{ content }}</h3>
+               <h3>{{ content }}</h3>
 
-                    <br>
+               <br />
 
-                    <v-btn v-if="confirmButton" color="#3898ec" class="mr-10" @click="confirm">{{ confirmButtonText }}</v-btn>
-                    <v-btn v-if="cancelButton" color="#3898ec" @click="closeDialog">{{ cancelButtonText }}</v-btn>
-                </div>
-            </v-card>
-    </v-dialog>
+               <v-btn
+                  v-if="confirmButton"
+                  color="#3898ec"
+                  class="mr-10"
+                  @click="confirm"
+                  >{{ confirmButtonText }}</v-btn
+               >
+               <v-btn
+                  v-if="cancelButton"
+                  color="#3898ec"
+                  @click="closeDialog"
+                  >{{ cancelButtonText }}</v-btn
+               >
+            </div>
+         </v-card>
+      </v-dialog>
+   </div>
 </template>
 
 <script>
 export default {
-    name: 'Mylev-Dialog',
+   name: 'Mylev-Dialog',
 
-    props: {
-        show: {
-            type: Boolean,
-            required: true
-        },
+   data() {
+      return {
+         isLoading: false,
+      };
+   },
 
-        title: {
-            type: String,
-            required: true,
-        },
+   props: {
+      show: {
+         type: Boolean,
+         required: true,
+      },
 
-        content: {
-            type: String,
-            required: true,
-        },
+      title: {
+         type: String,
+         required: true,
+      },
 
-        confirmButton: {
-            type: Boolean,
-            required: true,
-        },
+      content: {
+         type: String,
+         required: true,
+      },
 
-        confirmButtonText: {
-            type: String,
-            default: 'Ok',
-        },
+      confirmButton: {
+         type: Boolean,
+         required: true,
+      },
 
-        cancelButton: {
-            type: Boolean,
-            required: true,
-        },
+      confirmButtonText: {
+         type: String,
+         default: 'Ok',
+      },
 
-        cancelButtonText: {
-            type: String,
-            default: 'Cancelar',
-        }
-    },
+      cancelButton: {
+         type: Boolean,
+         required: true,
+      },
 
-    methods: {
-        //Emite um event para o componente pai fechar o dialogo
-        closeDialog() {
-            this.$emit('closeDialog', false);
-        },
+      cancelButtonText: {
+         type: String,
+         default: 'Cancelar',
+      },
+   },
 
-        /*Emite um event para o componente pai informando que
-        o botão de confirmação foi apertado*/
-        confirm() {
-            this.$emit('confirm');
-        }
-    }
-}
+   methods: {
+      //Emite um event para o componente pai fechar o dialogo
+      closeDialog() {
+         this.$emit('closeDialog', false);
+      },
+
+      /*Emite um event para o componente pai informando que
+      o botão de confirmação foi apertado*/
+      confirm() {
+         this.$emit('confirm');
+      },
+   },
+};
 </script>

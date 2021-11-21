@@ -16,13 +16,16 @@
             </div>
          </v-form>
       </v-card>
+
+      <MylevLoading :isLoading="isLoading" />
    </div>
 </template>
 
 <script>
-import { mapActions, mapGetters } from 'vuex'
-import subjectValidation from '@/mixins/validations/subjectValidation'
-import { createNotify, NOTIFICATION_TYPE } from '@/helpers/EventBus'
+import { mapActions, mapGetters } from 'vuex';
+import subjectValidation from '@/mixins/validations/subjectValidation';
+import { createNotify, NOTIFICATION_TYPE } from '@/helpers/EventBus';
+import MylevLoading from '../../shared/Mylev-Loading.vue';
 
 export default {
    name: 'MylevSubjectCard',
@@ -32,7 +35,8 @@ export default {
    data() {
       return {
          subjectName: '',
-      }
+         isLoading: false,
+      };
    },
 
    props: {
@@ -42,35 +46,45 @@ export default {
       },
    },
 
+   components: {
+      MylevLoading,
+   },
+
    async created() {
       //Se for página de edição
       if (this.isEdit) {
-         let subjectId = this.getSubjectId()
+         //Exibe o componente de carregamento
+         this.isLoading = true;
+
+         let subjectId = this.getSubjectId();
 
          try {
             //Obtem a dsiciplina pelo ID
-            await this.fecthSubjectById({ subjectId })
+            await this.fecthSubjectById({ subjectId });
 
             //Atribui ao campo
-            this.subjectName = this.subject.name
+            this.subjectName = this.subject.name;
          } catch (error) {
-            let errorMessage = ''
+            let errorMessage = '';
 
             if (error.response) {
-               errorMessage = error.response.data
+               errorMessage = error.response.data;
             } else {
-               errorMessage = 'Não foi possível se conectar com a API!'
+               errorMessage = 'Não foi possível se conectar com a API!';
             }
 
             //Exibe o Alert de erro
-            this.showAlertMessage({ show: true, message: errorMessage })
+            this.showAlertMessage({ show: true, message: errorMessage });
          }
+
+         //Remove o componente de carregamento
+         this.isLoading = false;
       }
    },
 
    //Remove o Alert de erro ao sair da página
    beforeDestroy() {
-      this.showAlertMessage({ show: false, message: '' })
+      this.showAlertMessage({ show: false, message: '' });
    },
 
    computed: {
@@ -91,33 +105,33 @@ export default {
       async addNewSubject() {
          let data = {
             name: this.subjectName,
-         }
+         };
 
          try {
-            let res = await this.addSubject(data)
+            let res = await this.addSubject(data);
 
             //Cria a notificação
             createNotify({
                type: NOTIFICATION_TYPE.SUCCESS,
                message: res,
-            })
+            });
 
             //Muda para a página de listagem das disciplinas
-            this.$router.push({ name: 'ListSubjects' })
+            this.$router.push({ name: 'ListSubjects' });
          } catch (error) {
-            let errorMessage = ''
+            let errorMessage = '';
 
             if (error.response) {
-               errorMessage = error.response.data
+               errorMessage = error.response.data;
             } else {
-               errorMessage = 'Não foi possível se conectar com a API!'
+               errorMessage = 'Não foi possível se conectar com a API!';
             }
 
             //Cria a notificação
             createNotify({
                type: NOTIFICATION_TYPE.ERROR,
                message: errorMessage,
-            })
+            });
          }
       },
 
@@ -126,59 +140,65 @@ export default {
          let subject = {
             id: this.getSubjectId(),
             name: this.subjectName,
-         }
+         };
 
          try {
-            let res = await this.editSubject({ subject })
+            let res = await this.editSubject({ subject });
 
             //Cria a notificação
             createNotify({
                type: NOTIFICATION_TYPE.SUCCESS,
                message: res,
-            })
+            });
 
             //Muda para a página de listagem das disciplinas
-            this.$router.push({ name: 'ListSubjects' })
+            this.$router.push({ name: 'ListSubjects' });
          } catch (error) {
-            let errorMessage = ''
+            let errorMessage = '';
 
             if (error.response) {
-               errorMessage = error.response.data
+               errorMessage = error.response.data;
             } else {
-               errorMessage = 'Não foi possível se conectar com a API!'
+               errorMessage = 'Não foi possível se conectar com a API!';
             }
 
             //Cria a notificação
             createNotify({
                type: NOTIFICATION_TYPE.ERROR,
                message: errorMessage,
-            })
+            });
          }
       },
 
       //Obtem o ID da disciplina contida na URL
       getSubjectId() {
-         return this.$route.params.id
+         return this.$route.params.id;
       },
 
       //Salva ou atualiza a disciplina dependendo da página em que estiver
       async saveEdit() {
          //Se o formulário estiver validado, salva ou atualiza a disciplina
          if (this.$refs.form.validate()) {
+            //Exibe o componente de carregamento
+            this.isLoading = true;
+
             //Se estiver na página de edição
             if (this.isEdit) {
                //Atualiza a disciplina
-               this.updateSubject()
+               await this.updateSubject();
 
                //Se estiver na página de adicionar
             } else {
                //Adiciona disciplina
-               this.addNewSubject()
+               await this.addNewSubject();
             }
          }
+
+         //Remove o componente de carregamento
+         this.isLoading = false;
       },
    },
-}
+};
 </script>
 
 <style scoped></style>

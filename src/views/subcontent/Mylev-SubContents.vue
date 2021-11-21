@@ -26,22 +26,32 @@
             />
          </v-col>
       </v-row>
+
+      <MylevLoading :isLoading="isLoading"/>
    </v-container>
 </template>
 
 <script>
 import MylevContentName from '@/components/shared/Mylev-ContentName.vue';
+import MylevLoading from '@/components/shared/Mylev-Loading.vue';
 import { mapActions, mapGetters } from 'vuex';
 
 export default {
    name: 'MylevSubContents',
 
+   data() {
+      return {
+         isLoading: false,
+      }
+   },
+
    components: {
       MylevContentName,
+      MylevLoading,
    },
 
    async created() {
-      await this.fecthSubContentsBySubject({ subjectId: this.subjectId });
+      await this.listSubContentsBySubject();
    },
 
    computed: {
@@ -57,6 +67,20 @@ export default {
    methods: {
       //Actions Vuex
       ...mapActions('subContent', ['fecthSubContentsBySubject']),
+
+      async listSubContentsBySubject() {
+         //Exibe o componente de carregamento
+         this.isLoading = true;
+
+         try {
+            await this.fecthSubContentsBySubject({ subjectId: this.subjectId });
+         } catch(error) {
+            console.log(error);
+         }
+
+         //Remove o componente de carregamento
+         this.isLoading = false;
+      }
    },
 };
 </script>
