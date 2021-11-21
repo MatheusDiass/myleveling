@@ -3,9 +3,9 @@
       <v-app-bar class="color heightNavFooter" elevation="6" dense>
          <v-toolbar-title
             ><v-img
-               max-height="60"
-               max-width="60"
-               :src="require('../../../assets/logo.png')"
+               max-height="80"
+               max-width="80"
+               :src="require('../../../assets/img/Myleveling_Logo.png')"
             ></v-img
          ></v-toolbar-title>
 

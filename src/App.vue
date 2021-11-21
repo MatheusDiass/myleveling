@@ -32,7 +32,11 @@ export default {
 </script>
 
 <style>
-@import url('https://fonts.googleapis.com/css2?family=Changa+One&display=swap');
+@font-face {
+  font-family: 'Changa';
+  src: local('fonts'),
+  url('./assets/fonts/Changa-Medium.ttf') format("truetype");
+}
 
 .heightNavFooter {
   height: 80px !important;
@@ -43,7 +47,7 @@ export default {
 }
 
 .v-application {
-  font-family: 'Changa One';
+  font-family: 'Changa';
 }
 
 .textColor {
