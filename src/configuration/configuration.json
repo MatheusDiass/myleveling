@@ -1,15 +1,15 @@
 {
-    "mylevelingbackend": "http://192.168.1.101:3000",
-    "checkToken": "http://192.168.1.101:3000/token",
-    "login": "http://192.168.1.101:3000/login",
-    "register": "http://192.168.1.101:3000/register",
-    "checkNickname": "http://192.168.1.101:3000/checkNickname",
-    "confirmEmail": "http://192.168.1.101:3000/confirmEmail",
-    "profile": "http://192.168.1.101:3000/profile",
-    "bookmark": "http://192.168.1.101:3000/bookmark",
-    "task": "http://192.168.1.101:3000/task",
-    "subject": "http://192.168.1.101:3000/subject",
-    "subContent": "http://192.168.1.101:3000/subcontent",
-    "subContentVideo": "http://192.168.1.101:3000/subcontentvideo",
-    "subContentFile": "http://192.168.1.101:3000/subcontentfile"
+    "mylevelingbackend": "http://localhost:3000",
+    "checkToken": "http://localhost:3000/token",
+    "login": "http://localhost:3000/login",
+    "register": "http://localhost:3000/register",
+    "checkNickname": "http://localhost:3000/checkNickname",
+    "confirmEmail": "http://localhost:3000/confirmEmail",
+    "profile": "http://localhost:3000/profile",
+    "bookmark": "http://localhost:3000/bookmark",
+    "task": "http://localhost:3000/task",
+    "subject": "http://localhost:3000/subject",
+    "subContent": "http://localhost:3000/subcontent",
+    "subContentVideo": "http://localhost:3000/subcontentvideo",
+    "subContentFile": "http://localhost:3000/subcontentfile"
 }

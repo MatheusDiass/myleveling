@@ -39,7 +39,7 @@ import MylevPlayerVideo from '@/components/shared/Mylev-PlayerVideo';
 import MylevBookmarkButton from '../../components/shared/Mylev-Bookmark-Button.vue';
 
 export default {
-  name: 'Mylev-SubContent',
+  name: 'MylevSubContent',
 
   components: {
     MylevPlayerVideo,

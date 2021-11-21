@@ -8,6 +8,10 @@ const mutations = {
     [MUTATIONS_TYPES.setSubContent](state, subContent) {
         state.subContent = subContent;
     },
+
+    [MUTATIONS_TYPES.setSubContentsBySubject](state, subContentsBySubject) {
+        state.subContentsBySubject = subContentsBySubject;
+    }
 };
 
 export default mutations;

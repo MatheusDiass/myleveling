@@ -1,5 +1,5 @@
 <template>
-    <v-card class="verticalCenterContent" :color="color" width="300" height="250" rounded="lg" flat>
+    <v-card :to="routeName" class="verticalCenterContent" :color="color" width="300" height="250" rounded="lg" flat>
         <v-card-title class="textCenter sizeText">{{ title }}</v-card-title>
     </v-card>
 </template>
@@ -12,6 +12,11 @@ export default {
       title: {
         type: String,
         required: true,
+      },
+
+      routeName: {
+          type: Object,
+          required: true,
       },
 
       color: {
