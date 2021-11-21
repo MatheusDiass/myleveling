@@ -7,7 +7,7 @@
         :class="['notification', 'mb-3', `${item.type}Color`]"
         width="300"
         rounded="lg"
-        flat
+        elevation="6"
       >
         <v-card-text class="textColor">{{ item.message }}</v-card-text>
         <v-icon @click="deleteNotify(item.id)" class="textColor mr-3">mdi-close</v-icon>

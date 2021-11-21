@@ -1,6 +1,6 @@
 <template>
   <div>
-    <v-card rounded="lg" flat>
+    <v-card rounded="lg" elevation="6">
       <v-simple-table class="textCenter">
         <thead class="color">
           <tr class="headerBorderLeft">
