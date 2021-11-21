@@ -63,16 +63,19 @@
             </div>
          </v-form>
       </v-card>
+
+      <MylevLoading :isLoading="isLoading"/>
    </div>
 </template>
 
 <script>
-import { mapActions, mapGetters } from 'vuex'
-import { createNotify, NOTIFICATION_TYPE } from '@/helpers/EventBus'
-import subContentValidation from '@/mixins/validations/subContentValidation'
-import Editor from '@tinymce/tinymce-vue'
+import { mapActions, mapGetters } from 'vuex';
+import { createNotify, NOTIFICATION_TYPE } from '@/helpers/EventBus';
+import subContentValidation from '@/mixins/validations/subContentValidation';
+import Editor from '@tinymce/tinymce-vue';
+import MylevLoading from '../../shared/Mylev-Loading.vue';
 
-const ALLOWEXTENSIONS = ['mp4', 'mkv', 'avi', 'mpeg', 'mov']
+const ALLOWEXTENSIONS = ['mp4', 'mkv', 'avi', 'mpeg', 'mov'];
 
 export default {
    name: 'MylevSubContent',
@@ -89,16 +92,18 @@ export default {
          hasVideo: false,
          hasFile: false,
          allowExtensions: ALLOWEXTENSIONS,
-      }
+         isLoading: false,
+      };
    },
 
    components: {
       Editor,
+      MylevLoading,
    },
 
    async created() {
       //Obtem todas as matérias para serem listadas na tabela
-      await this.fecthSubjects()
+      await this.fecthSubjects();
    },
 
    computed: {
@@ -119,63 +124,69 @@ export default {
       //Salva a matéria
       async addNewSubContent() {
          if (this.$refs.form.validate()) {
+            //Exibe o componente de carregamento
+            this.isLoading = true;
+
             const subContent = {
                title: this.title,
                subjectId: this.subjectId,
                content: this.content,
-            }
+            };
 
             try {
                //Salva no firebase os dados iniciais(Título, conteúdo e o ID da matéria)
-               const id = await this.addSubContent(subContent)
+               const id = await this.addSubContent(subContent);
 
                //Compila o video para ser enviado para a API
-               const formDataVideo = new FormData()
-               formDataVideo.append('video', this.video)
+               const formDataVideo = new FormData();
+               formDataVideo.append('video', this.video);
 
                //Compila o arquivo para ser enviado para a API
-               const formDataFile = new FormData()
-               formDataFile.append('file', this.file)
+               const formDataFile = new FormData();
+               formDataFile.append('file', this.file);
 
                //Faz o upload do video no firebase
                await this.addSubContentVideo({
                   subjectId: this.subjectId,
                   id,
                   video: formDataVideo,
-               })
+               });
 
                //Faz o upload do arquivo no firebase
                const res = await this.addSubContentFile({
                   subjectId: this.subjectId,
                   id,
                   file: formDataFile,
-               })
+               });
 
                //Cria a notificação
                createNotify({
                   type: NOTIFICATION_TYPE.SUCCESS,
                   message: res,
-               })
+               });
 
                //Muda para a página de listagem das matérias
-               this.$router.push({ name: 'Home' })
+               this.$router.push({ name: 'Home' });
             } catch (error) {
-               let errorMessage = ''
+               let errorMessage = '';
 
                if (error.response) {
-                  errorMessage = error.response.data
+                  errorMessage = error.response.data;
                } else {
-                  errorMessage = 'Não foi possível se conectar com a API!'
+                  errorMessage = 'Não foi possível se conectar com a API!';
                }
 
                //Cria a notificação
                createNotify({
                   type: NOTIFICATION_TYPE.ERROR,
                   message: errorMessage,
-               })
+               });
             }
+
+            //Remove o componente de carregamento
+            this.isLoading = false;
          }
       },
    },
-}
+};
 </script>

@@ -3,6 +3,12 @@ import { createNotify, NOTIFICATION_TYPE } from '@/helpers/EventBus';
 import { mapActions, mapGetters } from 'vuex'
 
 export default {
+  data() {
+    return {
+      isLoading: false,
+    }
+  },
+
   computed: {
     //Getters Vuex
     ...mapGetters('profile', ['profile']),
@@ -14,6 +20,9 @@ export default {
     ...mapActions('profile', ['fecthProfileByUid']),
 
     async loginGoogle() {
+      //Exibe o componente de carregamento
+      this.isLoading = true;
+
       try {
         const auth = getAuth();
 
@@ -104,6 +113,9 @@ export default {
           message: errorMessage,
         });
       }
+
+      //Remove o componente de carregamento
+      this.isLoading = false;
     },
   },
 }

@@ -1,70 +1,96 @@
 <template>
-  <v-container>
-    <v-row justify="start">
-        <h1 class="mr-5">{{ subContent.title }}</h1>
-        <MylevBookmarkButton v-if="subContent.title" :contentId="subContentId" :contentTitle="subContent.title" />
-    </v-row>
+   <v-container>
+      <v-row justify="start">
+         <h1 class="mr-5">{{ subContent.title }}</h1>
+         <MylevBookmarkButton
+            v-if="subContent.title"
+            :contentId="subContentId"
+            :contentTitle="subContent.title"
+         />
+      </v-row>
 
-    <br />
+      <br />
 
-    <v-divider></v-divider>
+      <v-divider></v-divider>
 
-    <br />
+      <br />
 
-    <div v-html="subContent.content"></div>
+      <div v-html="subContent.content"></div>
 
-    <br />
+      <br />
 
-    <v-expansion-panels multiple accordion>
-      <v-expansion-panel class="color">
-        <v-expansion-panel-header><h2>Video Complementar</h2></v-expansion-panel-header>
-        <v-expansion-panel-content>
-          <MylevPlayerVideo :linkVideo="subContent.videoLink" />
-        </v-expansion-panel-content>
-      </v-expansion-panel>
+      <v-expansion-panels multiple accordion>
+         <v-expansion-panel class="color">
+            <v-expansion-panel-header
+               ><h2>Video Complementar</h2></v-expansion-panel-header
+            >
+            <v-expansion-panel-content>
+               <MylevPlayerVideo :linkVideo="subContent.videoLink" />
+            </v-expansion-panel-content>
+         </v-expansion-panel>
 
-      <v-expansion-panel class="color">
-        <v-expansion-panel-header><h2>Download do Material</h2></v-expansion-panel-header>
-        <v-expansion-panel-content>
-          <v-btn color="#3898ec" :href="subContent.fileLink">Clique aqui!</v-btn>
-        </v-expansion-panel-content>
-      </v-expansion-panel>
-    </v-expansion-panels>    
-  </v-container>
+         <v-expansion-panel class="color">
+            <v-expansion-panel-header
+               ><h2>Download do Material</h2></v-expansion-panel-header
+            >
+            <v-expansion-panel-content>
+               <v-btn color="#3898ec" :href="subContent.fileLink"
+                  >Clique aqui!</v-btn
+               >
+            </v-expansion-panel-content>
+         </v-expansion-panel>
+      </v-expansion-panels>
+
+      <MylevLoading :isLoading="isLoading"/>
+   </v-container>
 </template>
 
 <script>
 import { mapActions, mapGetters } from 'vuex';
 import MylevPlayerVideo from '@/components/shared/Mylev-PlayerVideo';
-import MylevBookmarkButton from '../../components/shared/Mylev-Bookmark-Button.vue';
+import MylevBookmarkButton from '@/components/shared/Mylev-Bookmark-Button.vue';
+import MylevLoading from '@/components/shared/Mylev-Loading.vue';
 
 export default {
-  name: 'MylevSubContent',
+   name: 'MylevSubContent',
 
-  components: {
-    MylevPlayerVideo,
-    MylevBookmarkButton,
-  },
+   data() {
+      return {
+         isLoading: false,
+      };
+   },
 
-  //Obtem o todos os dados da matéria ao entrar na página
-  async created() {
-    //Obtem os dados da matéria
-    await this.fecthSubContentById({ subContentId: this.subContentId });
-  },
+   components: {
+      MylevPlayerVideo,
+      MylevBookmarkButton,
+      MylevLoading,
+   },
 
-  computed: {
-    //Getters Vuex
-    ...mapGetters('subContent', ['subContent']),
+   //Obtem o todos os dados da matéria ao entrar na página
+   async created() {
+      //Exibe o componente de carregamento
+      this.isLoading = true;
 
-    //Obtem o ID da matéria contida na URL
-    subContentId() {
-      return this.$route.params.id;
-    },
-  },
+      //Obtem os dados da matéria
+      await this.fecthSubContentById({ subContentId: this.subContentId });
 
-  methods: {
-    //Actions Vuex
-    ...mapActions('subContent', ['fecthSubContentById']),
-  }
-}
+      //Remove o componente de carregamento
+      this.isLoading = false;
+   },
+
+   computed: {
+      //Getters Vuex
+      ...mapGetters('subContent', ['subContent']),
+
+      //Obtem o ID da matéria contida na URL
+      subContentId() {
+         return this.$route.params.id;
+      },
+   },
+
+   methods: {
+      //Actions Vuex
+      ...mapActions('subContent', ['fecthSubContentById']),
+   },
+};
 </script>
