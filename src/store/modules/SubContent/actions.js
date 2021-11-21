@@ -40,6 +40,13 @@ const actions = {
         commit(MUTATIONS_TYPES.setSubContents, data);
     },
 
+    //Faz a requisição para a API para obter todas as matérias por uma disciplina
+    fecthSubContentsBySubject: async({ commit }, { subjectId }) => {
+        const { data } = await axios.get(`${config.subContent}/subject/${subjectId}`);
+
+        commit(MUTATIONS_TYPES.setSubContentsBySubject, data);
+    },
+
     //Faz a requisição para a API para deletar uma matéria
     deleteSubContent: async(state, subContentInfo) => {
         let { data } = await axios.delete(`${config.subContent}/${subContentInfo.data.subjectId}/${subContentInfo.id}/${subContentInfo.data.videoName}/${subContentInfo.data.fileName}`);
