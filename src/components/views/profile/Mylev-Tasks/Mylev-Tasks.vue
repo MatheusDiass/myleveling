@@ -28,7 +28,7 @@
          </div>
       </v-expand-transition>
 
-      <v-virtual-scroll :bench="5" :items="tasks" height="200" item-height="64">
+      <v-virtual-scroll v-if="hasTasks" :bench="5" :items="tasks" height="200" item-height="64">
          <template v-slot:default="{ item }">
             <v-list-item class="pl-10 pr-10" :key="item.id">
                <v-row>
@@ -74,6 +74,10 @@
          </template>
       </v-virtual-scroll>
 
+      <div :class="['contentCenter', smallScreenMargin, smallScreenMarginBtn]">
+         <MylevAlert :show="!hasTasks" :type="'info'" :message="'Você ainda não tem tarefas'"/>
+      </div>
+
       <v-btn @click="openTasksDialog(false)" class="ml-7 mb-5" text>Nova Tarefa</v-btn>
 
       <MylevDialog
@@ -99,15 +103,16 @@
 
 <script>
 import { mapActions, mapGetters } from 'vuex';
-import { dateTime } from '@/mixins';
+import { dateTime, css } from '@/mixins';
 import MylevDialog from '@/components/shared/Mylev-Dialog.vue';
 import MylevTasksDialog from './components/Mylev-Tasks-Dialog.vue';
+import MylevAlert from '../../../shared/Mylev-Alert.vue';
 import { createNotify, NOTIFICATION_TYPE } from '@/helpers/EventBus';
 
 export default {
    name: 'MylevTasks',
 
-   mixins: [dateTime],
+   mixins: [dateTime, css],
 
    data() {
       return {
@@ -124,6 +129,7 @@ export default {
    components: {
       MylevDialog,
       MylevTasksDialog,
+      MylevAlert,
    },
 
    async created() {
@@ -137,6 +143,14 @@ export default {
       //Getters vuex
       ...mapGetters('profile', ['profile']),
       ...mapGetters('profile/task', ['tasks']),
+
+      hasTasks() {
+         return this.tasks.length > 0 ? true : false;
+      },
+
+      smallScreenMarginBtn() {
+         return this.hasTasks ? '' : 'mb-4';
+      }
    },
 
    methods: {

@@ -1,6 +1,6 @@
 <template>
    <div>
-      <v-card rounded="lg" elevation="6">
+      <v-card v-if="!isError" rounded="lg" elevation="6">
          <v-simple-table class="textCenter">
             <thead class="color">
                <tr class="headerBorderLeft">
@@ -48,6 +48,8 @@
       />
 
       <MylevLoading :isLoading="isLoading" />
+
+      <MylevAlert :show="isError" :type="'error'" :message="errorMessage"/>
    </div>
 </template>
 
@@ -55,6 +57,7 @@
 import { mapActions, mapGetters } from 'vuex';
 import MylevDialog from '@/components/shared/Mylev-Dialog.vue';
 import MylevLoading from '../../shared/Mylev-Loading.vue';
+import MylevAlert from '../../shared/Mylev-Alert.vue';
 import { createNotify, NOTIFICATION_TYPE } from '@/helpers/EventBus';
 
 export default {
@@ -65,22 +68,40 @@ export default {
          showDialog: false,
          subjectToDelete: {},
          isLoading: false,
+         isError: false,
+         errorMessage: '',
       };
    },
 
    components: {
       MylevDialog,
       MylevLoading,
+      MylevAlert,
    },
 
    async created() {
-      //Obtem todas as disciplinas para serem listadas na tabela
-      await this.fecthSubjects();
-   },
+      //Exibe o componente de carregamento
+      this.isLoading = true;
 
-   //Remove o Alert de erro ao sair da página
-   beforeDestroy() {
-      this.showAlertMessage({ show: false, message: '' });
+      try {
+         //Obtem todas as disciplinas para serem listadas na tabela
+         await this.fecthSubjects();
+      } catch (error) {
+         this.isError = true;
+
+         let errorMessage = '';
+
+         if (error.response) {
+            errorMessage = error.response.data;
+         } else {
+            errorMessage = 'Não foi possível se conectar com a API!';
+         }
+
+         this.errorMessage = errorMessage;
+      }
+
+      //Remove o componente de carregamento
+      this.isLoading = false;
    },
 
    computed: {

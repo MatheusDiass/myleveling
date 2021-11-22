@@ -1,25 +1,77 @@
 <template>
-  <div class="contentCenter alertMargin" v-if="showAlert.show">
-    <v-alert class="contentCenter" type="error" width="400"
-      >{{ showAlert.message }}</v-alert
-    >
-  </div>
+   <div>
+      <div v-if="isCentralized" class="contentCenter">
+         <v-card
+            v-if="show"
+            class="contentCenter"
+            width="400"
+            rounded="lg"
+            elevation="6"
+         >
+            <v-alert
+               class="contentCenter removeMarginBottom"
+               :type="type"
+               width="400"
+               rounded="sm"
+               >{{ message }}</v-alert
+            >
+         </v-card>
+      </div>
+
+      <div v-else>
+         <v-card
+            v-if="show"
+            class="contentCenter"
+            width="400"
+            rounded="lg"
+            elevation="6"
+         >
+            <v-alert
+               class="contentCenter removeMarginBottom"
+               :type="type"
+               width="400"
+               rounded="sm"
+               >{{ message }}</v-alert
+            >
+         </v-card>
+      </div>
+   </div>
 </template>
 
 <script>
-import { mapGetters } from "vuex";
-
 export default {
-  name: "MylevAlert",
+   name: 'MylevAlert',
 
-  computed: {
-    ...mapGetters(["showAlert"]),
-  },
+   props: {
+      show: {
+         type: Boolean,
+         default: false,
+      },
+
+      type: {
+         type: String,
+         required: true,
+      },
+
+      message: {
+         type: String,
+         required: true,
+      },
+
+      isCentralized: {
+         type: Boolean,
+         default: false,
+      },
+   },
 };
 </script>
 
 <style scoped>
 .alertMargin {
-  margin-top: 30px;
+   margin-top: 30px;
+}
+
+.removeMarginBottom {
+   margin-bottom: 0;
 }
 </style>

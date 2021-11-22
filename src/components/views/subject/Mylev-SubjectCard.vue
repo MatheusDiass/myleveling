@@ -1,6 +1,6 @@
 <template>
    <div class="externalDivBorder">
-      <v-card class="paddingCard" color="#499fc6" rounded="lg" elevation="6">
+      <v-card v-if="!isError" class="paddingCard" color="#499fc6" rounded="lg" elevation="6">
          <v-form ref="form">
             <label>Nome:</label>
             <v-text-field
@@ -18,6 +18,8 @@
       </v-card>
 
       <MylevLoading :isLoading="isLoading" />
+
+      <MylevAlert :show="isError" :type="'error'" :message="errorMessage"/>
    </div>
 </template>
 
@@ -26,6 +28,7 @@ import { mapActions, mapGetters } from 'vuex';
 import subjectValidation from '@/mixins/validations/subjectValidation';
 import { createNotify, NOTIFICATION_TYPE } from '@/helpers/EventBus';
 import MylevLoading from '../../shared/Mylev-Loading.vue';
+import MylevAlert from '../../shared/Mylev-Alert.vue';
 
 export default {
    name: 'MylevSubjectCard',
@@ -36,6 +39,8 @@ export default {
       return {
          subjectName: '',
          isLoading: false,
+         isError: false,
+         errorMessage: '',
       };
    },
 
@@ -48,6 +53,7 @@ export default {
 
    components: {
       MylevLoading,
+      MylevAlert,
    },
 
    async created() {
@@ -59,12 +65,14 @@ export default {
          let subjectId = this.getSubjectId();
 
          try {
-            //Obtem a dsiciplina pelo ID
+            //Obtem a disciplina pelo ID
             await this.fecthSubjectById({ subjectId });
 
             //Atribui ao campo
             this.subjectName = this.subject.name;
          } catch (error) {
+            this.isError = true;
+
             let errorMessage = '';
 
             if (error.response) {
@@ -73,18 +81,12 @@ export default {
                errorMessage = 'Não foi possível se conectar com a API!';
             }
 
-            //Exibe o Alert de erro
-            this.showAlertMessage({ show: true, message: errorMessage });
+            this.errorMessage = errorMessage;
          }
 
          //Remove o componente de carregamento
          this.isLoading = false;
       }
-   },
-
-   //Remove o Alert de erro ao sair da página
-   beforeDestroy() {
-      this.showAlertMessage({ show: false, message: '' });
    },
 
    computed: {
@@ -94,7 +96,6 @@ export default {
 
    methods: {
       //Actions vuex
-      ...mapActions(['showSnackbarMessage', 'showAlertMessage']),
       ...mapActions('subject', [
          'addSubject',
          'editSubject',
