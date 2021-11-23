@@ -14,7 +14,7 @@
       <v-row>
          <v-col cols="12">
             <div>
-               <MylevProfileInfoCard />
+               <MylevProfileInfoCard :profile="profile"/>
             </div>
          </v-col>
       </v-row>
