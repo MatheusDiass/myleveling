@@ -8,7 +8,7 @@
 
       <br />
 
-      <v-row align="center" justify="start">
+      <v-row v-if="!isError" align="center" justify="start">
          <v-col
             cols="12"
             sm="6"
@@ -27,13 +27,21 @@
          </v-col>
       </v-row>
 
-      <MylevLoading :isLoading="isLoading"/>
+      <MylevLoading :isLoading="isLoading" />
+
+      <MylevAlert
+         :show="isError"
+         :styleClasses="['contentCenter']"
+         :type="'error'"
+         :message="errorMessage"
+      />
    </v-container>
 </template>
 
 <script>
 import MylevContentName from '@/components/shared/Mylev-ContentName.vue';
 import MylevLoading from '@/components/shared/Mylev-Loading.vue';
+import MylevAlert from '@/components/shared/Mylev-Alert.vue';
 import { mapActions, mapGetters } from 'vuex';
 
 export default {
@@ -42,12 +50,15 @@ export default {
    data() {
       return {
          isLoading: false,
-      }
+         isError: false,
+         errorMessage: '',
+      };
    },
 
    components: {
       MylevContentName,
       MylevLoading,
+      MylevAlert,
    },
 
    async created() {
@@ -74,13 +85,23 @@ export default {
 
          try {
             await this.fecthSubContentsBySubject({ subjectId: this.subjectId });
-         } catch(error) {
-            console.log(error);
+         } catch (error) {
+            this.isError = true;
+
+            let errorMessage = '';
+
+            if (error.response) {
+               errorMessage = error.response.data;
+            } else {
+               errorMessage = 'Não foi possível se conectar com a API!';
+            }
+
+            this.errorMessage = errorMessage;
          }
 
          //Remove o componente de carregamento
          this.isLoading = false;
-      }
+      },
    },
 };
 </script>

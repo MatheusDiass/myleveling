@@ -1,5 +1,10 @@
 <template>
-   <v-card color="#499fc6" rounded="lg" elevation="6">
+   <v-card
+      color="#499fc6"
+      rounded="lg"
+      elevation="6"
+      :height="!hasBookmarks ? 236 : ''"
+   >
       <v-row>
          <v-col>
             <v-card-title
@@ -11,6 +16,7 @@
       </v-row>
 
       <v-virtual-scroll
+         v-if="hasBookmarks"
          :bench="5"
          :items="bookmarks"
          height="256"
@@ -39,6 +45,13 @@
          </template>
       </v-virtual-scroll>
 
+      <MylevAlert
+         :show="isError || !hasBookmarks"
+         :styleClasses="['contentCenter', smallScreenMargin]"
+         :type="alertType"
+         :message="alertMessage"
+      />
+
       <MylevDialog
          :show="showDialog"
          title="Aviso!"
@@ -55,31 +68,72 @@
 <script>
 import { mapActions, mapGetters } from 'vuex';
 import MylevDialog from '@/components/shared/Mylev-Dialog.vue';
+import MylevAlert from '../../shared/Mylev-Alert.vue';
+import { css } from '@/mixins';
 import { createNotify, NOTIFICATION_TYPE } from '@/helpers/EventBus';
 
 export default {
    name: 'MylevBookmarks',
 
+   mixins: [css],
+
    data() {
       return {
          showDialog: false,
          bookmarkToDelete: {},
+         isError: false,
+         errorMessage: '',
       };
    },
 
    components: {
       MylevDialog,
+      MylevAlert,
    },
 
    created() {
-      //Obtem todos os favoritos de um usuário
-      this.fetchAllBookmarksByUser({ uid: this.profile.uid });
+      try {
+         //Obtem todos os favoritos de um usuário
+         this.fetchAllBookmarksByUser({ uid: this.profile.uid });
+      } catch (error) {
+         this.isError = true;
+
+         let errorMessage = '';
+
+         if (error.response) {
+            errorMessage = error.response.data;
+         } else {
+            errorMessage = 'Não foi possível se conectar com a API!';
+         }
+
+         this.errorMessage = errorMessage;
+      }
    },
 
    computed: {
       //Getters Vuex
       ...mapGetters('profile', ['profile']),
       ...mapGetters('profile/bookmark', ['bookmarks']),
+
+      hasBookmarks() {
+         return this.bookmarks.length > 0 ? true : false;
+      },
+
+      alertType() {
+         if (this.isError) {
+            return 'error';
+         } else {
+            return 'info';
+         }
+      },
+
+      alertMessage() {
+         if (this.isError) {
+            return this.errorMessage;
+         } else {
+            return 'Você ainda não tem favoritos';
+         }
+      },
    },
 
    methods: {

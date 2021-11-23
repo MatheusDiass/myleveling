@@ -82,6 +82,11 @@ export default {
   margin-bottom: 80px;
 }
 
+.smallScreenMargin {
+   padding-left: 10px;
+   padding-right: 10px;
+}
+
 @media (max-width: 660px) {
   .container {
     width: 100%;

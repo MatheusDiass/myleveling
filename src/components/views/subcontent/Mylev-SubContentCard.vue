@@ -113,7 +113,6 @@ export default {
 
    methods: {
       //Actions Vuex
-      //...mapActions(["showSnackbarMessage", "showAlertMessage"]),
       ...mapActions('subject', ['fecthSubjects']),
       ...mapActions('subContent', [
          'addSubContent',

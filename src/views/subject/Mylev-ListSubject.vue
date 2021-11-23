@@ -1,29 +1,25 @@
 <template>
-    <v-container>
-    <h1>Lista de Disciplinas</h1>
+   <v-container>
+      <h1>Lista de Disciplinas</h1>
 
-    <br />
+      <br />
 
-    <v-divider></v-divider>
+      <v-divider></v-divider>
 
-    <br />
+      <br />
 
-    <MylevAlert />
-    
-    <MylevTableSubjectCard />
-  </v-container>
+      <MylevTableSubjectCard />
+   </v-container>
 </template>
 
 <script>
-import MylevTableSubjectCard from '@/components/views/subject/Mylev-TableSubjectCard.vue'
-import MylevAlert from '@/components/shared/Mylev-Alert.vue'
+import MylevTableSubjectCard from '@/components/views/subject/Mylev-TableSubjectCard.vue';
 
 export default {
-    name: 'MylevListSubject',
+   name: 'MylevListSubject',
 
-    components: {
-        MylevTableSubjectCard,
-        MylevAlert
-    },
-}
+   components: {
+      MylevTableSubjectCard,
+   },
+};
 </script>

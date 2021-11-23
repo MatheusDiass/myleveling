@@ -1,29 +1,25 @@
 <template>
-  <v-container>
-    <h1>Editar Disciplina</h1>
+   <v-container>
+      <h1>Editar Disciplina</h1>
 
-    <br />
+      <br />
 
-    <v-divider></v-divider>
+      <v-divider></v-divider>
 
-    <br />
+      <br />
 
-    <MylevSubjectCard :isEdit="true"/>
-
-    <MylevAlert />
-  </v-container>
+      <MylevSubjectCard :isEdit="true" />
+   </v-container>
 </template>
 
 <script>
-import MylevSubjectCard from '@/components/views/subject/Mylev-SubjectCard.vue'
-import MylevAlert from '@/components/shared/Mylev-Alert.vue'
+import MylevSubjectCard from '@/components/views/subject/Mylev-SubjectCard.vue';
 
 export default {
-  name: 'MylevEditSubject',
+   name: 'MylevEditSubject',
 
-  components: {
-    MylevSubjectCard,
-    MylevAlert
-  }
-}
+   components: {
+      MylevSubjectCard,
+   },
+};
 </script>
