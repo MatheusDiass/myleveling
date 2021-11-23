@@ -49,7 +49,12 @@
 
       <MylevLoading :isLoading="isLoading" />
 
-      <MylevAlert :show="isError" :type="'error'" :message="errorMessage"/>
+      <MylevAlert
+         :show="isError"
+         :styleClasses="['contentCenter']"
+         :type="'error'"
+         :message="errorMessage"
+      />
    </div>
 </template>
 
@@ -111,7 +116,6 @@ export default {
 
    methods: {
       //Actions Vuex
-      ...mapActions(['showSnackbarMessage', 'showAlertMessage']),
       ...mapActions('subject', ['fecthSubjects', 'deleteSubject']),
 
       async removeSubject() {

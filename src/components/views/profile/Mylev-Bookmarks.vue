@@ -1,5 +1,10 @@
 <template>
-   <v-card color="#499fc6" rounded="lg" elevation="6" :height="!hasBookmarks ? 236 : ''">
+   <v-card
+      color="#499fc6"
+      rounded="lg"
+      elevation="6"
+      :height="!hasBookmarks ? 236 : ''"
+   >
       <v-row>
          <v-col>
             <v-card-title
@@ -40,9 +45,12 @@
          </template>
       </v-virtual-scroll>
 
-      <div :class="['contentCenter', smallScreenMargin]">
-         <MylevAlert :show="isError || !hasBookmarks" :type="alertType" :message="alertMessage"/>
-      </div>
+      <MylevAlert
+         :show="isError || !hasBookmarks"
+         :styleClasses="['contentCenter', smallScreenMargin]"
+         :type="alertType"
+         :message="alertMessage"
+      />
 
       <MylevDialog
          :show="showDialog"
@@ -87,7 +95,7 @@ export default {
       try {
          //Obtem todos os favoritos de um usuário
          this.fetchAllBookmarksByUser({ uid: this.profile.uid });
-      } catch(error) {
+      } catch (error) {
          this.isError = true;
 
          let errorMessage = '';
@@ -112,20 +120,20 @@ export default {
       },
 
       alertType() {
-         if(this.isError) {
-            return 'error'; 
+         if (this.isError) {
+            return 'error';
          } else {
             return 'info';
          }
       },
 
       alertMessage() {
-         if(this.isError) {
-            return this.errorMessage; 
+         if (this.isError) {
+            return this.errorMessage;
          } else {
             return 'Você ainda não tem favoritos';
          }
-      }
+      },
    },
 
    methods: {

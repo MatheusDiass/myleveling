@@ -1,6 +1,12 @@
 <template>
    <div class="externalDivBorder">
-      <v-card v-if="!isError" class="paddingCard" color="#499fc6" rounded="lg" elevation="6">
+      <v-card
+         v-if="!isError"
+         class="paddingCard"
+         color="#499fc6"
+         rounded="lg"
+         elevation="6"
+      >
          <v-form ref="form">
             <label>Nome:</label>
             <v-text-field
@@ -19,7 +25,12 @@
 
       <MylevLoading :isLoading="isLoading" />
 
-      <MylevAlert :show="isError" :type="'error'" :message="errorMessage"/>
+      <MylevAlert
+         :show="isError"
+         :styleClasses="['contentCenter']"
+         :type="'error'"
+         :message="errorMessage"
+      />
    </div>
 </template>
 

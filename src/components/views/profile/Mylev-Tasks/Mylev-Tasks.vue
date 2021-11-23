@@ -23,18 +23,33 @@
 
       <v-expand-transition>
          <div class="ma-2" v-show="displayCalendar">
-            <v-date-picker event-color="#499fc6" :events="events" width="" no-title></v-date-picker>
+            <v-date-picker
+               event-color="#499fc6"
+               :events="events"
+               width=""
+               no-title
+            ></v-date-picker>
             <v-divider />
          </div>
       </v-expand-transition>
 
-      <v-virtual-scroll v-if="hasTasks" :bench="5" :items="tasks" height="200" item-height="64">
+      <v-virtual-scroll
+         v-if="hasTasks"
+         :bench="5"
+         :items="tasks"
+         height="200"
+         item-height="64"
+      >
          <template v-slot:default="{ item }">
             <v-list-item class="pl-10 pr-10" :key="item.id">
                <v-row>
                   <v-list-item-content>
-                     <v-list-item-title>{{ item.data.title }}</v-list-item-title>
-                     <v-list-item-subtitle>{{ taskDueDate(item.data.duedate) }}</v-list-item-subtitle>
+                     <v-list-item-title>{{
+                        item.data.title
+                     }}</v-list-item-title>
+                     <v-list-item-subtitle>{{
+                        taskDueDate(item.data.duedate)
+                     }}</v-list-item-subtitle>
                   </v-list-item-content>
                   <v-list-item-action style="display: contents">
                      <v-menu>
@@ -74,11 +89,20 @@
          </template>
       </v-virtual-scroll>
 
-      <div :class="['contentCenter', smallScreenMargin, smallScreenMarginBtn]">
-         <MylevAlert :show="!hasTasks" :type="'info'" :message="'Você ainda não tem tarefas'"/>
-      </div>
+      <MylevAlert
+         :show="!hasTasks"
+         :styleClasses="[
+            'contentCenter',
+            smallScreenMargin,
+            smallScreenMarginBtn,
+         ]"
+         :type="'info'"
+         :message="'Você ainda não tem tarefas'"
+      />
 
-      <v-btn @click="openTasksDialog(false)" class="ml-7 mb-5" text>Nova Tarefa</v-btn>
+      <v-btn @click="openTasksDialog(false)" class="ml-7 mb-5" text
+         >Nova Tarefa</v-btn
+      >
 
       <MylevDialog
          :show="showDialog"
@@ -122,7 +146,7 @@ export default {
          displayCalendar: false,
          taskToDelete: {},
          task: {},
-         events: []
+         events: [],
       };
    },
 
@@ -150,7 +174,7 @@ export default {
 
       smallScreenMarginBtn() {
          return this.hasTasks ? '' : 'mb-4';
-      }
+      },
    },
 
    methods: {
@@ -207,7 +231,7 @@ export default {
       createEventsCalendar(tasks) {
          this.events = [];
 
-         tasks.forEach(task => {
+         tasks.forEach((task) => {
             this.events.push(task.data.duedate);
          });
       },

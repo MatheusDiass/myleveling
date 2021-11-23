@@ -1,8 +1,7 @@
 <template>
-   <div>
-      <div v-if="isCentralized" class="contentCenter">
+   <!--<div>-->
+      <div v-if="show" :class="styleClasses">
          <v-card
-            v-if="show"
             class="contentCenter"
             width="400"
             rounded="lg"
@@ -18,7 +17,7 @@
          </v-card>
       </div>
 
-      <div v-else>
+      <!--<div v-else>
          <v-card
             v-if="show"
             class="contentCenter"
@@ -34,8 +33,8 @@
                >{{ message }}</v-alert
             >
          </v-card>
-      </div>
-   </div>
+      </div>-->
+   <!--</div>-->
 </template>
 
 <script>
@@ -58,10 +57,15 @@ export default {
          required: true,
       },
 
-      isCentralized: {
+      /*isCentralized: {
          type: Boolean,
          default: false,
-      },
+      },*/
+
+      styleClasses: {
+         type: Array,
+         default: () => ([]),
+      }
    },
 };
 </script>

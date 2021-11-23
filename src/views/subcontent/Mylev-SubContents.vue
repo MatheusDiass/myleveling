@@ -27,9 +27,14 @@
          </v-col>
       </v-row>
 
-      <MylevLoading :isLoading="isLoading"/>
+      <MylevLoading :isLoading="isLoading" />
 
-      <MylevAlert :show="isError" :type="'error'" :message="errorMessage"/>
+      <MylevAlert
+         :show="isError"
+         :styleClasses="['contentCenter']"
+         :type="'error'"
+         :message="errorMessage"
+      />
    </v-container>
 </template>
 
@@ -47,7 +52,7 @@ export default {
          isLoading: false,
          isError: false,
          errorMessage: '',
-      }
+      };
    },
 
    components: {
@@ -80,7 +85,7 @@ export default {
 
          try {
             await this.fecthSubContentsBySubject({ subjectId: this.subjectId });
-         } catch(error) {
+         } catch (error) {
             this.isError = true;
 
             let errorMessage = '';
@@ -96,7 +101,7 @@ export default {
 
          //Remove o componente de carregamento
          this.isLoading = false;
-      }
+      },
    },
 };
 </script>

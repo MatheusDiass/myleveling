@@ -30,7 +30,12 @@
 
       <MylevLoading :isLoading="isLoading" />
 
-      <MylevAlert :show="isError" :type="'error'" :message="errorMessage"/>
+      <MylevAlert
+         :show="isError"
+         :styleClasses="['contentCenter']"
+         :type="'error'"
+         :message="errorMessage"
+      />
    </v-container>
 </template>
 

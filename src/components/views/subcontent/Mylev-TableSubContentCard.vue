@@ -47,7 +47,14 @@
          @closeDialog="closeDialog"
       />
 
-      <MylevLoading :isLoading="isLoading"/>
+      <MylevLoading :isLoading="isLoading" />
+
+      <MylevAlert
+         :show="isError"
+         :styleClasses="['contentCenter']"
+         :type="'error'"
+         :message="errorMessage"
+      />
    </div>
 </template>
 
@@ -55,6 +62,7 @@
 import { mapActions, mapGetters } from 'vuex';
 import MylevDialog from '@/components/shared/Mylev-Dialog.vue';
 import MylevLoading from '../../shared/Mylev-Loading.vue';
+import MylevAlert from '../../shared/Mylev-Alert.vue';
 import { createNotify, NOTIFICATION_TYPE } from '@/helpers/EventBus';
 
 export default {
@@ -65,17 +73,40 @@ export default {
          showDialog: false,
          subContentToDelete: {},
          isLoading: false,
+         isError: false,
+         errorMessage: '',
       };
    },
 
    components: {
       MylevDialog,
       MylevLoading,
+      MylevAlert,
    },
 
    async created() {
-      //Obtem todas as matérias para serem listadas na tabela
-      await this.fecthSubContents();
+      //Exibe o componente de carregamento
+      this.isLoading = true;
+
+      try {
+         //Obtem todas as matérias para serem listadas na tabela
+         await this.fecthSubContents();
+      } catch (error) {
+         this.isError = true;
+
+         let errorMessage = '';
+
+         if (error.response) {
+            errorMessage = error.response.data;
+         } else {
+            errorMessage = 'Não foi possível se conectar com a API!';
+         }
+
+         this.errorMessage = errorMessage;
+      }
+
+      //Remove o componente de carregamento
+      this.isLoading = false;
    },
 
    computed: {
