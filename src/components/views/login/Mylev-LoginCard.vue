@@ -74,7 +74,7 @@ export default {
 
    methods: {
       //Actions Vuex
-      ...mapActions('profile', ['fetchUserDataByEmail']),
+      ...mapActions('profile', ['fetchUserDataByEmail', 'fetchProfileByUidOnFirestoreGoogle']),
 
       async loginEmailAndPassword() {
          //Se o formulário estiver validado, realiza o login
@@ -101,8 +101,9 @@ export default {
                   //Recebe o UID do usuário
                   const uidUser = data._tokenResponse.localId;
 
-                  //Pega informações do usuário no firebase
-                  await this.fecthProfileByUid({ uid: uidUser });
+                  //Obtem informações do usuário no firestore e no Google
+                  await this.fetchProfileByUidOnFirestoreGoogle({ uid: uidUser });
+
 
                   //Salva nos cookies do navegador os dados do usuário e seu token
                   this.$cookies.set('profile', JSON.stringify(this.profile));
