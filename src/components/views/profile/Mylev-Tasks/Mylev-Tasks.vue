@@ -34,7 +34,7 @@
       </v-expand-transition>
 
       <v-virtual-scroll
-         v-if="hasTasks"
+         v-if="!isError && hasTasks"
          :bench="5"
          :items="tasks"
          height="200"
@@ -90,14 +90,14 @@
       </v-virtual-scroll>
 
       <MylevAlert
-         :show="!hasTasks"
+         :show="isError || !hasTasks"
          :styleClasses="[
             'contentCenter',
             smallScreenMargin,
             smallScreenMarginBtn,
          ]"
-         :type="'info'"
-         :message="'Você ainda não tem tarefas'"
+         :type="alertType"
+         :message="alertMessage"
       />
 
       <v-btn @click="openTasksDialog(false)" class="ml-7 mb-5" text
@@ -147,6 +147,8 @@ export default {
          taskToDelete: {},
          task: {},
          events: [],
+         isError: false,
+         errorMessage: '',
       };
    },
 
@@ -157,10 +159,25 @@ export default {
    },
 
    async created() {
-      //Obtem todos as tarefas de um usuário
-      await this.fetchAllTasksByUser({ uid: this.profile.uid });
+      try {
+         //Obtem todos as tarefas de um usuário
+         await this.fetchAllTasksByUser({ uid: this.profile.uid });
 
-      this.createEventsCalendar(this.tasks);
+         //Cria os eventos do calendario
+         this.createEventsCalendar(this.tasks);
+      } catch (error) {
+         this.isError = true;
+
+         let errorMessage = '';
+
+         if (error.response) {
+            errorMessage = error.response.data;
+         } else {
+            errorMessage = 'Não foi possível se conectar com a API!';
+         }
+
+         this.errorMessage = errorMessage;
+      }
    },
 
    computed: {
@@ -174,6 +191,22 @@ export default {
 
       smallScreenMarginBtn() {
          return this.hasTasks ? '' : 'mb-4';
+      },
+
+      alertType() {
+         if (this.isError) {
+            return 'error';
+         } else {
+            return 'info';
+         }
+      },
+
+      alertMessage() {
+         if (this.isError) {
+            return this.errorMessage;
+         } else {
+            return 'Você ainda não tem tarefas!';
+         }
       },
    },
 

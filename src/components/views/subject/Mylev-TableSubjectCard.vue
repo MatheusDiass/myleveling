@@ -1,6 +1,6 @@
 <template>
    <div>
-      <v-card v-if="!isError" rounded="lg" elevation="6">
+      <v-card rounded="lg" elevation="6">
          <v-simple-table class="textCenter">
             <thead class="color">
                <tr class="headerBorderLeft">
@@ -46,91 +46,57 @@
          @confirm="removeSubject"
          @closeDialog="closeDialog"
       />
-
-      <MylevLoading :isLoading="isLoading" />
-
-      <MylevAlert
-         :show="isError"
-         :styleClasses="['contentCenter']"
-         :type="'error'"
-         :message="errorMessage"
-      />
    </div>
 </template>
 
 <script>
-import { mapActions, mapGetters } from 'vuex';
+import { mapActions } from 'vuex';
 import MylevDialog from '@/components/shared/Mylev-Dialog.vue';
-import MylevLoading from '../../shared/Mylev-Loading.vue';
-import MylevAlert from '../../shared/Mylev-Alert.vue';
 import { createNotify, NOTIFICATION_TYPE } from '@/helpers/EventBus';
 
 export default {
    name: 'MylevTableSubjectCard',
 
+   props: {
+      subjects: {
+         type: Array,
+         required: true,
+      },
+   },
+
    data() {
       return {
          showDialog: false,
          subjectToDelete: {},
-         isLoading: false,
-         isError: false,
-         errorMessage: '',
       };
    },
 
    components: {
       MylevDialog,
-      MylevLoading,
-      MylevAlert,
-   },
-
-   async created() {
-      //Exibe o componente de carregamento
-      this.isLoading = true;
-
-      try {
-         //Obtem todas as disciplinas para serem listadas na tabela
-         await this.fecthSubjects();
-      } catch (error) {
-         this.isError = true;
-
-         let errorMessage = '';
-
-         if (error.response) {
-            errorMessage = error.response.data;
-         } else {
-            errorMessage = 'Não foi possível se conectar com a API!';
-         }
-
-         this.errorMessage = errorMessage;
-      }
-
-      //Remove o componente de carregamento
-      this.isLoading = false;
-   },
-
-   computed: {
-      //Getters Vuex
-      ...mapGetters('subject', ['subjects']),
    },
 
    methods: {
       //Actions Vuex
-      ...mapActions('subject', ['fecthSubjects', 'deleteSubject']),
+      ...mapActions('subject', ['deleteSubject']),
 
       async removeSubject() {
          //Fecha o dialogo de deleção da disciplina
          this.showDialog = false;
 
          //Exibe o componente de carregamento
-         this.isLoading = true;
+         this.loading(true);
 
          try {
             //Deleta a disciplina
             let res = await this.deleteSubject(this.subjectToDelete.subjectId);
 
             //Remove a disciplina do array que está listando as disciplinas
-            this.subjects.splice(this.subjectToDelete.index, 1);
+            const newSubjects = this.subjects.filter(
+               (subject) => subject.id != this.subjectToDelete.subjectId
+            );
+
+            //Atualiza as disciplinas
+            this.$store.commit('subject/setSubjects', newSubjects);
 
             //Cria a notificação
             createNotify({
@@ -154,7 +120,7 @@ export default {
          }
 
          //Remove o componente de carregamento
-         this.isLoading = false;
+         this.loading(false);
       },
 
       /*Atribuí uma disciplina a variavel "subjectToDelete" (disciplina que será deletada)
@@ -170,6 +136,11 @@ export default {
          this.subjectToDelete = {};
          this.showDialog = event;
       },
+
+      //Emite um evento para exibir ou remover o componente de carregamento
+      loading(isLoading) {
+         this.$emit('loading', isLoading);
+      }
    },
 };
 </script>

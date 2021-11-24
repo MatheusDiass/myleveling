@@ -8,7 +8,7 @@
 
       <br />
 
-      <h3>Cursos</h3>
+      <h3>Disciplinas</h3>
 
       <br />
 
@@ -31,10 +31,10 @@
       <MylevLoading :isLoading="isLoading" />
 
       <MylevAlert
-         :show="isError"
+         :show="isError || !hasSubjects"
          :styleClasses="['contentCenter']"
-         :type="'error'"
-         :message="errorMessage"
+         :type="alertType"
+         :message="alertMessage"
       />
    </v-container>
 </template>
@@ -90,6 +90,26 @@ export default {
    computed: {
       //Getters Vuex
       ...mapGetters('subject', ['subjects']),
+
+      hasSubjects() {
+         return this.subjects.length > 0 ? true : false;
+      },
+
+      alertType() {
+         if (this.isError) {
+            return 'error';
+         } else {
+            return 'info';
+         }
+      },
+
+      alertMessage() {
+         if (this.isError) {
+            return this.errorMessage;
+         } else {
+            return 'Ainda não a disciplina disponíveis!';
+         }
+      },
    },
 
    methods: {

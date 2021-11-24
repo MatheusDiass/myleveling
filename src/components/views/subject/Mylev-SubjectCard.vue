@@ -1,7 +1,6 @@
 <template>
    <div class="externalDivBorder">
       <v-card
-         v-if="!isError"
          class="paddingCard"
          color="#499fc6"
          rounded="lg"
@@ -22,24 +21,13 @@
             </div>
          </v-form>
       </v-card>
-
-      <MylevLoading :isLoading="isLoading" />
-
-      <MylevAlert
-         :show="isError"
-         :styleClasses="['contentCenter']"
-         :type="'error'"
-         :message="errorMessage"
-      />
    </div>
 </template>
 
 <script>
-import { mapActions, mapGetters } from 'vuex';
+import { mapActions } from 'vuex';
 import subjectValidation from '@/mixins/validations/subjectValidation';
 import { createNotify, NOTIFICATION_TYPE } from '@/helpers/EventBus';
-import MylevLoading from '../../shared/Mylev-Loading.vue';
-import MylevAlert from '../../shared/Mylev-Alert.vue';
 
 export default {
    name: 'MylevSubjectCard',
@@ -50,8 +38,6 @@ export default {
       return {
          subjectName: '',
          isLoading: false,
-         isError: false,
-         errorMessage: '',
       };
    },
 
@@ -60,49 +46,21 @@ export default {
          type: Boolean,
          required: true,
       },
-   },
 
-   components: {
-      MylevLoading,
-      MylevAlert,
-   },
-
-   async created() {
-      //Se for página de edição
-      if (this.isEdit) {
-         //Exibe o componente de carregamento
-         this.isLoading = true;
-
-         let subjectId = this.getSubjectId();
-
-         try {
-            //Obtem a disciplina pelo ID
-            await this.fecthSubjectById({ subjectId });
-
-            //Atribui ao campo
-            this.subjectName = this.subject.name;
-         } catch (error) {
-            this.isError = true;
-
-            let errorMessage = '';
-
-            if (error.response) {
-               errorMessage = error.response.data;
-            } else {
-               errorMessage = 'Não foi possível se conectar com a API!';
-            }
-
-            this.errorMessage = errorMessage;
-         }
-
-         //Remove o componente de carregamento
-         this.isLoading = false;
+      subject: {
+         type: Object,
+         default: () => ({})
       }
    },
 
-   computed: {
-      //Getters Vuex
-      ...mapGetters('subject', ['subject']),
+   created() {
+      //Se for página de edição
+      //Atribui ao campo
+      console.log(this.subject.name)
+      if (this.isEdit) {
+         console.log(this.subject.name)
+         this.subjectName = this.subject.name;
+      }
    },
 
    methods: {
@@ -110,7 +68,6 @@ export default {
       ...mapActions('subject', [
          'addSubject',
          'editSubject',
-         'fecthSubjectById',
       ]),
 
       //Salva a disciplina
@@ -192,7 +149,7 @@ export default {
          //Se o formulário estiver validado, salva ou atualiza a disciplina
          if (this.$refs.form.validate()) {
             //Exibe o componente de carregamento
-            this.isLoading = true;
+            this.loading(true);
 
             //Se estiver na página de edição
             if (this.isEdit) {
@@ -207,8 +164,13 @@ export default {
          }
 
          //Remove o componente de carregamento
-         this.isLoading = false;
+         this.loading(false);
       },
+
+      //Emite um evento para exibir ou remover o componente de carregamento
+      loading(isLoading) {
+         this.$emit('loading', isLoading);
+      }
    },
 };
 </script>

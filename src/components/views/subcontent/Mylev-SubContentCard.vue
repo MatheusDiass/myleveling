@@ -165,7 +165,7 @@ export default {
                });
 
                //Muda para a página de listagem das matérias
-               this.$router.push({ name: 'Home' });
+               this.$router.push({ name: 'ListSubContents' });
             } catch (error) {
                let errorMessage = '';
 
