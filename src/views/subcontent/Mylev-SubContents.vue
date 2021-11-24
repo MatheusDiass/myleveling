@@ -1,6 +1,6 @@
 <template>
    <v-container>
-      <h1>Matérias</h1>
+      <h1>{{ subject.name }}</h1>
 
       <br />
 
@@ -30,10 +30,10 @@
       <MylevLoading :isLoading="isLoading" />
 
       <MylevAlert
-         :show="isError"
+         :show="isError || !hasSubContentsBySubject"
          :styleClasses="['contentCenter']"
-         :type="'error'"
-         :message="errorMessage"
+         :type="alertType"
+         :message="alertMessage"
       />
    </v-container>
 </template>
@@ -62,28 +62,11 @@ export default {
    },
 
    async created() {
-      await this.listSubContentsBySubject();
-   },
-
-   computed: {
-      //Getters Vuex
-      ...mapGetters('subContent', ['subContentsBySubject']),
-
-      //Obtem o ID da disciplina contida na URL
-      subjectId() {
-         return this.$route.params.id;
-      },
-   },
-
-   methods: {
-      //Actions Vuex
-      ...mapActions('subContent', ['fecthSubContentsBySubject']),
-
-      async listSubContentsBySubject() {
-         //Exibe o componente de carregamento
+      //Exibe o componente de carregamento
          this.isLoading = true;
 
          try {
+            await this.fecthSubjectById({ subjectId: this.subjectId });
             await this.fecthSubContentsBySubject({ subjectId: this.subjectId });
          } catch (error) {
             this.isError = true;
@@ -101,7 +84,43 @@ export default {
 
          //Remove o componente de carregamento
          this.isLoading = false;
+   },
+
+   computed: {
+      //Getters Vuex
+      ...mapGetters('subContent', ['subContentsBySubject']),
+      ...mapGetters('subject', ['subject']),
+
+      //Obtem o ID da disciplina contida na URL
+      subjectId() {
+         return this.$route.params.id;
       },
+
+      hasSubContentsBySubject() {
+         return this.subContentsBySubject.length > 0 ? true : false;
+      },
+
+      alertType() {
+         if (this.isError) {
+            return 'error';
+         } else {
+            return 'info';
+         }
+      },
+
+      alertMessage() {
+         if (this.isError) {
+            return this.errorMessage;
+         } else {
+            return 'Ainda não a matérias disponíveis!';
+         }
+      },
+   },
+
+   methods: {
+      //Actions Vuex
+      ...mapActions('subContent', ['fecthSubContentsBySubject']),
+      ...mapActions('subject', ['fecthSubjectById']),
    },
 };
 </script>

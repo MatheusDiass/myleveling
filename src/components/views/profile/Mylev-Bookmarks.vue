@@ -16,7 +16,7 @@
       </v-row>
 
       <v-virtual-scroll
-         v-if="hasBookmarks"
+         v-if="!isError && hasBookmarks"
          :bench="5"
          :items="bookmarks"
          height="256"
@@ -91,10 +91,10 @@ export default {
       MylevAlert,
    },
 
-   created() {
+   async created() {
       try {
          //Obtem todos os favoritos de um usuário
-         this.fetchAllBookmarksByUser({ uid: this.profile.uid });
+         await this.fetchAllBookmarksByUser({ uid: this.profile.uid });
       } catch (error) {
          this.isError = true;
 
@@ -120,6 +120,7 @@ export default {
       },
 
       alertType() {
+         console.log('Bookmark', this.isError);
          if (this.isError) {
             return 'error';
          } else {
@@ -128,10 +129,11 @@ export default {
       },
 
       alertMessage() {
+         console.log('Bookmark', this.isError);
          if (this.isError) {
             return this.errorMessage;
          } else {
-            return 'Você ainda não tem favoritos';
+            return 'Você ainda não tem favoritos!';
          }
       },
    },
