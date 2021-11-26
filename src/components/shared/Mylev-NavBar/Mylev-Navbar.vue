@@ -186,7 +186,7 @@
 import MylevAdminOptionsDesktop from './components/Mylev-AdminOptionsDesktop.vue';
 import MylevAdminOptionsMobile from './components/Mylev-AdminOptionsMobile.vue';
 import MylevUserImage from '../Mylev-UserImage.vue';
-import { getCookie, removeCookie, hasKey } from '@/helpers/managerCookies';
+import { getCookie, hasKey } from '@/helpers/managerCookies';
 import { mapActions, mapGetters } from 'vuex';
 
 export default {
@@ -198,12 +198,12 @@ export default {
       MylevUserImage,
    },
 
-   data() {
+   /*data() {
       return {
          isLogged: false,
          isAdmin: false,
       };
-   },
+   },*/
 
    mounted() {
       this.checkPermissionUser();
@@ -219,6 +219,7 @@ export default {
 
    computed: {
       //Getters Vuex
+      ...mapGetters(['isLogged', 'isAdmin']),
       ...mapGetters('profile', ['profile']),
 
       username() {
@@ -228,6 +229,7 @@ export default {
 
    methods: {
       //Actions Vuex
+      ...mapActions(['logout']),
       ...mapActions('profile', ['cleanProfile', 'setProfile']),
 
       //Verifica se o usuário está logado e se o mesmo tem permissão de admin
@@ -240,26 +242,33 @@ export default {
                this.setProfile({ profile });
             } else {
                //Desabilita a visualização de alguns menus
-               this.isLogged = false;
-               this.isAdmin = false;
+               this.$store.commit('setIsLogged', false);
+               this.$store.commit('setIsAdmin', false);
+               /*this.isLogged = false;
+               this.isAdmin = false;*/
             }
          } else {
-            this.isLogged = true;
+            this.$store.commit('setIsLogged', true);
+            //this.isLogged = true;
             if (this.profile.role === 'ADMIN') {
-               this.isAdmin = true;
+               this.$store.commit('setIsAdmin', true);
+               //this.isAdmin = true;
             } else {
-               this.isAdmin = false;
+               this.$store.commit('setIsAdmin', false);
+               //this.isAdmin = false;
             }
          }
       },
 
       //Encerra a seção do usuário
-      logout() {
+      /*logout() {
          //Remove os cookies do navegador
          removeCookie('profile');
          removeCookie('token');
 
          //Desabilita a visualização de alguns menus
+         this.$store.commit('setIsLogged', false);
+         this.$store.commit('setIsAdmin', false);
          this.isLogged = false;
          this.isAdmin = false;
 
@@ -268,7 +277,7 @@ export default {
 
          //Muda para a página de login
          this.$router.push({ name: 'Login' });
-      },
+      },*/
    },
 };
 </script>

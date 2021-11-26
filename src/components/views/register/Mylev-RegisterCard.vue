@@ -80,6 +80,7 @@ import { loginGoogle } from '@/mixins';
 import registerValidation from '@/mixins/validations/registerValidation';
 import { createNotify, NOTIFICATION_TYPE } from '@/helpers/EventBus';
 import MylevLoading from '../../shared/Mylev-Loading.vue';
+import { getAuth, createUserWithEmailAndPassword, updateProfile } from 'firebase/auth';
 
 export default {
    name: 'MylevRegisterCard',
@@ -109,11 +110,22 @@ export default {
             //Exibe o componente de carregamento
             this.isLoading = true;
 
+            const auth = getAuth();
+
+            //Cria a conta no firebase(email)
+            const { user } = await createUserWithEmailAndPassword(auth, this.email, this.password);
+
+            //Atualiza os dados do perfil do usuário(displayName)
+            await updateProfile(user, {
+               displayName: this.name,
+            });
+
             const data = {
-               name: this.name,
+               uid: user.uid,
+               //name: this.name,
                nickname: this.nickname,
                email: this.email,
-               password: this.password,
+               //password: this.password,
             };
 
             try {
@@ -128,7 +140,7 @@ export default {
                   message: 'Cadastro realizado com sucesso!',
                });
 
-               //Muda para a página de "Confirmar Email"ni
+               //Muda para a página de "Confirmar Email
                this.$router.push({
                   name: 'ConfirmRegister',
                   params: { id: uid },

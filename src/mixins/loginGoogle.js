@@ -1,6 +1,6 @@
-import { getAuth, signInWithPopup, GoogleAuthProvider } from 'firebase/auth'
+import { getAuth, signInWithPopup, GoogleAuthProvider } from 'firebase/auth';
 import { createNotify, NOTIFICATION_TYPE } from '@/helpers/EventBus';
-import { mapActions, mapGetters } from 'vuex'
+import { mapActions, mapGetters } from 'vuex';
 
 export default {
     data() {
@@ -38,8 +38,8 @@ export default {
 
                 //Obtem informações do usuário no firestore
                 const userFirestore = await this.fecthProfileByUidOnFirestore(userData.uid);
-
-                //Se o usuário não tiver um perfil salvo no firebase, o perfil é criado
+                console.log('Matheus', getAuth().currentUser)
+                    //Se o usuário não tiver um perfil salvo no firebase, o perfil é criado
                 if (Object.values(userFirestore).length <= 0) {
                     //Dados do usuário
                     let user = {
