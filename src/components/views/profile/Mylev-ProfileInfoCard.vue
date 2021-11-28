@@ -19,11 +19,13 @@
       <br />
 
       <v-card class="paddingCard" color="#499fc6" rounded="lg" elevation="6">
-         <v-form>
+         <v-form ref="form">
             <label>Nome:</label>
             <v-text-field
                v-model="name"
                :disabled="isDisable"
+               :rules="nameRules"
+               counter="20"
                background-color="white"
                outlined
             ></v-text-field>
@@ -32,14 +34,27 @@
             <v-text-field
                v-model="nickname"
                :disabled="isDisable"
+               :rules="nicknameRules"
+               :error-messages="nicknameExistMessage"
+               counter="15"
                background-color="white"
                outlined
-            ></v-text-field>
+            >
+               <template v-slot:append>
+                  <v-progress-circular
+                     v-if="nicknameLoading"
+                     size="24"
+                     color="#499fc6"
+                     indeterminate
+                  ></v-progress-circular>
+               </template>
+            </v-text-field>
 
             <label>Email:</label>
             <v-text-field
                v-model="email"
                :disabled="isDisable"
+               :rules="emailRules"
                background-color="white"
                outlined
             ></v-text-field>
@@ -48,20 +63,27 @@
             <v-text-field
                v-model="password"
                :disabled="isDisable"
+               :rules="passwordChanged ? passwordRules : []"
                background-color="white"
                outlined
             ></v-text-field>
          </v-form>
       </v-card>
+
+      <MylevLoading :isLoading="isLoading"/>
    </div>
 </template>
 
 <script>
+import registerValidation from '@/mixins/validations/registerValidation';
 import { createNotify, NOTIFICATION_TYPE } from '@/helpers/EventBus';
 import { mapActions } from 'vuex';
+import MylevLoading from '../../shared/Mylev-Loading.vue';
 
 export default {
    name: 'MylevProfileInfoCard',
+
+   mixins: [registerValidation],
 
    data() {
       return {
@@ -69,7 +91,11 @@ export default {
          nickname: this.profile.nickname,
          email: this.profile.email,
          password: '',
+         oldPassword: '',
+         passwordChanged: false,
          isDisable: true,
+         isLoading: false,
+         passwordErrorMessage: '',
       };
    },
 
@@ -77,6 +103,20 @@ export default {
       profile: {
          type: Object,
          required: true,
+      },
+   },
+
+   components: {
+      MylevLoading ,
+   },
+
+   watch: {
+      password(value) {
+         if (this.oldPassword != value) {
+            this.passwordChanged = true;
+         } else {
+            this.passwordChanged = false;
+         }
       },
    },
 
@@ -100,30 +140,25 @@ export default {
       },
 
       emailChanged() {
-         if (
-            this.email.toLowerCase() != this.profile.email.toLowerCase()
-         ) {
+         if (this.email.toLowerCase() != this.profile.email.toLowerCase()) {
             return true;
          }
 
          return false;
       },
-
-      passwordChanged() {
-         if (
-            this.password.toLowerCase() != this.profile.email.toLowerCase()
-         ) {
-            return true;
-         }
-
-         return false;
-      }
    },
 
    methods: {
       //Actions Vuex
       ...mapActions(['logout']),
-      ...mapActions('profile', ['editName', 'editNickname', 'editEmail', 'editPassword']),
+      ...mapActions('profile', [
+         'editName',
+         'editNickname',
+         'editEmail',
+         'editPassword',
+         'fetchProfileByUidOnFirestoreGoogle',
+         'updateEmailSendConfirmation',
+      ]),
 
       //Habilita ou desabilita os campos para edição
       enableDisableFields() {
@@ -135,24 +170,42 @@ export default {
       },
 
       async updateProfile() {
-         if (this.nameChanged) {
-            await this.updateName();
-         }
+         if (this.$refs.form.validate()) {
+            //Exibe o componente de carregamento
+            this.isLoading = true;
 
-         if (this.nicknameChanged) {
-            await this.updateNickname();
-         }
+            this.isDisable = true;
 
-         if(this.emailChanged) {
-            await this.updateEmail();
-         }
+            if (this.nameChanged) {
+               await this.updateName();
+            }
 
-         if(this.passwordChanged) {
-            await this.updatePassword();
-         }
+            if (this.nicknameChanged) {
+               await this.updateNickname();
+            }
 
-         if(this.emailChanged || this.passwordChanged) {
-            this.logout();
+            if (this.emailChanged) {
+               await this.updateEmail();
+            }
+
+            if (this.passwordChanged) {
+               await this.updatePassword();
+            }
+
+            if((this.emailChanged && !this.passwordChanged) || (this.emailChanged && this.passwordChanged)) {
+               //Muda para a página de "Confirmar Email
+               this.$router.push({
+                  name: 'ConfirmRegister',
+                  params: { id: this.profile.uid },
+               });
+            } else if((!this.nameChanged && !this.nicknameChanged && !this.emailChanged) && this.passwordChanged) {
+               this.logout();
+            } else {
+               await this.fetchProfileByUidOnFirestoreGoogle({ uid: this.profile.uid });
+            }
+
+            //Remove o componente de carregamento
+            this.isLoading = false;
          }
       },
 
@@ -169,10 +222,17 @@ export default {
          } catch (error) {
             let errorMessage = '';
 
-            if (error.response) {
-               errorMessage = error.response.data;
-            } else {
-               errorMessage = 'Não foi possível se conectar com a API!';
+            switch (error.code) {
+               case 4:
+                  errorMessage = 'Erro de conexão com o Firebase!';
+                  break;
+
+               default:
+                  if (error.response) {
+                     errorMessage = error.response.data;
+                  } else {
+                     errorMessage = 'Não foi possível se conectar com a API!';
+                  }
             }
 
             //Cria a notificação
@@ -216,20 +276,31 @@ export default {
       //Atualiza o email
       async updateEmail() {
          try {
-            const res = await this.editEmail(this.email);
+            await this.editEmail(this.email);
+            await this.updateEmailSendConfirmation(this.profile.uid);
 
             //Cria a notificação
             createNotify({
                type: NOTIFICATION_TYPE.SUCCESS,
-               message: res,
+               message: 'Email atualizado com sucesso, verifique seu email!',
             });
          } catch (error) {
             let errorMessage = '';
 
-            if (error.response) {
-               errorMessage = error.response.data;
-            } else {
-               errorMessage = 'Não foi possível se conectar com a API!';
+            switch (error.code) {
+               case 'auth/email-already-in-use':
+                  errorMessage = 'O email informado já existe!';
+                  break;
+               case 4:
+                  errorMessage = 'Erro de conexão com o Firebase!';
+                  break;
+
+               default:
+                  if (error.response) {
+                     errorMessage = error.response.data;
+                  } else {
+                     errorMessage = 'Não foi possível se conectar com a API!';
+                  }
             }
 
             //Cria a notificação
@@ -243,20 +314,27 @@ export default {
       //Atualiza a senha
       async updatePassword() {
          try {
-            const res = await this.editPassword(this.password);
+            await this.editPassword(this.password);
 
             //Cria a notificação
             createNotify({
                type: NOTIFICATION_TYPE.SUCCESS,
-               message: res,
+               message: 'Senha atualizada com sucesso!',
             });
          } catch (error) {
             let errorMessage = '';
 
-            if (error.response) {
-               errorMessage = error.response.data;
-            } else {
-               errorMessage = 'Não foi possível se conectar com a API!';
+            switch (error.code) {
+               case 4:
+                  errorMessage = 'Erro de conexão com o Firebase!';
+                  break;
+
+               default:
+                  if (error.response) {
+                     errorMessage = error.response.data;
+                  } else {
+                     errorMessage = 'Não foi possível se conectar com a API!';
+                  }
             }
 
             //Cria a notificação

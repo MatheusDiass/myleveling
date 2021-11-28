@@ -122,17 +122,16 @@ export default {
 
             const data = {
                uid: user.uid,
-               //name: this.name,
+               name: this.name,
                nickname: this.nickname,
                email: this.email,
-               //password: this.password,
             };
 
             try {
                const res = await axios.post(`${config.register}`, data);
 
                //Obtem o UID do usuário retornado após fazer o cadastro
-               const uid = res.data.uid;
+               const uid = res.data;
 
                //Cria a notificação
                createNotify({

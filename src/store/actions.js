@@ -22,12 +22,12 @@ const actions = {
         commit(MUTATIONS_TYPES.setIsLogged, false);
         commit(MUTATIONS_TYPES.setIsAdmin, false);
 
+        //Muda para a página de login
+        router.push({ name: 'Login' });
+
         //Limpa a variavel onde é armazenado o perfil do usuário
         store.dispatch('profile/cleanProfile');
         this.cleanProfile();
-
-        //Muda para a página de login
-        router.push({ name: 'Login' });
     }
 };
 

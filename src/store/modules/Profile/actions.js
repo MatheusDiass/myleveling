@@ -65,6 +65,11 @@ const actions = {
         await updatePassword(firebaseUser, password);
     },
 
+    //Envia um email de confirmação, após atualizar o email
+    updateEmailSendConfirmation: async(state, uid) => {
+        await axios.get(`${config.profile}/confirmemail/${uid}`);
+    },
+
     //Limpa os dados da variavel onde é armazenado o perfil do usuário
     cleanProfile: ({ commit }) => {
         commit(MUTATIONS_TYPES.setProfile, undefined);

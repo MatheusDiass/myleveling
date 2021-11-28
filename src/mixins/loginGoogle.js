@@ -38,17 +38,14 @@ export default {
 
                 //Obtem informações do usuário no firestore
                 const userFirestore = await this.fecthProfileByUidOnFirestore(userData.uid);
-                console.log('Matheus', getAuth().currentUser)
-                    //Se o usuário não tiver um perfil salvo no firebase, o perfil é criado
+
+                //Se o usuário não tiver um perfil salvo no firebase, o perfil é criado
                 if (Object.values(userFirestore).length <= 0) {
                     //Dados do usuário
                     let user = {
                         uid: userData.uid,
-                        //name: userData.displayName,
                         nickname: '',
-                        //profilePicture: userData.photoURL,
                         role: "STUDENT",
-                        //emailVerified: userData.emailVerified,
                         verificationCode: 0,
                     }
 
