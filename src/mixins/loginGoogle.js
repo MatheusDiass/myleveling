@@ -1,6 +1,6 @@
-import { getAuth, signInWithPopup, GoogleAuthProvider } from 'firebase/auth'
+import { getAuth, signInWithPopup, GoogleAuthProvider } from 'firebase/auth';
 import { createNotify, NOTIFICATION_TYPE } from '@/helpers/EventBus';
-import { mapActions, mapGetters } from 'vuex'
+import { mapActions, mapGetters } from 'vuex';
 
 export default {
     data() {
@@ -44,11 +44,8 @@ export default {
                     //Dados do usuário
                     let user = {
                         uid: userData.uid,
-                        //name: userData.displayName,
                         nickname: '',
-                        //profilePicture: userData.photoURL,
                         role: "STUDENT",
-                        //emailVerified: userData.emailVerified,
                         verificationCode: 0,
                     }
 
