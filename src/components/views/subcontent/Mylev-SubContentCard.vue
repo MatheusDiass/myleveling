@@ -59,12 +59,12 @@
             ></v-file-input>
 
             <div class="contentCenter">
-               <v-btn color="#3898ec" @click="addNewSubContent">Salvar</v-btn>
+               <v-btn color="#3898ec" @click="saveEdit">Salvar</v-btn>
             </div>
          </v-form>
       </v-card>
 
-      <MylevLoading :isLoading="isLoading"/>
+      <MylevLoading :isLoading="isLoading" />
    </div>
 </template>
 
@@ -96,14 +96,56 @@ export default {
       };
    },
 
+   props: {
+      isEdit: {
+         type: Boolean,
+         required: true,
+      },
+
+      subContent: {
+         type: Object,
+         default: () => ({}),
+      },
+   },
+
    components: {
       Editor,
       MylevLoading,
    },
 
    async created() {
-      //Obtem todas as matérias para serem listadas na tabela
-      await this.fecthSubjects();
+      //Se for página de edição
+      //Atribui ao campo
+      if (this.isEdit) {
+         this.title = this.subContent.title;
+         this.subjectId = this.subContent.subjectId;
+         this.content = this.subContent.content;
+      }
+
+      //Exibe o componente de carregamento
+      this.loading(true);
+
+      try {
+         //Obtem todas as matérias para serem listadas no dropdown
+         await this.fecthSubjects();
+      } catch (error) {
+         let errorMessage = '';
+
+         if (error.response) {
+            errorMessage = error.response.data;
+         } else {
+            errorMessage = 'Não foi possível se conectar com a API!';
+         }
+
+         //Cria a notificação
+         createNotify({
+            type: NOTIFICATION_TYPE.ERROR,
+            message: errorMessage,
+         });
+      }
+
+      //Remove o componente de carregamento
+      this.loading(false);
    },
 
    computed: {
@@ -118,54 +160,129 @@ export default {
          'addSubContent',
          'addSubContentVideo',
          'addSubContentFile',
+         'editSubContent',
+         'deleteFile',
       ]),
 
       //Salva a matéria
       async addNewSubContent() {
-         if (this.$refs.form.validate()) {
-            //Exibe o componente de carregamento
-            this.isLoading = true;
+         const subContent = {
+            title: this.title,
+            subjectId: this.subjectId,
+            content: this.content,
+         };
 
-            const subContent = {
-               title: this.title,
+         //Salva no firebase os dados iniciais(Título, conteúdo e o ID da matéria)
+         const id = await this.addSubContent(subContent);
+
+         //Compila o video para ser enviado para a API
+         const formDataVideo = new FormData();
+         formDataVideo.append('video', this.video);
+
+         //Compila o arquivo para ser enviado para a API
+         const formDataFile = new FormData();
+         formDataFile.append('file', this.file);
+
+         //Faz o upload do video no storage
+         await this.addSubContentVideo({
+            subjectId: this.subjectId,
+            subContentId: id,
+            video: formDataVideo,
+         });
+
+         //Faz o upload do arquivo no storage
+         await this.addSubContentFile({
+            subjectId: this.subjectId,
+            subContentId: id,
+            file: formDataFile,
+         });
+      },
+
+      async updateSubContent() {
+         //Obtem o ID da disciplina contida na URL
+         const subContentId = this.getSubContentId();
+
+         const subContent = {
+            title: this.title,
+            subjectId: this.subjectId,
+            content: this.content,
+         };
+
+         //Atualiza a matéria
+         await this.editSubContent({
+            subContent,
+            subContentId,
+         });
+
+         if (this.hasVideo) {
+            const subContentInfoVideo = {
                subjectId: this.subjectId,
-               content: this.content,
+               subContentId,
+               fileName: this.subContent.videoName,
+               typeFile: 'VIDEO',
             };
 
+            //Deleta o video no storage
+            await this.deleteFile(subContentInfoVideo);
+
+            //Compila o video para ser enviado para a API
+            const formDataVideo = new FormData();
+            formDataVideo.append('video', this.video);
+
+            //Faz o upload do video no storage
+            await this.addSubContentVideo({
+               subjectId: this.subjectId,
+               subContentId,
+               video: formDataVideo,
+            });
+         } else if (this.hasFile) {
+            const subContentInfoFile = {
+               subjectId: this.subjectId,
+               subContentId,
+               fileName: this.subContent.videoName,
+               typeFile: 'FILE',
+            };
+
+            //Deleta o video no storage
+            await this.deleteFile(subContentInfoFile);
+
+            //Compila o arquivo para ser enviado para a API
+            const formDataFile = new FormData();
+            formDataFile.append('file', this.file);
+
+            //Faz o upload do arquivo no storage
+            await this.addSubContentFile({
+               subjectId: this.subjectId,
+               subContentId,
+               file: formDataFile,
+            });
+         }
+      },
+
+      async saveEdit() {
+         //Exibe o componente de carregamento
+         this.loading(true);
+
+         //Se o formulário estiver validado, adiciona ou atualiza a matéria
+         if (this.$refs.form.validate()) {
             try {
-               //Salva no firebase os dados iniciais(Título, conteúdo e o ID da matéria)
-               const id = await this.addSubContent(subContent);
+               if (this.isEdit) {
+                  this.updateSubContent();
 
-               //Compila o video para ser enviado para a API
-               const formDataVideo = new FormData();
-               formDataVideo.append('video', this.video);
+                  //Cria a notificação
+                  createNotify({
+                     type: NOTIFICATION_TYPE.SUCCESS,
+                     message: 'Matéria atualizada com sucesso',
+                  });
+               } else {
+                  this.addNewSubContent();
 
-               //Compila o arquivo para ser enviado para a API
-               const formDataFile = new FormData();
-               formDataFile.append('file', this.file);
-
-               //Faz o upload do video no firebase
-               await this.addSubContentVideo({
-                  subjectId: this.subjectId,
-                  id,
-                  video: formDataVideo,
-               });
-
-               //Faz o upload do arquivo no firebase
-               const res = await this.addSubContentFile({
-                  subjectId: this.subjectId,
-                  id,
-                  file: formDataFile,
-               });
-
-               //Cria a notificação
-               createNotify({
-                  type: NOTIFICATION_TYPE.SUCCESS,
-                  message: res,
-               });
-
-               //Muda para a página de listagem das matérias
-               this.$router.push({ name: 'ListSubContents' });
+                  //Cria a notificação
+                  createNotify({
+                     type: NOTIFICATION_TYPE.SUCCESS,
+                     message: 'Matéria adicionada com sucesso',
+                  });
+               }
             } catch (error) {
                let errorMessage = '';
 
@@ -181,10 +298,20 @@ export default {
                   message: errorMessage,
                });
             }
-
-            //Remove o componente de carregamento
-            this.isLoading = false;
          }
+
+         //Remove o componente de carregamento
+         this.loading(false);
+      },
+
+      //Emite um evento para exibir ou remover o componente de carregamento
+      loading(isLoading) {
+         this.$emit('loading', isLoading);
+      },
+
+      //Obtem o ID da disciplina contida na URL
+      getSubContentId() {
+         return this.$route.params.id;
       },
    },
 };

@@ -56,9 +56,7 @@ export default {
    created() {
       //Se for página de edição
       //Atribui ao campo
-      console.log(this.subject.name)
       if (this.isEdit) {
-         console.log(this.subject.name)
          this.subjectName = this.subject.name;
       }
    },
@@ -146,7 +144,7 @@ export default {
 
       //Salva ou atualiza a disciplina dependendo da página em que estiver
       async saveEdit() {
-         //Se o formulário estiver validado, salva ou atualiza a disciplina
+         //Se o formulário estiver validado, adiciona ou atualiza a disciplina
          if (this.$refs.form.validate()) {
             //Exibe o componente de carregamento
             this.loading(true);

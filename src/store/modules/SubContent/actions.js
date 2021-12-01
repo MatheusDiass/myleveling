@@ -47,9 +47,24 @@ const actions = {
         commit(MUTATIONS_TYPES.setSubContentsBySubject, data);
     },
 
+    //Faz a requisição para a API para editar uma matéria
+    editSubContent: async(state, { subContent, subContentId }) => {
+        const { data } = await axios.put(`${config.subContent}/${subContentId}`, subContent);
+
+        return data;
+    },
+
+    //Faz a requisição para a API para deletar um arquivo da matéria
+    deleteFile: async(state, subContentInfo) => {
+        const { data } = await axios.delete(`${config.subContent}/${subContentInfo.subjectId}/${subContentInfo.subContentId}/${subContentInfo.fileName}/${subContentInfo.typeFile}`);
+
+        return data;
+    },
+
     //Faz a requisição para a API para deletar uma matéria
     deleteSubContent: async(state, subContentInfo) => {
-        let { data } = await axios.delete(`${config.subContent}/${subContentInfo.data.subjectId}/${subContentInfo.id}/${subContentInfo.data.videoName}/${subContentInfo.data.fileName}`);
+        console.log(subContentInfo)
+        const { data } = await axios.delete(`${config.subContent}/${subContentInfo.data.subjectId}/${subContentInfo.id}/${subContentInfo.data.videoName}/${subContentInfo.data.fileName}`);
 
         return data;
     }

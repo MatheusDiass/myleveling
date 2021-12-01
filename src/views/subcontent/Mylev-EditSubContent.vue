@@ -1,6 +1,6 @@
 <template>
    <v-container>
-      <h1>Editar Disciplina</h1>
+      <h1>Editar Matéria</h1>
 
       <br />
 
@@ -8,10 +8,10 @@
 
       <br />
 
-      <MylevSubjectCard
-         v-if="!isError && subject"
+      <MylevSubContentCard
+         v-if="!isError && subContent"
          :isEdit="true"
-         :subject="subject"
+         :subContent="subContent"
          @loading="loading"
       />
 
@@ -28,15 +28,15 @@
 
 <script>
 import { mapActions, mapGetters } from 'vuex';
-import MylevSubjectCard from '@/components/views/subject/Mylev-SubjectCard.vue';
+import MylevSubContentCard from '@/components/views/subcontent/Mylev-SubContentCard.vue';
 import MylevLoading from '@/components/shared/Mylev-Loading.vue';
 import MylevAlert from '@/components/shared/Mylev-Alert.vue';
 
 export default {
-   name: 'MylevEditSubject',
+   name: 'MylevEditSubContent',
 
    components: {
-      MylevSubjectCard,
+      MylevSubContentCard,
       MylevLoading,
       MylevAlert,
    },
@@ -51,16 +51,16 @@ export default {
 
    async created() {
       //Marca como undefined para ser atribuída ao campo corretamente
-      this.$store.commit('subject/setSubject', undefined);
+      this.$store.commit('subContent/setSubContent', undefined);
 
       //Exibe o componente de carregamento
       this.isLoading = true;
 
-      let subjectId = this.getSubjectId();
+      let subContentId = this.getSubContentId();
 
       try {
          //Obtem a disciplina pelo ID
-         await this.fecthSubjectById({ subjectId });
+         await this.fecthSubContentById({ subContentId });
       } catch (error) {
          this.isError = true;
 
@@ -81,15 +81,15 @@ export default {
 
    computed: {
       //Getters Vuex
-      ...mapGetters('subject', ['subject']),
+      ...mapGetters('subContent', ['subContent']),
    },
 
    methods: {
-      //Actions vuex
-      ...mapActions('subject', ['fecthSubjectById']),
+      //Actions Vuex
+      ...mapActions('subContent', ['fecthSubContentById']),
 
       //Obtem o ID da disciplina contida na URL
-      getSubjectId() {
+      getSubContentId() {
          return this.$route.params.id;
       },
 
@@ -97,6 +97,6 @@ export default {
       loading(event) {
          this.isLoading = event;
       },
-   },
+   }
 };
 </script>

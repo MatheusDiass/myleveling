@@ -1,6 +1,7 @@
 //Views
 import MylevAddSubContent from '../../views/subcontent/Mylev-AddSubContent.vue';
 import MylevListSubContent from '../../views/subcontent/Mylev-ListSubContent.vue';
+import MylevEditSubContent from '../../views/subcontent/Mylev-EditSubContent.vue';
 import MylevSubContent from '../../views/subcontent/Mylev-SubContent.vue';
 import MylevSubContents from '../../views/subcontent/Mylev-SubContents.vue';
 
@@ -26,6 +27,15 @@ export const subContentRoutes = [
       path: '/admin/subcontents',
       name: 'ListSubContents',
       component: MylevListSubContent,
+      async beforeEnter(to, from, next) {
+         await checkPermission(to, from, next);
+      },
+   },
+
+   {
+      path: '/admin/subcontent/edit/:id',
+      name: 'EditSubContent',
+      component: MylevEditSubContent,
       async beforeEnter(to, from, next) {
          await checkPermission(to, from, next);
       },

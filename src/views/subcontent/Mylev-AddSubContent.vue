@@ -13,7 +13,7 @@
 </template>
 
 <script>
-import MylevSubContent from '@/components/views/subcontent/Mylev-SubContentCard.vue'
+import MylevSubContent from '@/components/views/subcontent/Mylev-SubContentCard.vue';
 
 export default {
   name: 'MylevSubject',
