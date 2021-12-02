@@ -6,35 +6,35 @@ import config from "@/configuration/configuration.json";
 const actions = {
     //Faz a requisição para a API para salvar uma nova disciplina
     addSubject: async(state, subject) => {
-        let { data } = await axios.post(config.subject, subject);
+        const { data } = await axios.post(config.subject, subject);
 
         return data;
     },
 
     //Faz a requisição para a API para editar uma disciplina
     editSubject: async(state, { subject }) => {
-        let { data } = await axios.put(`${config.subject}`, subject);
+        const { data } = await axios.put(`${config.subject}`, subject);
 
         return data;
     },
 
     //Faz a requisição para a API para pegar todas as disciplinas
     fecthSubjects: async({ commit }) => {
-        let { data } = await axios.get(`${config.subject}`);
+        const { data } = await axios.get(`${config.subject}`);
 
         commit(MUTATIONS_TYPES.setSubjects, data);
     },
 
     //Faz a requisição para a API para pegar uma disciplina pelo ID
     fecthSubjectById: async({ commit }, { subjectId }) => {
-        let { data } = await axios.get(`${config.subject}/${subjectId}`);
+        const { data } = await axios.get(`${config.subject}/${subjectId}`);
 
         commit(MUTATIONS_TYPES.setSubject, data);
     },
 
     //Faz a requisição para a API para deletar uma disciplina
     deleteSubject: async(state, subjectId) => {
-        let { data } = await axios.delete(`${config.subject}/${subjectId}`);
+        const { data } = await axios.delete(`${config.subject}/${subjectId}`);
 
         return data;
     }

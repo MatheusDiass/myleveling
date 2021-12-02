@@ -120,7 +120,6 @@ export default {
       },
 
       alertType() {
-         console.log('Bookmark', this.isError);
          if (this.isError) {
             return 'error';
          } else {
@@ -129,7 +128,6 @@ export default {
       },
 
       alertMessage() {
-         console.log('Bookmark', this.isError);
          if (this.isError) {
             return this.errorMessage;
          } else {

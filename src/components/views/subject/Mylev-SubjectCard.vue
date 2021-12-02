@@ -1,11 +1,6 @@
 <template>
    <div class="externalDivBorder">
-      <v-card
-         class="paddingCard"
-         color="#499fc6"
-         rounded="lg"
-         elevation="6"
-      >
+      <v-card class="paddingCard" color="#499fc6" rounded="lg" elevation="6">
          <v-form ref="form">
             <label>Nome:</label>
             <v-text-field
@@ -44,31 +39,26 @@ export default {
    props: {
       isEdit: {
          type: Boolean,
-         required: true,
+         default: false,
       },
 
       subject: {
          type: Object,
-         default: () => ({})
-      }
+         default: () => ({}),
+      },
    },
 
    created() {
       //Se for página de edição
       //Atribui ao campo
-      console.log(this.subject.name)
       if (this.isEdit) {
-         console.log(this.subject.name)
          this.subjectName = this.subject.name;
       }
    },
 
    methods: {
       //Actions vuex
-      ...mapActions('subject', [
-         'addSubject',
-         'editSubject',
-      ]),
+      ...mapActions('subject', ['addSubject', 'editSubject']),
 
       //Salva a disciplina
       async addNewSubject() {
@@ -76,32 +66,9 @@ export default {
             name: this.subjectName,
          };
 
-         try {
-            let res = await this.addSubject(data);
+         const res = await this.addSubject(data);
 
-            //Cria a notificação
-            createNotify({
-               type: NOTIFICATION_TYPE.SUCCESS,
-               message: res,
-            });
-
-            //Muda para a página de listagem das disciplinas
-            this.$router.push({ name: 'ListSubjects' });
-         } catch (error) {
-            let errorMessage = '';
-
-            if (error.response) {
-               errorMessage = error.response.data;
-            } else {
-               errorMessage = 'Não foi possível se conectar com a API!';
-            }
-
-            //Cria a notificação
-            createNotify({
-               type: NOTIFICATION_TYPE.ERROR,
-               message: errorMessage,
-            });
-         }
+         return res;
       },
 
       //Atualiza uma disciplina
@@ -111,32 +78,9 @@ export default {
             name: this.subjectName,
          };
 
-         try {
-            let res = await this.editSubject({ subject });
+         const res = await this.editSubject({ subject });
 
-            //Cria a notificação
-            createNotify({
-               type: NOTIFICATION_TYPE.SUCCESS,
-               message: res,
-            });
-
-            //Muda para a página de listagem das disciplinas
-            this.$router.push({ name: 'ListSubjects' });
-         } catch (error) {
-            let errorMessage = '';
-
-            if (error.response) {
-               errorMessage = error.response.data;
-            } else {
-               errorMessage = 'Não foi possível se conectar com a API!';
-            }
-
-            //Cria a notificação
-            createNotify({
-               type: NOTIFICATION_TYPE.ERROR,
-               message: errorMessage,
-            });
-         }
+         return res;
       },
 
       //Obtem o ID da disciplina contida na URL
@@ -146,20 +90,48 @@ export default {
 
       //Salva ou atualiza a disciplina dependendo da página em que estiver
       async saveEdit() {
-         //Se o formulário estiver validado, salva ou atualiza a disciplina
+         //Exibe o componente de carregamento
+         this.loading(true);
+
+         //Se o formulário estiver validado, adiciona ou atualiza a disciplina
          if (this.$refs.form.validate()) {
-            //Exibe o componente de carregamento
-            this.loading(true);
+            try {
+               //Se estiver na página de edição
+               if (this.isEdit) {
+                  //Atualiza a disciplina
+                  const res = await this.updateSubject();
 
-            //Se estiver na página de edição
-            if (this.isEdit) {
-               //Atualiza a disciplina
-               await this.updateSubject();
+                  //Cria a notificação
+                  createNotify({
+                     type: NOTIFICATION_TYPE.SUCCESS,
+                     message: res,
+                  });
 
-               //Se estiver na página de adicionar
-            } else {
-               //Adiciona disciplina
-               await this.addNewSubject();
+                  //Se estiver na página de adicionar
+               } else {
+                  //Adiciona disciplina
+                  const res = await this.addNewSubject();
+
+                  //Cria a notificação
+                  createNotify({
+                     type: NOTIFICATION_TYPE.SUCCESS,
+                     message: res,
+                  });
+               }
+            } catch (error) {
+               let errorMessage = '';
+
+               if (error.response) {
+                  errorMessage = error.response.data;
+               } else {
+                  errorMessage = 'Não foi possível se conectar com a API!';
+               }
+
+               //Cria a notificação
+               createNotify({
+                  type: NOTIFICATION_TYPE.ERROR,
+                  message: errorMessage,
+               });
             }
          }
 
@@ -170,7 +142,7 @@ export default {
       //Emite um evento para exibir ou remover o componente de carregamento
       loading(isLoading) {
          this.$emit('loading', isLoading);
-      }
+      },
    },
 };
 </script>

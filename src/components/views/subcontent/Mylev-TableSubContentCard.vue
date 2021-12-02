@@ -17,7 +17,7 @@
                            class="mx-2"
                            text
                            :to="{
-                              name: 'EditSubject',
+                              name: 'EditSubContent',
                               params: { id: subContent.id },
                            }"
                            ><v-icon>mdi-pencil</v-icon>Editar</v-btn
