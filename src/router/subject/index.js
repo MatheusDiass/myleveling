@@ -1,5 +1,5 @@
 //Views
-import MylevSubject from '../../views/subject/Mylev-Subject.vue'
+import MylevAddSubject from '../../views/subject/Mylev-AddSubject.vue'
 import MylevListSubject from '../../views/subject/Mylev-ListSubject.vue'
 import MylevEditSubject from '../../views/subject/Mylev-EditSubject.vue'
 
@@ -11,32 +11,32 @@ import checkPermission from '@/helpers/checkPermission'
 
 export const subjectRoutes = [
     //Página para adicionar uma matéria
-  {
-    path: '/admin/subjects/add',
-    name: 'AddSubject',
-    component: MylevSubject,
-    async beforeEnter(to, from, next) {
-      await checkPermission(to, from, next);
+    {
+        path: '/admin/subjects/add',
+        name: 'AddSubject',
+        component: MylevAddSubject,
+        async beforeEnter(to, from, next) {
+            await checkPermission(to, from, next);
+        },
     },
-  },
 
-  //Página para editar uma matéria
-  {
-    path:'/admin/subjects/edit/:id',
-    name: 'EditSubject',
-    component: MylevEditSubject,
-    async beforeEnter(to, from, next) {
-      await checkPermission(to, from, next);
+    //Página para editar uma matéria
+    {
+        path: '/admin/subjects/edit/:id',
+        name: 'EditSubject',
+        component: MylevEditSubject,
+        async beforeEnter(to, from, next) {
+            await checkPermission(to, from, next);
+        },
     },
-  },
 
-  //Página para listar as matérias
-  {
-    path: '/admin/subjects',
-    name: 'ListSubjects',
-    component: MylevListSubject,
-    async beforeEnter(to, from, next) {
-      await checkPermission(to, from, next);
+    //Página para listar as matérias
+    {
+        path: '/admin/subjects',
+        name: 'ListSubjects',
+        component: MylevListSubject,
+        async beforeEnter(to, from, next) {
+            await checkPermission(to, from, next);
+        },
     },
-  },
 ];

@@ -8,7 +8,7 @@
 
     <br />
 
-    <MylevSubjectCard :isEdit="false"/>
+    <MylevSubjectCard />
   </v-container>
 </template>
 

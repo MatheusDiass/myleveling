@@ -13,15 +13,15 @@ const actions = {
     },
 
     //Faz a requisição para a API para salvar o video da matéria
-    addSubContentVideo: async(state, { subjectId, id, video }) => {
-        const { data } = await axios.post(`${config.subContentVideo}/${subjectId}/${id}`, video);
+    addSubContentVideo: async(state, { subContentId, video }) => {
+        const { data } = await axios.post(`${config.subContentVideo}/${subContentId}`, video);
 
         return data;
     },
 
     //Faz a requisição para a API para salvar o arquivo da matéria
-    addSubContentFile: async(state, { subjectId, id, file }) => {
-        const { data } = await axios.post(`${config.subContentFile}/${subjectId}/${id}`, file);
+    addSubContentFile: async(state, { subContentId, file }) => {
+        const { data } = await axios.post(`${config.subContentFile}/${subContentId}`, file);
 
         return data;
     },
@@ -56,15 +56,14 @@ const actions = {
 
     //Faz a requisição para a API para deletar um arquivo da matéria
     deleteFile: async(state, subContentInfo) => {
-        const { data } = await axios.delete(`${config.subContent}/${subContentInfo.subjectId}/${subContentInfo.subContentId}/${subContentInfo.fileName}/${subContentInfo.typeFile}`);
+        const { data } = await axios.delete(`${config.subContent}/${subContentInfo.subContentId}/${subContentInfo.fileName}/${subContentInfo.typeFile}`);
 
         return data;
     },
 
     //Faz a requisição para a API para deletar uma matéria
     deleteSubContent: async(state, subContentInfo) => {
-        console.log(subContentInfo)
-        const { data } = await axios.delete(`${config.subContent}/${subContentInfo.data.subjectId}/${subContentInfo.id}/${subContentInfo.data.videoName}/${subContentInfo.data.fileName}`);
+        const { data } = await axios.delete(`${config.subContent}/${subContentInfo.id}/${subContentInfo.data.videoName}/${subContentInfo.data.fileName}`);
 
         return data;
     }

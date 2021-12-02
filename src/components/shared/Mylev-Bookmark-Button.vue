@@ -1,8 +1,8 @@
 <template>
-   <v-icon @click="addNewBookmark" v-if="!isBookmarked" size="35">mdi-heart-outline</v-icon>
-   <v-icon @click="removeBookmark" v-else size="35" color="red"
+   <v-btn class="mt-1" @click="addNewBookmark" v-if="!isBookmarked" icon><v-icon size="35">mdi-heart-outline</v-icon></v-btn>
+   <v-btn class="mt-1" @click="removeBookmark" v-else icon><v-icon size="35" color="red"
       >mdi-heart</v-icon
-   >
+   ></v-btn>
 </template>
 
 <script>

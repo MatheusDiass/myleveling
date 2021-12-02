@@ -99,7 +99,7 @@ export default {
    props: {
       isEdit: {
          type: Boolean,
-         required: true,
+         default: false,
       },
 
       subContent: {
@@ -185,15 +185,13 @@ export default {
 
          //Faz o upload do video no storage
          await this.addSubContentVideo({
-            subjectId: this.subjectId,
-            subContentId: id,
+            id,
             video: formDataVideo,
          });
 
          //Faz o upload do arquivo no storage
          await this.addSubContentFile({
-            subjectId: this.subjectId,
-            subContentId: id,
+            id,
             file: formDataFile,
          });
       },
@@ -216,7 +214,6 @@ export default {
 
          if (this.hasVideo) {
             const subContentInfoVideo = {
-               subjectId: this.subjectId,
                subContentId,
                fileName: this.subContent.videoName,
                typeFile: 'VIDEO',
@@ -231,15 +228,15 @@ export default {
 
             //Faz o upload do video no storage
             await this.addSubContentVideo({
-               subjectId: this.subjectId,
                subContentId,
                video: formDataVideo,
             });
-         } else if (this.hasFile) {
+         } 
+         
+         if (this.hasFile) {
             const subContentInfoFile = {
-               subjectId: this.subjectId,
                subContentId,
-               fileName: this.subContent.videoName,
+               fileName: this.subContent.fileName,
                typeFile: 'FILE',
             };
 
@@ -252,7 +249,6 @@ export default {
 
             //Faz o upload do arquivo no storage
             await this.addSubContentFile({
-               subjectId: this.subjectId,
                subContentId,
                file: formDataFile,
             });
@@ -267,7 +263,7 @@ export default {
          if (this.$refs.form.validate()) {
             try {
                if (this.isEdit) {
-                  this.updateSubContent();
+                  await this.updateSubContent();
 
                   //Cria a notificação
                   createNotify({
@@ -275,7 +271,7 @@ export default {
                      message: 'Matéria atualizada com sucesso',
                   });
                } else {
-                  this.addNewSubContent();
+                  await this.addNewSubContent();
 
                   //Cria a notificação
                   createNotify({
@@ -283,7 +279,11 @@ export default {
                      message: 'Matéria adicionada com sucesso',
                   });
                }
+
+               //Muda para a página de listagem das matérias
+               this.$router.push({ name: 'ListSubContents' });
             } catch (error) {
+               console.log('matheus', error);
                let errorMessage = '';
 
                if (error.response) {
